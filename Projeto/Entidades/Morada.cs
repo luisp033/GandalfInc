@@ -1,4 +1,4 @@
-﻿namespace Projeto.Lib.Entidades.Pessoas
+﻿namespace Projeto.Lib.Entidades
 {
     public class Morada
     {

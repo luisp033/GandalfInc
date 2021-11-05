@@ -1,4 +1,4 @@
-﻿using Projeto.Lib.Entidades.Pessoas;
+﻿using Projeto.Lib.Entidades;
 using System;
 
 namespace Projeto.Lib.Faturacao

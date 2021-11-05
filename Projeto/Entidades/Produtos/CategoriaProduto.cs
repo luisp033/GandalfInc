@@ -2,5 +2,6 @@
 {
     public class CategoriaProduto : Entidade
     {
+        public int OrdemApresentacao { get; set; }
     }
 }

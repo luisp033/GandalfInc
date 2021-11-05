@@ -10,7 +10,7 @@ namespace Projeto.ConsoleApp
             /// <summary>
             /// Linha Apenas para exemplo. Deve ser descartada
             /// </summary>
-            Console.WriteLine(Calculadora.Somar(2, 2));
+            //Console.WriteLine(Calculadora.Somar(2, 2));
         }
     }
 }
