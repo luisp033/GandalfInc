@@ -60,9 +60,10 @@ namespace Projeto.Lib.Repositorios
             atual.Nome = tNew.Nome;
         }
 
-        public void Criar(Produto t)
+        public Produto Criar(Produto t)
         {
             ListaProdutos.Add(t);
+            return t;
         }
 
         public Produto ObterPorIdentificador(Guid guid)

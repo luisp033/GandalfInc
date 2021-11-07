@@ -10,51 +10,6 @@ namespace Projeto.ConsoleApp
     {
         static void Main(string[] args)
         {
-            #region Classe Utilizadores
-            //Console.WriteLine("-------------------------------------------- [Lista todos os utilizadores] \n");
-            //RepositorioUtilizador utilizadores = new RepositorioUtilizador();
-            //var listaUtilizadores = utilizadores.ObterTodos();
-            //foreach (var item in listaUtilizadores)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //Console.WriteLine("\n-------------------------------------------- [Inserir novo utilizador (Nuno)] \n");
-            //utilizadores.Criar(new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Senha = "1234", Email = "Nuno@mail.pt" });
-
-            //Console.WriteLine("-------------------------------------------- [Lista todos os utilizadores] \n");
-            //listaUtilizadores = utilizadores.ObterTodos();
-            //foreach (var item in listaUtilizadores)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //Console.WriteLine("\n-------------------------------------------- [Obter o user por Nome ='Nuno'] \n");
-            //var utilizadorNuno = utilizadores.ObterPorNome("Nuno");
-            //Console.WriteLine(utilizadorNuno);
-
-            //Console.WriteLine("\n-------------------------------------------- [Obter o user por identificador] \n");
-            //var utilizadorNuno2 = utilizadores.ObterPorIdentificador(utilizadorNuno.Identificador);
-            //Console.WriteLine(utilizadorNuno2);
-
-            //Console.WriteLine("\n-------------------------------------------- [Atualizar o estado activo do utilizador Nuno] \n");
-            //var utilizadorNuno3 = new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Senha = "1234", Email = "Nuno@mail.pt", Ativo = false };
-            //utilizadores.Atualizar(utilizadorNuno, utilizadorNuno3);
-            //listaUtilizadores = utilizadores.ObterTodos();
-            //foreach (var item in listaUtilizadores)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //Console.WriteLine("\n-------------------------------------------- [Remover o utilizador Nuno] \n");
-            //utilizadores.Apagar(utilizadorNuno);
-            //listaUtilizadores = utilizadores.ObterTodos();
-            //foreach (var item in listaUtilizadores)
-            //{
-            //    Console.WriteLine(item);
-            //}
-            #endregion
-
 
             Console.WriteLine("\n\t\t\t\t * * * * * * * * [GANDALF INC] * * * * * * * * \n");
 
@@ -68,6 +23,8 @@ namespace Projeto.ConsoleApp
             RepositorioProduto produtos = new RepositorioProduto(categorias,marcas);
             RepositorioEstoque estoques = new RepositorioEstoque(produtos);
             RepositorioCliente clientes = new RepositorioCliente();
+            RepositorioVenda vendas = new RepositorioVenda();
+
 
             //var listaLojas = lojas.ObterTodos();
             //foreach (var item in listaLojas)
@@ -148,11 +105,24 @@ namespace Projeto.ConsoleApp
             //    Console.WriteLine(item);
             //}
 
-            Console.WriteLine($"\nInicio da Nova Venda\n");
+            //Processa duas vendas
+            for (int i = 1; i < 3; i++)
+            {
+                Console.WriteLine($"\nInicio da Nova Venda\n");
+                var pontoDeVendaSelecionado = pontosDeVenda.ObterPorNomeActivo("POS 1");
+                var utilizadorLogado = pontosDeVenda.Login(pontoDeVendaSelecionado, "elsa@mail.pt", "1234");
+                Venda venda = vendas.Criar(new Venda(estoques, produtos));
+                venda.IniciarNovaVenda(pontoDeVendaSelecionado, utilizadorLogado);
+                var msg = venda.AdicionarProduto("10001", i);
+                Console.WriteLine(msg);
+                Cliente cliente = clientes.Criar(new Cliente() { Nome = "Maria das dores", NumeroFiscal = "888888888" });
+                msg = venda.FinalizarPagamento(TipoPagamento.Multibanco, cliente);
+                Console.WriteLine(msg);
+                venda.GerarRecibo();
+                Console.WriteLine("--------------------------------------------------");
+            }
 
-
-
-
+            //Console.Read();
         }
 
     }

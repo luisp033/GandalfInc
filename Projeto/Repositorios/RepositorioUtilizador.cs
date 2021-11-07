@@ -46,9 +46,10 @@ namespace Projeto.Lib.Repositorios
             atual.Tipo = tNew.Tipo;
         }
 
-        public void Criar(Utilizador t)
+        public Utilizador Criar(Utilizador t)
         {
             ListaUtilizadores.Add(t);
+            return t;
         }
 
         public Utilizador ObterPorIdentificador(Guid guid)

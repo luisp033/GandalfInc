@@ -44,9 +44,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(Cliente t)
+        public Cliente Criar(Cliente t)
         {
             ListaClientes.Add(t);
+            return t;
         }
 
         public Cliente ObterPorIdentificador(Guid guid)

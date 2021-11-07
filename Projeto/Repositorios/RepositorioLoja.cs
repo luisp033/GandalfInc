@@ -56,9 +56,10 @@ namespace Projeto.Lib.Repositorios
 
         }
 
-        public void Criar(Loja t)
+        public Loja Criar(Loja t)
         {
             ListaLojas.Add(t);
+            return t;
         }
 
         public Loja ObterPorIdentificador(Guid guid)

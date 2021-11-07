@@ -35,9 +35,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(Venda t)
+        public Venda Criar(Venda t)
         {
             ListaVendas.Add(t);
+            return t;
         }
 
         public Venda ObterPorIdentificador(Guid guid)

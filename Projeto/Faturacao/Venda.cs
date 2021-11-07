@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Projeto.Lib.Faturacao
 {
-    public class Venda //: IImpressora
+    public class Venda : IImpressora
     {
         private readonly RepositorioEstoque repositorioEstoque;
         private readonly RepositorioProduto repositorioProduto;
@@ -122,7 +122,6 @@ namespace Projeto.Lib.Faturacao
 
         public string FinalizarPagamento(TipoPagamento tipoPagamento, Cliente cliente) 
         {
-
             if (TipoPagamento.HasValue)
             {
                 return $"Compra já terminada não pode efetuar operações";
@@ -139,26 +138,26 @@ namespace Projeto.Lib.Faturacao
 
 
 
-        // Gerar Recibo
+        public void GerarRecibo()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Fatura Recibo FRD {DataHoraVenda.Value.Year}/{NumeroSerie}");
+            sb.AppendLine($"Loja: {PontoDeVenda.Loja.NumeroFiscal} - Ponto de Venda: {PontoDeVenda.Identificador} ");
+            sb.AppendLine($"Loja: {PontoDeVenda.Loja.Morada}");
+            sb.AppendLine($"Vendedor: {Vendedor.Nome} Identificador: {Vendedor.Identificador} ");
+            sb.AppendLine($"Data da Fatura/Recibo: {DataHoraVenda} ");
+            sb.AppendLine($"Tipo Pagamento: {TipoPagamento} "); //TODO: TRocar enumerador por string
+            sb.AppendLine($"Valor Pagamento: {ValorPagamento} ");
+            foreach (var item in DetalheVenda)
+            {
+                sb.AppendLine($"Id: {item.EstoqueIdentificador} Nome: {item.Produto.Nome}  - Valor Unitario: {item.Produto.PrecoUnitario} -  Desconto : {item.Desconto} - PrecoFinal : {item.PrecoFinal}");
+            }
 
-        //public void GerarRecibo()
-        //{
-        //    var sb = new StringBuilder();
-        //    sb.AppendLine($"Fatura Recibo FRD {DataHoraVenda.Year}/{NumeroSerie}");
-        //    sb.AppendLine($"Loja: {PontoDeVenda.Loja.NumeroFiscal} - Ponto de Venda: {PontoDeVenda.Identificador} ");
-        //    sb.AppendLine($"Loja: {PontoDeVenda.Loja.Morada}");
-        //    sb.AppendLine($"Vendedor: {Vendedor.Nome} Identificador: {Vendedor.Identificador} ");
-        //    sb.AppendLine($"Data da Fatura/Recibo: {DataHoraVenda} ");
-        //    sb.AppendLine($"Tipo Pagamento: {TipoPagamento} "); //TODO: TRocar enumerador por string
-        //    sb.AppendLine($"Valor Pagamento: {ValorPagamento} ");
-        //    foreach (var item in DetalheVendas)
-        //    {
-        //        sb.AppendLine($"Nome: {item.Produto.Nome}  - Valor Unitario: {item.Produto.PrecoUnitario} -  Desconto : {item.Desconto} - PrecoFinal : {item.PrecoFinal}");
-        //    }
+            Console.WriteLine(sb);
 
-        //    //Poderíamos escrever usando a notação LINQ
-        //    //DetalheVenda.Produtos.Select(x => sb.AppendLine($"Nome: {x.Nome}  - Valor Unitario: {x.PrecoUnitario} - Número de Série: {x.NumeroSerie}"))
-        //}
+            //Poderíamos escrever usando a notação LINQ
+            //DetalheVenda.Produtos.Select(x => sb.AppendLine($"Nome: {x.Nome}  - Valor Unitario: {x.PrecoUnitario} - Número de Série: {x.NumeroSerie}"))
+        }
 
         public override string ToString()
         {

@@ -1,4 +1,5 @@
 ﻿
+using Projeto.Lib.Faturacao;
 using Projeto.Lib.Repositorios;
 
 namespace Projeto.Lib.Entidades
@@ -10,15 +11,6 @@ namespace Projeto.Lib.Entidades
         public Loja Loja { get; set; }
 
         public Utilizador UtilizadorLogado{ get; set; }
-
-        private readonly RepositorioVenda repositorioVenda;
-
-
-
-
-
-
-
 
         public override string ToString()
         {

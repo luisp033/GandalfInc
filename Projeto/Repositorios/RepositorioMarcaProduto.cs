@@ -45,9 +45,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(MarcaProduto t)
+        public MarcaProduto Criar(MarcaProduto t)
         {
             ListaMarcasProduto.Add(t);
+            return t;
         }
 
         public MarcaProduto ObterPorIdentificador(Guid guid)

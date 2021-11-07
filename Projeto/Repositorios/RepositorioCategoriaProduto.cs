@@ -41,9 +41,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(CategoriaProduto t)
+        public CategoriaProduto Criar(CategoriaProduto t)
         {
             ListaCategoriasProduto.Add(t);
+            return t;
         }
 
         public CategoriaProduto ObterPorIdentificador(Guid guid)

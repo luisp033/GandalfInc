@@ -52,9 +52,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(PontoDeVenda t)
+        public PontoDeVenda Criar(PontoDeVenda t)
         {
             ListaPontosDeVenda.Add(t);
+            return t;
         }
 
         public PontoDeVenda ObterPorIdentificador(Guid guid)

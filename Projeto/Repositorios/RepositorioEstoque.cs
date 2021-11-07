@@ -46,9 +46,10 @@ namespace Projeto.Lib.Repositorios
             throw new NotImplementedException();
         }
 
-        public void Criar(Estoque t)
+        public Estoque Criar(Estoque t)
         {
             ListaEstoques.Add(t);
+            return t;
         }
 
         public Estoque ObterPorIdentificador(Guid guid)

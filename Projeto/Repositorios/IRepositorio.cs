@@ -5,7 +5,7 @@ namespace Projeto.Lib.Repositorios
 {
     public interface IRepositorio<T>
     {
-        void Criar(T t);
+        T Criar(T t);
         T ObterPorIdentificador(Guid guid);
         List<T> ObterTodos();
         void Atualizar(T tOld, T tNew);        void Apagar(T t);
