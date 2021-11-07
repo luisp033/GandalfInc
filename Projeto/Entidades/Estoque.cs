@@ -15,32 +15,11 @@ namespace Projeto.Lib.Entidades
         }
 
         public string Ean { get; set; }
+        public string NumeroSerie { get; set; }
         public DateTime DataEntrada { get; set; }
         public DateTime? DataVenda { get; set; }
         public Guid? IdentificadorVenda { get; set; }
 
-
-        //public List<Produto> Produtos { get; set; }
-
-        //public bool ValidarDisponibilidade(Dictionary<Produto, int> quantidadeItens) 
-        //{
-
-        //    foreach (var item in quantidadeItens.Keys)
-        //    {
-
-        //        var quantidadeEmEstoque = Produtos.Where(x => x.Nome == item.Nome).Count();
-        //        var valorSolicitado = 0;
-
-        //        quantidadeItens.TryGetValue(item, out valorSolicitado);
-
-        //        if (valorSolicitado > quantidadeEmEstoque)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-
-        //}
 
         public override string ToString()
         {

@@ -1,26 +1,24 @@
-﻿using Projeto.Lib.Entidades;
+﻿
 using Projeto.Lib.Repositorios;
-using System;
-using System.Collections.Generic;
 
-namespace Projeto.Lib.Faturacao
+namespace Projeto.Lib.Entidades
 {
     public class PontoDeVenda : Entidade
     {
-
         public string Nome { get; set; }
 
         public Loja Loja { get; set; }
 
         public Utilizador UtilizadorLogado{ get; set; }
 
-        //TODO Pesquisar produtos por Categoria, Marca, nome
+        private readonly RepositorioVenda repositorioVenda;
 
 
-        //TODO  AdicionarProdutosNaCompra
-        //TODO  RemoverProdutosNaCompra
-        //TODO  CancelarCompra
-        //TODO  Pagar Compra
+
+
+
+
+
 
         public override string ToString()
         {

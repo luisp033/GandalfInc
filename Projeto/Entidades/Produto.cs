@@ -8,8 +8,6 @@ namespace Projeto.Lib.Entidades
         public CategoriaProduto Categoria{ get; set; }
         public MarcaProduto Marca { get; set; }
         public decimal PrecoUnitario { get; set; }
-        public string NumeroSerie { get; set; }
-
 
         public override string ToString()
         {
