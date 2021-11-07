@@ -16,7 +16,17 @@ namespace Projeto.Lib.Faturacao
         public int NumeroSerie { get; set; }
         public TipoPagamento TipoPagamento { get; set; }
         public decimal ValorPagamento { get; set; }
-        public List<DetalheVenda> DetalheVendas { get; set; }  
+        public List<DetalheVenda> DetalheVendas { get; set; }
+
+        public bool EfetivarVenda() 
+        {
+
+
+            return true;
+        
+        }
+
+
 
         public void GerarRecibo()
         {
@@ -36,5 +46,8 @@ namespace Projeto.Lib.Faturacao
             //Poderíamos escrever usando a notação LINQ
             //DetalheVenda.Produtos.Select(x => sb.AppendLine($"Nome: {x.Nome}  - Valor Unitario: {x.PrecoUnitario} - Número de Série: {x.NumeroSerie}"))
         }
+
+
+
     }
 }

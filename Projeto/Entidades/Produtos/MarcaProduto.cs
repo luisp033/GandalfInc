@@ -1,8 +1,8 @@
 ﻿namespace Projeto.Lib.Entidades.Produtos
 {
-    public class CategoriaProduto : Entidade
+    public class MarcaProduto : Entidade
     {
         public string Nome { get; set; }
-        public int OrdemApresentacao { get; set; }
+        public string Origem { get; set; }   
     }
 }
