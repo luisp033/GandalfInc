@@ -1,5 +1,4 @@
 ﻿using Projeto.Lib.Entidades;
-using Projeto.Lib.Entidades.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace Projeto.Lib.Repositorios
     {
         private readonly List<MarcaProduto> ListaMarcasProduto;
 
-        public RepositorioMarcaProduto(MarcaProduto dados = null)
+        public RepositorioMarcaProduto(List<MarcaProduto> dados = null)
         {
             if (dados == null)
             {
@@ -29,6 +28,10 @@ namespace Projeto.Lib.Repositorios
                     new MarcaProduto(){ Nome = "Disney",  Ativo = true, Origem= "USA"},
                     new MarcaProduto(){ Nome = "ToysRus",  Ativo = true, Origem= "China"},
                 };
+            }
+            else
+            {
+                ListaMarcasProduto = dados;
             }
         }
 

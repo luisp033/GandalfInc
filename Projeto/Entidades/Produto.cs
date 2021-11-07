@@ -1,6 +1,5 @@
-﻿using Projeto.Lib.Entidades.Pessoas;
-
-namespace Projeto.Lib.Entidades.Produtos
+﻿
+namespace Projeto.Lib.Entidades
 {
     public class Produto : Entidade
     {

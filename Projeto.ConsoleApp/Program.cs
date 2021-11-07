@@ -20,7 +20,7 @@ namespace Projeto.ConsoleApp
             //}
 
             //Console.WriteLine("\n-------------------------------------------- [Inserir novo utilizador (Nuno)] \n");
-            //utilizadores.Criar(new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Password = "1234", Email = "Nuno@mail.pt" });
+            //utilizadores.Criar(new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Senha = "1234", Email = "Nuno@mail.pt" });
 
             //Console.WriteLine("-------------------------------------------- [Lista todos os utilizadores] \n");
             //listaUtilizadores = utilizadores.ObterTodos();
@@ -38,7 +38,7 @@ namespace Projeto.ConsoleApp
             //Console.WriteLine(utilizadorNuno2);
 
             //Console.WriteLine("\n-------------------------------------------- [Atualizar o estado activo do utilizador Nuno] \n");
-            //var utilizadorNuno3 = new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Password = "1234", Email = "Nuno@mail.pt", Ativo = false };
+            //var utilizadorNuno3 = new Utilizador { Tipo = TipoUtilizador.Empregado, Nome = "Nuno", Senha = "1234", Email = "Nuno@mail.pt", Ativo = false };
             //utilizadores.Atualizar(utilizadorNuno, utilizadorNuno3);
             //listaUtilizadores = utilizadores.ObterTodos();
             //foreach (var item in listaUtilizadores)
@@ -55,23 +55,26 @@ namespace Projeto.ConsoleApp
             //}
             #endregion
 
-            
+
             Console.WriteLine("\n\t\t\t\t * * * * * * * * [GANDALF INC] * * * * * * * * \n");
 
             Console.WriteLine("\n-------------------------------------------- [Lojas da Gandalf Inc]\n");
+
             RepositorioUtilizador utilizadores = new RepositorioUtilizador();
             RepositorioLoja lojas = new RepositorioLoja(utilizadores);
             RepositorioPontoDeVenda pontosDeVenda = new RepositorioPontoDeVenda(utilizadores, lojas);
             RepositorioCategoriaProduto categorias = new RepositorioCategoriaProduto();
             RepositorioMarcaProduto marcas = new RepositorioMarcaProduto();
             RepositorioProduto produtos = new RepositorioProduto(categorias,marcas);
+            RepositorioEstoque estoques = new RepositorioEstoque(produtos);
+            RepositorioCliente clientes = new RepositorioCliente();
 
             //var listaLojas = lojas.ObterTodos();
             //foreach (var item in listaLojas)
             //{
             //    Console.WriteLine(item);
             //}
-            
+
             //Loja lojaSelecionada;
             //do
             //{
@@ -120,16 +123,35 @@ namespace Projeto.ConsoleApp
 
             //Console.WriteLine($"\n Utilizador <{utilizadorLogado.Nome}> logado com sucesso no <{pontoDeVendaSelecionado.Nome}> da <{pontoDeVendaSelecionado.Loja.Nome}> \n");
 
-            Console.WriteLine($"\nDigite uma palavra para pesquisar produtos\n");
-            var pesquisa = Console.ReadLine();
+            //Console.WriteLine($"\nDigite uma palavra para pesquisar produtos\n");
+            //var pesquisa = Console.ReadLine();
 
-            Console.WriteLine($"\nProdutos encontrados para a pesquisa {pesquisa}\n");
+            //Console.WriteLine($"\nProdutos encontrados para a pesquisa {pesquisa}\n");
 
-            var listaProdutos = produtos.ObterProdutosPor(pesquisa); 
-            foreach (var item in listaProdutos)
-            {
-                Console.WriteLine(item);
-            }
+            //var listaProdutos = produtos.ObterProdutosPor(pesquisa); 
+            //foreach (var item in listaProdutos)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //Console.WriteLine($"\nListagem do estoque\n");
+            //var listaEstoques = estoques.ObterTodos();
+            //foreach (var item in listaEstoques)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            //Console.WriteLine($"\nListagem de clientes existentes\n");
+            //var listaClientes = clientes.ObterTodos();
+            //foreach (var item in listaClientes)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            Console.WriteLine($"\nInicio da Nova Venda\n");
+
+
+
 
         }
 

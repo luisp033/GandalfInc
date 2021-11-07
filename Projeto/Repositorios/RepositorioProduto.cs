@@ -1,5 +1,4 @@
 ﻿using Projeto.Lib.Entidades;
-using Projeto.Lib.Entidades.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace Projeto.Lib.Repositorios
     {
         private readonly List<Produto> ListaProdutos;
 
-        public RepositorioProduto(RepositorioCategoriaProduto categorias, RepositorioMarcaProduto marcas, Produto dados = null)
+        public RepositorioProduto(RepositorioCategoriaProduto categorias, RepositorioMarcaProduto marcas, List<Produto> dados = null)
         {
             if (dados == null)
             {
@@ -42,6 +41,10 @@ namespace Projeto.Lib.Repositorios
 
                 };
             }
+            else
+            {
+                ListaProdutos = dados;
+            }
         }
 
         public void Apagar(Produto t)
@@ -51,7 +54,10 @@ namespace Projeto.Lib.Repositorios
 
         public void Atualizar(Produto tOld, Produto tNew)
         {
-            throw new NotImplementedException();
+            var atual = ObterPorIdentificador(tOld.Identificador);
+            atual.Ativo = tNew.Ativo;
+            atual.DataUltimaAlteracao = DateTime.Now;
+            atual.Nome = tNew.Nome;
         }
 
         public void Criar(Produto t)
@@ -82,6 +88,10 @@ namespace Projeto.Lib.Repositorios
             return ListaProdutos.Where(x => x.Nome == nome).FirstOrDefault();
         }
 
+        public Produto ObterPorEan(string ean)
+        {
+            return ListaProdutos.Where(x => x.Ean == ean).FirstOrDefault();
+        }
         public List<Produto> ObterProdutosPor(string query)
         {
             return ListaProdutos.Where(x => x.Nome.Contains(query) ||

@@ -1,4 +1,4 @@
-﻿using Projeto.Lib.Entidades.Produtos;
+﻿using Projeto.Lib.Entidades;
 using System.Collections.Generic;
 
 namespace Projeto.Lib.Faturacao

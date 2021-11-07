@@ -14,25 +14,31 @@ namespace Projeto.Lib.Repositorios
         private readonly List<PontoDeVenda> ListaPontosDeVenda;
 
         private readonly RepositorioUtilizador repoUtilizadores;
+        private readonly RepositorioLoja repolojas;
 
-        public RepositorioPontoDeVenda(RepositorioUtilizador utilizadores, RepositorioLoja lojas, Loja dados = null)
+        public RepositorioPontoDeVenda(RepositorioUtilizador utilizadores, RepositorioLoja lojas, List<PontoDeVenda> dados = null)
         {
 
             repoUtilizadores = utilizadores;
+            repolojas = lojas;
 
             if (dados == null) {
 
                 ListaPontosDeVenda = new List<PontoDeVenda> {
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 1", Loja = lojas.ObterPorNome("Loja 1")},
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 2", Loja = lojas.ObterPorNome("Loja 1")},
-                    new PontoDeVenda(){ Ativo = false, Nome = "POS 3", Loja = lojas.ObterPorNome("Loja 1")},
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 4", Loja = lojas.ObterPorNome("Loja 2")},
-                    new PontoDeVenda(){ Ativo = false, Nome = "POS 5", Loja = lojas.ObterPorNome("Loja 2")},
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 6", Loja = lojas.ObterPorNome("Loja 2")},
-                    new PontoDeVenda(){ Ativo = false, Nome = "POS 7", Loja = lojas.ObterPorNome("Loja 3")},
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 8", Loja = lojas.ObterPorNome("Loja 3")},
-                    new PontoDeVenda(){ Ativo = true, Nome = "POS 9", Loja = lojas.ObterPorNome("Loja 3")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 1", Loja = repolojas.ObterPorNome("Loja 1")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 2", Loja = repolojas.ObterPorNome("Loja 1")},
+                    new PontoDeVenda(){ Ativo = false, Nome = "POS 3", Loja = repolojas.ObterPorNome("Loja 1")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 4", Loja = repolojas.ObterPorNome("Loja 2")},
+                    new PontoDeVenda(){ Ativo = false, Nome = "POS 5", Loja = repolojas.ObterPorNome("Loja 2")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 6", Loja = repolojas.ObterPorNome("Loja 2")},
+                    new PontoDeVenda(){ Ativo = false, Nome = "POS 7", Loja = repolojas.ObterPorNome("Loja 3")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 8", Loja = repolojas.ObterPorNome("Loja 3")},
+                    new PontoDeVenda(){ Ativo = true, Nome = "POS 9", Loja = repolojas.ObterPorNome("Loja 3")},
                 };
+            }
+            else
+            {
+                ListaPontosDeVenda = dados;
             }
         }
 

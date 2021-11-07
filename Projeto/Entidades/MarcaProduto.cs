@@ -1,4 +1,4 @@
-﻿namespace Projeto.Lib.Entidades.Produtos
+﻿namespace Projeto.Lib.Entidades
 {
     public class MarcaProduto : Entidade
     {

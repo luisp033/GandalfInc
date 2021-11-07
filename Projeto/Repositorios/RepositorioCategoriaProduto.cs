@@ -1,5 +1,4 @@
 ﻿using Projeto.Lib.Entidades;
-using Projeto.Lib.Entidades.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace Projeto.Lib.Repositorios
     {
         private readonly List<CategoriaProduto> ListaCategoriasProduto;
 
-        public RepositorioCategoriaProduto(CategoriaProduto dados = null)
+        public RepositorioCategoriaProduto(List<CategoriaProduto> dados = null)
         {
             if (dados == null)
             {
@@ -25,6 +24,10 @@ namespace Projeto.Lib.Repositorios
                     new CategoriaProduto(){ Nome = "Filmes", OrdemApresentacao = 3, Ativo = true},
                     new CategoriaProduto(){ Nome = "Brinquedos", OrdemApresentacao = 4, Ativo = false},
                 };
+            }
+            else
+            {
+                ListaCategoriasProduto = dados;
             }
         }
 

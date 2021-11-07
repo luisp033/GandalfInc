@@ -1,5 +1,4 @@
 ﻿using Projeto.Lib.Entidades;
-using Projeto.Lib.Entidades.Produtos;
 using Projeto.Lib.Repositorios;
 using System;
 using System.Collections.Generic;

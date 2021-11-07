@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 
 namespace Projeto.Lib.Repositorios
 {
-    public class RepositorioEntidade : IRepositorio<Entidade>
-    {
-        private readonly List<Entidade> entidades;
-        public RepositorioEntidade()
-        {
-            entidades = new List<Entidade>();
-        }
+    //public class RepositorioEntidade : IRepositorio<Entidade>
+    //{
+    //    private readonly List<Entidade> entidades;
+    //    public RepositorioEntidade()
+    //    {
+    //        entidades = new List<Entidade>();
+    //    }
 
-        public void Apagar(Entidade t)
-        {
-            entidades.Remove(t);
-        }
+    //    public void Apagar(Entidade t)
+    //    {
+    //        entidades.Remove(t);
+    //    }
 
-        public void Atualizar(Entidade tOld, Entidade tNew)
-        {
-            throw new NotImplementedException();
-        }
+    //    public void Atualizar(Entidade tOld, Entidade tNew)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public void Criar(Entidade t)
-        {
-            entidades.Add(t);
-        }
+    //    public void Criar(Entidade t)
+    //    {
+    //        entidades.Add(t);
+    //    }
 
-        public Entidade ObterPorIdentificador(Guid guid)
-        {
-            return entidades.FirstOrDefault(x=> x.Identificador == guid);
-        }
+    //    public Entidade ObterPorIdentificador(Guid guid)
+    //    {
+    //        return entidades.FirstOrDefault(x=> x.Identificador == guid);
+    //    }
 
-        //public Entidade ObterPorNome(string nome)
-        //{
-        //    return entidades.FirstOrDefault(x => x. .Nome == nome);
-        //}
+    //    //public Entidade ObterPorNome(string nome)
+    //    //{
+    //    //    return entidades.FirstOrDefault(x => x. .Nome == nome);
+    //    //}
 
-        public List<Entidade> ObterTodos()
-        {
-            return entidades;
-        }
-    }
+    //    public List<Entidade> ObterTodos()
+    //    {
+    //        return entidades;
+    //    }
+    //}
 }

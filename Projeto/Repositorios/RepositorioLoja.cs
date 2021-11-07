@@ -12,12 +12,13 @@ namespace Projeto.Lib.Repositorios
 
         private readonly List<Loja> ListaLojas;
 
-        public RepositorioLoja(RepositorioUtilizador utilizadores, Loja dados = null)
+        public RepositorioLoja(RepositorioUtilizador utilizadores, List<Loja> dados = null)
         {
-            if (dados == null) {
+            if (dados == null)
+            {
 
                 ListaLojas = new List<Loja> {
-                    new Loja(){ Ativo = true, Email = "Loja1@mail.pt", NumeroFiscal = "123456789", Telefone="987654321", Nome = "Loja 1", 
+                    new Loja(){ Ativo = true, Email = "Loja1@mail.pt", NumeroFiscal = "123456789", Telefone="987654321", Nome = "Loja 1",
                                 Morada = new Morada(){ Endereco = "Rua da loja 1", CodigoPostal = "1000", Localidade="Lisboa"},
                                 Responsavel = utilizadores.ObterPorNome("Gabriel")
                     },
@@ -30,6 +31,10 @@ namespace Projeto.Lib.Repositorios
                                 Responsavel = utilizadores.ObterPorNome("Gertrudes")
                     },
                 };
+            }
+            else 
+            {
+                ListaLojas = dados;
             }
         }
 

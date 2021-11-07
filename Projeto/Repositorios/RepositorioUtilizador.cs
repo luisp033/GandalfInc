@@ -12,17 +12,21 @@ namespace Projeto.Lib.Repositorios
 
         private readonly List<Utilizador> ListaUtilizadores;
 
-        public RepositorioUtilizador(Utilizador dados = null)
+        public RepositorioUtilizador(List<Utilizador> dados = null)
         {
             if (dados == null) { 
                 ListaUtilizadores = new List<Utilizador> {
 
-                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gabriel", Password = "1234", Email = "gabriel@mail.pt"},
-                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gertrudes", Password = "1234", Email = "gertrudes@mail.pt"},
-                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gaudio", Password = "1234", Email = "galio@mail.pt"},
-                    new Utilizador(){ Tipo = TipoUtilizador.Empregado, Nome = "Eduardo", Password = "1234", Email = "eduardo@mail.pt"},
-                    new Utilizador(){ Tipo = TipoUtilizador.Empregado, Nome = "Elsa", Password = "1234", Email = "elsa@mail.pt"},
+                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gabriel", Senha = "1234", Email = "gabriel@mail.pt"},
+                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gertrudes", Senha = "1234", Email = "gertrudes@mail.pt"},
+                    new Utilizador(){ Tipo = TipoUtilizador.Gerente, Nome = "Gaudio", Senha = "1234", Email = "galio@mail.pt"},
+                    new Utilizador(){ Tipo = TipoUtilizador.Empregado, Nome = "Eduardo", Senha = "1234", Email = "eduardo@mail.pt"},
+                    new Utilizador(){ Tipo = TipoUtilizador.Empregado, Nome = "Elsa", Senha = "1234", Email = "elsa@mail.pt"},
                 };
+            }
+            else
+            {
+                ListaUtilizadores = dados;
             }
         }
 
@@ -38,7 +42,7 @@ namespace Projeto.Lib.Repositorios
             atual.DataUltimaAlteracao = DateTime.Now;
             atual.Email = tNew.Email;
             atual.Nome = tNew.Nome;
-            atual.Password = tNew.Password;
+            atual.Senha = tNew.Senha;
             atual.Tipo = tNew.Tipo;
         }
 
@@ -65,7 +69,7 @@ namespace Projeto.Lib.Repositorios
 
         public Utilizador Login(string email, string senha) 
         {
-            return ListaUtilizadores.Where(x => x.Email == email && x.Password == senha).FirstOrDefault();
+            return ListaUtilizadores.Where(x => x.Email == email && x.Senha == senha).FirstOrDefault();
         }
 
 
