@@ -10,7 +10,6 @@ namespace Projeto.Lib.Repositorios
 {
     public class RepositorioEstoque : IRepositorio<Estoque>
     {
-        private Random rand = new Random();
         private readonly List<Estoque> ListaEstoques;
 
         public RepositorioEstoque(RepositorioProduto repoProdutos, List<Estoque> dados = null)
@@ -25,7 +24,7 @@ namespace Projeto.Lib.Repositorios
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        ListaEstoques.Add(new Estoque(repoProdutos) { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"{i}{rand.Next(100, 900)}"});
+                        ListaEstoques.Add(new Estoque(repoProdutos) { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"SN{i}/{DateTime.Now.Millisecond}"});
                     }
                 }
             }

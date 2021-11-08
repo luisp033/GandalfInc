@@ -121,8 +121,6 @@ namespace Projeto.ConsoleApp
                 venda.GerarRecibo();
                 Console.WriteLine("--------------------------------------------------");
             }
-
-            //Console.Read();
         }
 
     }

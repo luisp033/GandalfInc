@@ -146,7 +146,7 @@ namespace Projeto.Lib.Faturacao
             sb.AppendLine($"Loja: {PontoDeVenda.Loja.Morada}");
             sb.AppendLine($"Vendedor: {Vendedor.Nome} Identificador: {Vendedor.Identificador} ");
             sb.AppendLine($"Data da Fatura/Recibo: {DataHoraVenda} ");
-            sb.AppendLine($"Tipo Pagamento: {TipoPagamento} "); //TODO: TRocar enumerador por string
+            sb.AppendLine($"Tipo Pagamento: {TipoPagamento} "); 
             sb.AppendLine($"Valor Pagamento: {ValorPagamento} ");
             foreach (var item in DetalheVenda)
             {

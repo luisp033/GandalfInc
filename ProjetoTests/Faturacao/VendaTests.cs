@@ -13,7 +13,6 @@ namespace Projeto.Lib.Faturacao.Tests
     [TestClass()]
     public class VendaTests
     {
-
         [TestMethod()]
         public void DeveIniciarNovaVendaComDadosDoPontoDeVendaEVendedorTest()
         {
@@ -40,9 +39,7 @@ namespace Projeto.Lib.Faturacao.Tests
             Assert.AreEqual(pontoDeVendaSelecionado.Identificador, venda.PontoDeVenda.Identificador);
 
             System.Diagnostics.Debug.WriteLine(venda);
-
         }
-
 
         [TestMethod()]
         public void AdicionarProdutosAVenda()
@@ -68,7 +65,7 @@ namespace Projeto.Lib.Faturacao.Tests
             var produtosAdicionados = venda.DetalheVenda.Count;
 
             //Assert
-            Assert.AreEqual(produtosAdicionados,4);
+            Assert.AreEqual(4,produtosAdicionados);
 
             System.Diagnostics.Debug.WriteLine(venda);
         }
@@ -98,7 +95,7 @@ namespace Projeto.Lib.Faturacao.Tests
             var estoqueLiberto = estoques.ObterPorIdentificador(primeiroProduto.EstoqueIdentificador).DataVenda == null;
 
             //Assert
-            Assert.AreEqual(produtosNaVendaDetalhe, 1);
+            Assert.AreEqual(1,produtosNaVendaDetalhe);
             Assert.IsTrue(estoqueLiberto);
 
 
@@ -129,8 +126,8 @@ namespace Projeto.Lib.Faturacao.Tests
             var estoqueLiberto = estoques.ObterListaPorEan("10001")?.Count(x=>x.DataVenda == null);
 
             //Assert
-            Assert.AreEqual(produtosNaVendaDetalhe, 0);
-            Assert.AreEqual(estoqueLiberto, 5);
+            Assert.AreEqual(0,produtosNaVendaDetalhe);
+            Assert.AreEqual(5,estoqueLiberto);
 
 
             System.Diagnostics.Debug.WriteLine(venda);
