@@ -1,6 +1,5 @@
 ﻿namespace Projeto.Lib.Entidades
 {
-    //Usuario ou Utilizador
     public class Utilizador : Entidade
     {
         public string Nome { get; set; }

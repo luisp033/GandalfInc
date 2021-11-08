@@ -7,6 +7,7 @@ namespace Projeto.Lib.Infraestrutura
         public void GerarRecibo()
         {
             throw new NotImplementedException();
+
         }
     }
 }
