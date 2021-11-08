@@ -10,12 +10,12 @@ namespace Projeto.Lib.Repositorios
 {
     public class RepositorioEstoque : IRepositorio<Estoque>
     {
-
+        private Random rand = new Random();
         private readonly List<Estoque> ListaEstoques;
 
         public RepositorioEstoque(RepositorioProduto repoProdutos, List<Estoque> dados = null)
         {
-            Random rand = new Random();
+            
 
             if (dados == null)
             {
@@ -54,7 +54,7 @@ namespace Projeto.Lib.Repositorios
 
         public Estoque ObterPorIdentificador(Guid guid)
         {
-            return ListaEstoques.Where(x => x.Identificador == guid).FirstOrDefault();
+            return ListaEstoques.FirstOrDefault(x => x.Identificador == guid);
         }
 
         public List<Estoque> ObterTodos()

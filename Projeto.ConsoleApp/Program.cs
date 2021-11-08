@@ -6,7 +6,7 @@ using System;
 
 namespace Projeto.ConsoleApp
 {
-    public class Program
+    public static class Program
     {
         static void Main(string[] args)
         {

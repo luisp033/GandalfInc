@@ -54,7 +54,7 @@ namespace Projeto.Lib.Repositorios
 
         public Utilizador ObterPorIdentificador(Guid guid)
         {
-            return ListaUtilizadores.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaUtilizadores.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<Utilizador> ObterTodos()
@@ -64,13 +64,13 @@ namespace Projeto.Lib.Repositorios
 
         public Utilizador ObterPorNome(string nome)
         {
-            return ListaUtilizadores.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaUtilizadores.FirstOrDefault(x => x.Nome == nome);
         }
 
 
         public Utilizador Login(string email, string senha) 
         {
-            return ListaUtilizadores.Where(x => x.Email == email && x.Senha == senha).FirstOrDefault();
+            return ListaUtilizadores.FirstOrDefault(x => x.Email == email && x.Senha == senha);
         }
 
 

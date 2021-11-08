@@ -64,7 +64,7 @@ namespace Projeto.Lib.Repositorios
 
         public Loja ObterPorIdentificador(Guid guid)
         {
-            return ListaLojas.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaLojas.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<Loja> ObterTodos()
@@ -74,12 +74,12 @@ namespace Projeto.Lib.Repositorios
 
         public Loja ObterPorNome(string nome)
         {
-            return ListaLojas.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaLojas.FirstOrDefault(x => x.Nome == nome);
         }
 
         public Loja ObterPorNomeActivo(string nome)
         {
-            return ListaLojas.Where(x => x.Nome == nome && x.Ativo).FirstOrDefault();
+            return ListaLojas.FirstOrDefault(x => x.Nome == nome && x.Ativo);
         }
     }
 }

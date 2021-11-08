@@ -53,7 +53,7 @@ namespace Projeto.Lib.Repositorios
 
         public MarcaProduto ObterPorIdentificador(Guid guid)
         {
-            return ListaMarcasProduto.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaMarcasProduto.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<MarcaProduto> ObterTodos()
@@ -71,7 +71,7 @@ namespace Projeto.Lib.Repositorios
 
         public MarcaProduto ObterPorNome(string nome)
         {
-            return ListaMarcasProduto.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaMarcasProduto.FirstOrDefault(x => x.Nome == nome);
         }
 
 

@@ -68,7 +68,7 @@ namespace Projeto.Lib.Repositorios
 
         public Produto ObterPorIdentificador(Guid guid)
         {
-            return ListaProdutos.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaProdutos.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<Produto> ObterTodos()
@@ -86,12 +86,12 @@ namespace Projeto.Lib.Repositorios
 
         public Produto ObterPorNome(string nome)
         {
-            return ListaProdutos.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaProdutos.FirstOrDefault(x => x.Nome == nome);
         }
 
         public Produto ObterPorEan(string ean)
         {
-            return ListaProdutos.Where(x => x.Ean == ean).FirstOrDefault();
+            return ListaProdutos.FirstOrDefault(x => x.Ean == ean);
         }
         public List<Produto> ObterProdutosPor(string query)
         {

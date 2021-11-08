@@ -8,7 +8,7 @@ namespace Projeto.Lib.Entidades
         public bool Ativo { get; set; }
         public DateTime DataUltimaAlteracao { get; set; }
 
-        public Entidade()
+        protected Entidade()
         {
             Identificador = Guid.NewGuid();
 

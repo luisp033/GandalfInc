@@ -6,6 +6,7 @@ namespace Projeto.Tests
     /// Classe apenas para exemplo. Deve ser descartada
     /// </summary>
     [TestClass]
+    [Ignore]
     public class CalculadoraTests
     {
         //[TestMethod]

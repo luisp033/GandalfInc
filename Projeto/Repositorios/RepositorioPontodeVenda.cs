@@ -60,7 +60,7 @@ namespace Projeto.Lib.Repositorios
 
         public PontoDeVenda ObterPorIdentificador(Guid guid)
         {
-            return ListaPontosDeVenda.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaPontosDeVenda.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<PontoDeVenda> ObterTodos()
@@ -70,12 +70,12 @@ namespace Projeto.Lib.Repositorios
 
         public PontoDeVenda ObterPorNome(string nome)
         {
-            return ListaPontosDeVenda.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaPontosDeVenda.FirstOrDefault(x => x.Nome == nome);
         }
 
         public PontoDeVenda ObterPorNomeActivo(string nome)
         {
-            return ListaPontosDeVenda.Where(x => x.Nome == nome && x.Ativo).FirstOrDefault();
+            return ListaPontosDeVenda.FirstOrDefault(x => x.Nome == nome && x.Ativo);
         }
 
         public List<PontoDeVenda> ObterPorLojaActiva(Guid identificadorLoja)

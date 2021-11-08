@@ -52,7 +52,7 @@ namespace Projeto.Lib.Repositorios
 
         public Cliente ObterPorIdentificador(Guid guid)
         {
-            return ListaClientes.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaClientes.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<Cliente> ObterTodos()
@@ -70,12 +70,12 @@ namespace Projeto.Lib.Repositorios
 
         public Cliente ObterPorNome(string nome)
         {
-            return ListaClientes.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaClientes.FirstOrDefault(x => x.Nome == nome);
         }
 
         public Cliente ObterPorNif(string nif)
         {
-            return ListaClientes.Where(x => x.NumeroFiscal == nif).FirstOrDefault();
+            return ListaClientes.FirstOrDefault(x => x.NumeroFiscal == nif);
         }
 
 

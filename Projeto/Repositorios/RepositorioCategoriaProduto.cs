@@ -49,7 +49,7 @@ namespace Projeto.Lib.Repositorios
 
         public CategoriaProduto ObterPorIdentificador(Guid guid)
         {
-            return ListaCategoriasProduto.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaCategoriasProduto.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<CategoriaProduto> ObterTodos()
@@ -67,7 +67,7 @@ namespace Projeto.Lib.Repositorios
 
         public CategoriaProduto ObterPorNome(string nome)
         {
-            return ListaCategoriasProduto.Where(x => x.Nome == nome).FirstOrDefault();
+            return ListaCategoriasProduto.FirstOrDefault(x => x.Nome == nome);
         }
 
 

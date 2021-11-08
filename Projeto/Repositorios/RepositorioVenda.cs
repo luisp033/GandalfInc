@@ -43,7 +43,7 @@ namespace Projeto.Lib.Repositorios
 
         public Venda ObterPorIdentificador(Guid guid)
         {
-            return ListaVendas.Where(x=>x.Identificador == guid).FirstOrDefault();
+            return ListaVendas.FirstOrDefault(x=>x.Identificador == guid);
         }
 
         public List<Venda> ObterTodos()
