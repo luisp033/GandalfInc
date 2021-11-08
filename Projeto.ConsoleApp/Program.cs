@@ -11,7 +11,7 @@ namespace Projeto.ConsoleApp
         static void Main(string[] args)
         {
 
-            Console.WriteLine("\n\t\t\t\t * * * * * * * * [GANDALF INC] * * * * * * * * \n");
+            Console.WriteLine("\n\t\t\t\t * * * * * * * * [GANDALF INC...] * * * * * * * * \n");
 
             Console.WriteLine("\n-------------------------------------------- [Lojas da Gandalf Inc]\n");
 
