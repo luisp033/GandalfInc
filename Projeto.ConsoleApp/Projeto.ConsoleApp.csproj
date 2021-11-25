@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Projeto\Projeto.Lib.csproj" />
+    <ProjectReference Include="..\Projeto.DataAccessLayer\Projeto.DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

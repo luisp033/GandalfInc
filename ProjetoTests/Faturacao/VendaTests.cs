@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Projeto.Lib.Entidades;
-using Projeto.Lib.Faturacao;
-using Projeto.Lib.Repositorios;
-using System;
-using System.Collections.Generic;
+using Projeto.DataAccessLayer.Faturacao;
+using Projeto.DataAccessLayer.Repositorios;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projeto.Lib.Faturacao.Tests
 {

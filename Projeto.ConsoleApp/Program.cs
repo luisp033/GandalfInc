@@ -1,7 +1,7 @@
-﻿using Projeto.Lib;
-using Projeto.Lib.Entidades;
-using Projeto.Lib.Faturacao;
-using Projeto.Lib.Repositorios;
+﻿
+using Projeto.DataAccessLayer.Entidades;
+using Projeto.DataAccessLayer.Faturacao;
+using Projeto.DataAccessLayer.Repositorios;
 using System;
 
 namespace Projeto.ConsoleApp
