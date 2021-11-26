@@ -1,8 +1,10 @@
-﻿namespace Projeto.DataAccessLayer.Entidades
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Projeto.DataAccessLayer.Entidades
 {
     public class Loja : Entidade
     {
-
+        [Required, MaxLength(255)]
         public string Nome { get; set; }
         public string NumeroFiscal { get; set; }
         public Morada Morada { get; set; }
@@ -11,10 +13,10 @@
         public Utilizador Responsavel { get; set; }
 
 
-        public override string ToString()
-        {
-            return $"Loja: {base.Identificador} - Nome: {Nome} - Responsavel: {Responsavel.Nome} - Ativo: {Ativo} - CPostal: {Morada.CodigoPostal}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"Loja: {base.Identificador} - Nome: {Nome} - Responsavel: {Responsavel.Nome} - Ativo: {Ativo} - CPostal: {Morada.CodigoPostal}";
+        //}
 
     }
 }

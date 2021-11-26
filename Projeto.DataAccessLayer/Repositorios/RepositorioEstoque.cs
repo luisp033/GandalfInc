@@ -23,7 +23,7 @@ namespace Projeto.DataAccessLayer.Repositorios
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        ListaEstoques.Add(new Estoque(repoProdutos) { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"SN{i}/{DateTime.Now.Millisecond}"});
+                        ListaEstoques.Add(new Estoque() { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"SN{i}/{DateTime.Now.Millisecond}"});
                     }
                 }
             }
