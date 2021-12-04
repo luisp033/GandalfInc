@@ -153,7 +153,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<Guid?>("MoradaIdentificador")
                         .HasColumnType("uniqueidentifier");
@@ -164,13 +165,15 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("NumeroFiscal")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<Guid?>("ResponsavelIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Identificador");
 
@@ -333,7 +336,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -341,7 +345,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Senha")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");

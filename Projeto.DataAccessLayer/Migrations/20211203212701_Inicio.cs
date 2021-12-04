@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,25 +21,6 @@ namespace Projeto.DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoriaProdutos", x => x.Identificador);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Estoques",
-                columns: table => new
-                {
-                    Identificador = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Ean = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumeroSerie = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataEntrada = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataVenda = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdentificadorVenda = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataUltimaAlteracao = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Estoques", x => x.Identificador);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,8 +63,8 @@ namespace Projeto.DataAccessLayer.Migrations
                 {
                     Identificador = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Senha = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Tipo = table.Column<int>(type: "int", nullable: false),
                     Ativo = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -164,10 +145,10 @@ namespace Projeto.DataAccessLayer.Migrations
                 {
                     Identificador = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    NumeroFiscal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroFiscal = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: true),
                     MoradaIdentificador = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telefone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ResponsavelIdentificador = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Ativo = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -186,6 +167,32 @@ namespace Projeto.DataAccessLayer.Migrations
                         name: "FK_Lojas_Utilizadores_ResponsavelIdentificador",
                         column: x => x.ResponsavelIdentificador,
                         principalTable: "Utilizadores",
+                        principalColumn: "Identificador",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Estoques",
+                columns: table => new
+                {
+                    Identificador = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Ean = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroSerie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DataEntrada = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataVenda = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IdentificadorVenda = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProdutoIdentificador = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataUltimaAlteracao = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estoques", x => x.Identificador);
+                    table.ForeignKey(
+                        name: "FK_Estoques_Produtos_ProdutoIdentificador",
+                        column: x => x.ProdutoIdentificador,
+                        principalTable: "Produtos",
                         principalColumn: "Identificador",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -304,6 +311,11 @@ namespace Projeto.DataAccessLayer.Migrations
                 column: "VendaIdentificador");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Estoques_ProdutoIdentificador",
+                table: "Estoques",
+                column: "ProdutoIdentificador");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Lojas_MoradaIdentificador",
                 table: "Lojas",
                 column: "MoradaIdentificador");
@@ -358,22 +370,22 @@ namespace Projeto.DataAccessLayer.Migrations
                 name: "Estoques");
 
             migrationBuilder.DropTable(
-                name: "Produtos");
-
-            migrationBuilder.DropTable(
                 name: "Vendas");
 
             migrationBuilder.DropTable(
-                name: "CategoriaProdutos");
-
-            migrationBuilder.DropTable(
-                name: "MarcaProdutos");
+                name: "Produtos");
 
             migrationBuilder.DropTable(
                 name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "PontoDeVendas");
+
+            migrationBuilder.DropTable(
+                name: "CategoriaProdutos");
+
+            migrationBuilder.DropTable(
+                name: "MarcaProdutos");
 
             migrationBuilder.DropTable(
                 name: "Lojas");

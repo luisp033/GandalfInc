@@ -12,11 +12,62 @@ namespace Projeto.DataAccessLayer
     public class ProjetoDBContext: DbContext
     {
 
+        private DataBaseType Tipo;
+        private string CnnString;
+        public ProjetoDBContext(DataBaseType tipo = DataBaseType.SqlServer)
+        {
+            Tipo = tipo;
+
+            if (Tipo is DataBaseType.Sqlite)
+            {
+                CnnString = "Data Source=DBTeste.sqlite";
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
+            else
+            {
+                CnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;";
+                //Database.EnsureCreated();
+            }
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;";
-            options.UseSqlServer(connectionString);
+            if (Tipo is DataBaseType.Sqlite)
+            {
+                options.UseSqlite(CnnString);
+            }
+            else
+            {
+                options.UseSqlServer(CnnString);
+            }
         }
+
+        public override int SaveChanges()
+        {
+            var now = DateTime.UtcNow;
+
+            foreach (var changedEntity in ChangeTracker.Entries())
+            {
+                if (changedEntity.Entity is Entidade entity)
+                {
+                    switch (changedEntity.State)
+                    {
+                        case EntityState.Added:
+                            entity.DataCriacao = now;
+                            entity.DataUltimaAlteracao = null;
+                            break;
+                        case EntityState.Modified:
+                            entity.DataUltimaAlteracao = now;
+                            break;
+                    }
+                }
+            }
+
+            return base.SaveChanges();
+
+        }
+
 
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Utilizador> Utilizadores { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Projeto.DataAccessLayer.Entidades
 {
-    public abstract class Entidade 
+    public abstract class Entidade
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

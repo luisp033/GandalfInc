@@ -1,7 +1,9 @@
 ﻿
 using Projeto.BusinessLogicLayer;
+using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Faturacao;
+using Projeto.DataAccessLayer.Persistence;
 using Projeto.DataAccessLayer.Repositorios;
 using System;
 
@@ -16,31 +18,32 @@ namespace Projeto.ConsoleApp
 
             Console.WriteLine("\n-------------------------------------------- [Lojas da Gandalf Inc]\n");
 
-            var dbContext = new DataAccessLayer.ProjetoDBContext();
+            //GestaoUtilizadores();
 
-            RepositorioUtilizador utilizadores = new RepositorioUtilizador(dbContext);
+            //RepositorioUtilizador utilizadores = new RepositorioUtilizador(dbContext);
 
-            utilizadores.Criar(new Utilizador { 
-                Nome = "User 1",
-                Tipo = DataAccessLayer.TipoUtilizador.Empregado,
-                Email = "user1@mail.pt",
-                Senha = "123",
-                Ativo = true,
-                DataCriacao = DateTime.Now,
-                DataUltimaAlteracao =DateTime.Now
-            });
-
-
+            //utilizadores.Criar(new Utilizador { 
+            //    Nome = "User 1",
+            //    Tipo = DataAccessLayer.TipoUtilizador.Empregado,
+            //    Email = "user1@mail.pt",
+            //    Senha = "123",
+            //    Ativo = true,
+            //    DataCriacao = DateTime.Now,
+            //    DataUltimaAlteracao =DateTime.Now
+            //});
 
 
-            RepositorioLoja lojas = new RepositorioLoja(utilizadores);
-            RepositorioPontoDeVenda pontosDeVenda = new RepositorioPontoDeVenda(utilizadores, lojas);
-            RepositorioCategoriaProduto categorias = new RepositorioCategoriaProduto();
-            RepositorioMarcaProduto marcas = new RepositorioMarcaProduto();
-            RepositorioProduto produtos = new RepositorioProduto(categorias,marcas);
-            RepositorioEstoque estoques = new RepositorioEstoque(produtos);
-            RepositorioCliente clientes = new RepositorioCliente();
-            RepositorioVenda vendas = new RepositorioVenda();
+
+
+
+            //RepositorioLoja lojas = new RepositorioLoja(utilizadores);
+            //RepositorioPontoDeVenda pontosDeVenda = new RepositorioPontoDeVenda(utilizadores, lojas);
+            //RepositorioCategoriaProduto categorias = new RepositorioCategoriaProduto();
+            //RepositorioMarcaProduto marcas = new RepositorioMarcaProduto();
+            //RepositorioProduto produtos = new RepositorioProduto(categorias,marcas);
+            //RepositorioEstoque estoques = new RepositorioEstoque(produtos);
+            //RepositorioCliente clientes = new RepositorioCliente();
+            //RepositorioVenda vendas = new RepositorioVenda();
 
 
             //var listaLojas = lojas.ObterTodos();
@@ -140,5 +143,47 @@ namespace Projeto.ConsoleApp
             //}
         }
 
+        /// <summary>
+        /// Insere 2 utilizadores para teste
+        /// </summary>
+        private static void GestaoUtilizadores()
+        {
+            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.SqlServer)))
+            {
+
+
+                Console.WriteLine("-----------------------------------------{Utilizadores}-");
+                var users = unitOfWork.Utilizadores.GetAll();
+                foreach (var item in users)
+                {
+                    Console.WriteLine($"{item.Identificador} - {item.Nome}");
+                }
+                Console.WriteLine("-----------------------------------------{Inserindo 2 users}-");
+
+                unitOfWork.Utilizadores.Add(new Utilizador
+                {
+                    Nome = "Elias Empregado",
+                    Email = "elias@mail.pt",
+                    Tipo = TipoUtilizador.Empregado,
+                    Senha = "123",
+                });
+
+                unitOfWork.Utilizadores.Add(new Utilizador
+                {
+                    Nome = "Garcia Gerente",
+                    Email = "garcia@mail.pt",
+                    Tipo = TipoUtilizador.Gerente,
+                    Senha = "123",
+                });
+                unitOfWork.Complete();
+
+                Console.WriteLine("-----------------------------------------{Utilizadores}-");
+                users = unitOfWork.Utilizadores.GetAll();
+                foreach (var item in users)
+                {
+                    Console.WriteLine($"{item.Identificador} - {item.Nome}");
+                }
+            }
+        }
     }
 }

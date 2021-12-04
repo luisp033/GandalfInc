@@ -10,8 +10,8 @@ using Projeto.DataAccessLayer;
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    [Migration("20211125212214_Initial")]
-    partial class Initial
+    [Migration("20211203212701_Inicio")]
+    partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,7 +129,12 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<string>("NumeroSerie")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ProdutoIdentificador")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Identificador");
+
+                    b.HasIndex("ProdutoIdentificador");
 
                     b.ToTable("Estoques");
                 });
@@ -150,7 +155,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<Guid?>("MoradaIdentificador")
                         .HasColumnType("uniqueidentifier");
@@ -161,13 +167,15 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("NumeroFiscal")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<Guid?>("ResponsavelIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Identificador");
 
@@ -330,7 +338,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -338,7 +347,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Senha")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
@@ -429,6 +439,15 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Navigation("MoradaEntrega");
 
                     b.Navigation("MoradaFaturacao");
+                });
+
+            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Estoque", b =>
+                {
+                    b.HasOne("Projeto.DataAccessLayer.Entidades.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoIdentificador");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Loja", b =>

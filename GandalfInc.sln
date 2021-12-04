@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentacao", "Documentaca
 		Documentation\PROJETO I.pdf = Documentation\PROJETO I.pdf
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projeto.DataAccessLayer", "Projeto.DataAccessLayer\Projeto.DataAccessLayer.csproj", "{908A2F68-9A65-46C8-B453-83E3382B2769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projeto.DataAccessLayer", "Projeto.DataAccessLayer\Projeto.DataAccessLayer.csproj", "{908A2F68-9A65-46C8-B453-83E3382B2769}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projeto.BusinessLogicLayer", "Projeto.BusinessLogicLayer\Projeto.BusinessLogicLayer.csproj", "{CB8C0BED-16F0-49F8-A181-D62BC74E19C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projeto.BusinessLogicLayer", "Projeto.BusinessLogicLayer\Projeto.BusinessLogicLayer.csproj", "{CB8C0BED-16F0-49F8-A181-D62BC74E19C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

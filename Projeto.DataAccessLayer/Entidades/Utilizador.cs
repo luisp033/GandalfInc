@@ -7,16 +7,15 @@ namespace Projeto.DataAccessLayer.Entidades
     {
         [Required, MaxLength(255)]
         public string Nome { get; set; }
+
+        [EmailAddress]
+        [MaxLength(255)]
         public string Email { get; set; }
+
+        [MaxLength(255)]
         public string Senha { get; set; }
+
         public TipoUtilizador Tipo { get; set; }
-
-
-        //public override string ToString()
-        //{
-        //    return $"Utilizador: {base.Identificador} - Nome: {Nome} - Tipo:{Tipo} - Ativo:{Ativo}";
-        //}
-
 
     }
 }
