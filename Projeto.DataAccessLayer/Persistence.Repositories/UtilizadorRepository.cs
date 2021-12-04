@@ -15,7 +15,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
         }
         public ProjetoDBContext ProjetoDBContext 
         {
-            get { return ProjetoDBContext as ProjetoDBContext; }
+            get { return ProjetoDBContext; }
         }
 
         public IEnumerable<Utilizador> ObtemUtilizadoresActivos()

@@ -18,11 +18,14 @@ namespace Projeto.DataAccessLayer.Persistence
             _context = context;
             Utilizadores = new UtilizadorRepository(_context);
             Lojas = new LojaRepository(_context);
+            Moradas = new MoradaRepository(_context);
         }
 
         public IUtilizadorRepository Utilizadores { get; private set; }
 
         public ILojaRepository Lojas { get; private set; }
+
+        public IMoradaRepository Moradas { get; private set; }
 
         public int Complete()
         {

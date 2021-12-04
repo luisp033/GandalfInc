@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Projeto.DataAccessLayer.Persistence.Repositories
 {
-    public class LojaRepository : Repository<Loja>, ILojaRepository
+    public class MoradaRepository : Repository<Morada>, IMoradaRepository
     {
-        public LojaRepository(ProjetoDBContext context) : base(context)
+        public MoradaRepository(ProjetoDBContext context) : base(context)
         {
         }
         public ProjetoDBContext ProjetoDBContext 
