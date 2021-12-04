@@ -2,7 +2,6 @@
 
 namespace Projeto.DataAccessLayer.Entidades
 {
-    //Usuario ou Utilizador
     public class Utilizador : Entidade
     {
         [Required, MaxLength(255)]

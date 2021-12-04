@@ -7,6 +7,7 @@ namespace Projeto.BusinessLogicLayer.Infraestrutura
         public void GerarRecibo()
         {
             throw new NotImplementedException();
+
         }
     }
 }
