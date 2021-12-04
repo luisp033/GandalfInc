@@ -33,6 +33,15 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
 
+                var expectedMorada = new Morada
+                {
+                    Endereco = "Rua do Teste 1",
+                    Localidade = "Odivelas",
+                    CodigoPostal = "1000999",
+                    Observacoes = "Observacoes para teste"
+                };
+                unitOfWork.Moradas.Add(expectedMorada);
+
                 var expected = new Loja
                 {
                     Identificador = id,
@@ -41,6 +50,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                     Telefone = "123456789",
                     NumeroFiscal = "123456789",
                     Responsavel = expectedUtilizador,
+                    Morada = expectedMorada
 
                 };
                 var DateExpected = DateTime.Today;
@@ -60,6 +70,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 Assert.AreEqual(expected.Identificador, actual.Identificador);
                 Assert.AreEqual(expected.Nome, actualFind.Nome);
                 Assert.AreEqual(expected.Responsavel.Nome, expectedUtilizador.Nome);
+                Assert.AreEqual(expected.Morada.Endereco, expectedMorada.Endereco);
 
             }
         }
@@ -84,6 +95,15 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
 
+                var expectedMorada = new Morada
+                {
+                    Endereco = "Rua do Teste 1",
+                    Localidade = "Odivelas",
+                    CodigoPostal = "1000999",
+                    Observacoes = "Observacoes para teste"
+                };
+                unitOfWork.Moradas.Add(expectedMorada);
+
                 var expected = new List<Loja>() {
                     new Loja
                     {
@@ -93,6 +113,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     new Loja
                     {
@@ -111,12 +132,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var actual = unitOfWork.Lojas.GetAll();
 
                 var actualResponsaveis = actual.Count(x => x.Responsavel.Nome == "User Teste");
+                var actualMoradas = actual.Count(x => x.Morada?.Endereco == expectedMorada.Endereco);
 
                 //assert
                 Assert.IsNotNull(actual);
                 Assert.AreEqual(2, actual.Count());
                 Assert.AreEqual(2, actualResponsaveis);
-
+                Assert.AreEqual(1, actualMoradas);
             }
         }
 
@@ -140,6 +162,16 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
 
+                var expectedMorada = new Morada
+                {
+                    Endereco = "Rua do Teste 1",
+                    Localidade = "Odivelas",
+                    CodigoPostal = "1000999",
+                    Observacoes = "Observacoes para teste"
+                };
+                unitOfWork.Moradas.Add(expectedMorada);
+
+
                 var guid = Guid.NewGuid();
                 var expected = new List<Loja>() {
 
@@ -151,6 +183,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     new Loja
                     {
@@ -160,6 +193,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     new Loja
                     {
@@ -169,6 +203,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     
                 };
@@ -188,12 +223,15 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var actualSecondDelete = unitOfWork.Lojas.GetAll();
 
                 var utilizadorActual = unitOfWork.Utilizadores.GetAll();
+                var moradaActual = unitOfWork.Moradas.GetAll();
+
 
                 //assert
                 Assert.AreEqual(3, actualBefore.Count());
                 Assert.AreEqual(2, actualFirstDelete.Count());
                 Assert.AreEqual(0, actualSecondDelete.Count());
                 Assert.AreEqual(1, utilizadorActual.Count());
+                Assert.AreEqual(1, moradaActual.Count());
             }
         }
 
@@ -217,6 +255,15 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
 
+                var expectedMorada = new Morada
+                {
+                    Endereco = "Rua do Teste 1",
+                    Localidade = "Odivelas",
+                    CodigoPostal = "1000999",
+                    Observacoes = "Observacoes para teste"
+                };
+                unitOfWork.Moradas.Add(expectedMorada);
+
                 var guid = Guid.NewGuid();
                 var expected = new List<Loja>() {
                     new Loja
@@ -227,6 +274,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     new Loja
                     {
@@ -236,6 +284,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
                     new Loja
                     {
@@ -245,6 +294,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                         Telefone = "123456789",
                         NumeroFiscal = "123456789",
                         Responsavel = expectedUtilizador,
+                        Morada = expectedMorada,
                     },
 
                 };
@@ -262,6 +312,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var firstElement = unitOfWork.Lojas.Get(guid);
                 firstElement.Nome = nomeEsperado;
                 firstElement.Responsavel = null;
+                firstElement.Morada = null;
                 unitOfWork.Lojas.Update(firstElement);
                 unitOfWork.Complete();
                 firstElement = unitOfWork.Lojas.Get(guid);
@@ -282,7 +333,8 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                     && x.DataUltimaAlteracao.Value.Day == DateExpected.Day);
 
                 var dadosAlterados = actualSecondUpdate.Count(x => x.NumeroFiscal == dadoAlterado);
-                var actualResponsaveisCount = actualSecondUpdate.Count(x => x.Responsavel?.Nome == "User Teste");
+                var actualResponsaveisCount = actualSecondUpdate.Count(x => x.Responsavel?.Nome == expectedUtilizador.Nome);
+                var actualMoradasCount = actualSecondUpdate.Count(x => x.Morada?.Endereco == expectedMorada.Endereco);
 
                 //assert
                 Assert.AreEqual(3, actualBefore.Count());
@@ -290,6 +342,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 Assert.AreEqual(3, dadosAlterados);
                 Assert.AreEqual(3, DateModifiedCount);
                 Assert.AreEqual(2, actualResponsaveisCount);
+                Assert.AreEqual(2, actualMoradasCount);
 
             }
         }

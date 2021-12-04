@@ -50,235 +50,188 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             }
         }
 
-        //[TestMethod()]
-        //public void LojaRepository_AddRangeAndGetAllDBTest()
-        //{
+        [TestMethod()]
+        public void MoradaRepository_AddRangeAndGetAllDBTest()
+        {
 
-        //    //Teste with a Dabase in sqlite ...
+            //Teste with a Dabase in sqlite ...
 
-        //    using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
-        //    {
-        //        //arrange
+            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
+            {
+                //arrange
 
-        //        var expectedUtilizador = new Utilizador
-        //        {
-        //            Identificador = Guid.NewGuid(),
-        //            Nome = "User Teste",
-        //            Email = "email@teste.pt",
-        //            Tipo = TipoUtilizador.Empregado,
-        //            Senha = "123"
-        //        };
-        //        unitOfWork.Utilizadores.Add(expectedUtilizador);
+                var expected = new List<Morada>() {
+                    new Morada
+                    {
+                        //Identificador = Guid.NewGuid(),
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                    new Morada
+                    {
+                        Identificador = Guid.NewGuid(),
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                };
+                unitOfWork.Moradas.AddRange(expected);
+                unitOfWork.Complete();
 
-        //        var expected = new List<Loja>() {
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste",
-        //                Email = "loja@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste",
-        //                Email = "loja@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //        };
-        //        unitOfWork.Lojas.AddRange(expected);
-        //        unitOfWork.Complete();
+                //act
+                var actual = unitOfWork.Moradas.GetAll();
 
-        //        //act
-        //        var actual = unitOfWork.Lojas.GetAll();
+                //assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(2, actual.Count());
 
-        //        var actualResponsaveis = actual.Count(x => x.Responsavel.Nome == "User Teste");
+            }
+        }
 
-        //        //assert
-        //        Assert.IsNotNull(actual);
-        //        Assert.AreEqual(2, actual.Count());
-        //        Assert.AreEqual(2, actualResponsaveis);
+        [TestMethod()]
+        public void MoradaRepository_RemoveDBTest()
+        {
 
-        //    }
-        //}
+            //Teste with a Dabase in sqlite ...
 
-        //[TestMethod()]
-        //public void LojaRepository_RemoveDBTest()
-        //{
-
-        //    //Teste with a Dabase in sqlite ...
-
-        //    using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
-        //    {
-        //        //arrange
-
-        //        var expectedUtilizador = new Utilizador
-        //        {
-        //            Identificador = Guid.NewGuid(),
-        //            Nome = "User Teste",
-        //            Email = "email@teste.pt",
-        //            Tipo = TipoUtilizador.Empregado,
-        //            Senha = "123"
-        //        };
-        //        unitOfWork.Utilizadores.Add(expectedUtilizador);
-
-        //        var guid = Guid.NewGuid();
-        //        var expected = new List<Loja>() {
-
-        //            new Loja
-        //            {
-        //                Identificador = guid,
-        //                Nome = "Loja Teste 1",
-        //                Email = "loja1@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste 2",
-        //                Email = "loja2@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste 3",
-        //                Email = "loja3@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-                    
-        //        };
-
-        //        unitOfWork.Lojas.AddRange(expected);
-        //        unitOfWork.Complete();
-        //        var actualBefore = unitOfWork.Lojas.GetAll();
-
-        //        //act
-        //        var firstElement = unitOfWork.Lojas.Get(guid);
-        //        unitOfWork.Lojas.Remove(firstElement);
-        //        unitOfWork.Complete();
-        //        var actualFirstDelete = unitOfWork.Lojas.GetAll();
-
-        //        unitOfWork.Lojas.RemoveRange(actualFirstDelete);
-        //        unitOfWork.Complete();
-        //        var actualSecondDelete = unitOfWork.Lojas.GetAll();
-
-        //        var utilizadorActual = unitOfWork.Utilizadores.GetAll();
-
-        //        //assert
-        //        Assert.AreEqual(3, actualBefore.Count());
-        //        Assert.AreEqual(2, actualFirstDelete.Count());
-        //        Assert.AreEqual(0, actualSecondDelete.Count());
-        //        Assert.AreEqual(1, utilizadorActual.Count());
-        //    }
-        //}
-
-        //[TestMethod()]
-        //public void LojaRepository_UpdateDBTest()
-        //{
-
-        //    //Teste with a Dabase in sqlite ...
-
-        //    using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
-        //    {
-        //        //arrange
-
-        //        var expectedUtilizador = new Utilizador
-        //        {
-        //            Identificador = Guid.NewGuid(),
-        //            Nome = "User Teste",
-        //            Email = "email@teste.pt",
-        //            Tipo = TipoUtilizador.Empregado,
-        //            Senha = "123"
-        //        };
-        //        unitOfWork.Utilizadores.Add(expectedUtilizador);
-
-        //        var guid = Guid.NewGuid();
-        //        var expected = new List<Loja>() {
-        //            new Loja
-        //            {
-        //                Identificador = guid,
-        //                Nome = "Loja Teste 1",
-        //                Email = "loja1@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste 2",
-        //                Email = "loja2@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-        //            new Loja
-        //            {
-        //                Identificador = Guid.NewGuid(),
-        //                Nome = "Loja Teste 3",
-        //                Email = "loja3@teste.pt",
-        //                Telefone = "123456789",
-        //                NumeroFiscal = "123456789",
-        //                Responsavel = expectedUtilizador,
-        //            },
-
-        //        };
-
-        //        unitOfWork.Lojas.AddRange(expected);
-        //        unitOfWork.Complete();
-        //        var actualBefore = unitOfWork.Lojas.GetAll();
-
-        //        var nomeEsperado = "Nome Esperado";
-        //        var dadoAlterado = "000000000";
-
-        //        var DateExpected = DateTime.Today;
-
-        //        //act
-        //        var firstElement = unitOfWork.Lojas.Get(guid);
-        //        firstElement.Nome = nomeEsperado;
-        //        firstElement.Responsavel = null;
-        //        unitOfWork.Lojas.Update(firstElement);
-        //        unitOfWork.Complete();
-        //        firstElement = unitOfWork.Lojas.Get(guid);
-        //        var actualFirstUpdate = unitOfWork.Lojas.GetAll();
-
-        //        foreach (var item in actualFirstUpdate)
-        //        {
-        //            item.NumeroFiscal = dadoAlterado;
-        //        }
-        //        unitOfWork.Lojas.UpdateRange(actualFirstUpdate);
-        //        unitOfWork.Complete();
-        //        var actualSecondUpdate = unitOfWork.Lojas.GetAll();
+            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
+            {
+                //arrange
 
 
-        //        var DateModifiedCount = actualSecondUpdate.Count(x =>
-        //               x.DataUltimaAlteracao.Value.Year == DateExpected.Year
-        //            && x.DataUltimaAlteracao.Value.Month == DateExpected.Month
-        //            && x.DataUltimaAlteracao.Value.Day == DateExpected.Day);
+                var guid = Guid.NewGuid();
+                var expected = new List<Morada>() {
 
-        //        var dadosAlterados = actualSecondUpdate.Count(x => x.NumeroFiscal == dadoAlterado);
-        //        var actualResponsaveisCount = actualSecondUpdate.Count(x => x.Responsavel?.Nome == "User Teste");
+                    new Morada
+                    {
+                        Identificador = guid,
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                    new Morada
+                    {
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                    new Morada
+                    {
+                        Identificador = Guid.NewGuid(),
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
 
-        //        //assert
-        //        Assert.AreEqual(3, actualBefore.Count());
-        //        Assert.AreEqual(nomeEsperado, firstElement.Nome);
-        //        Assert.AreEqual(3, dadosAlterados);
-        //        Assert.AreEqual(3, DateModifiedCount);
-        //        Assert.AreEqual(2, actualResponsaveisCount);
+                };
 
-        //    }
-        //}
+                unitOfWork.Moradas.AddRange(expected);
+                unitOfWork.Complete();
+                var actualBefore = unitOfWork.Moradas.GetAll();
+
+                //act
+                var firstElement = unitOfWork.Moradas.Get(guid);
+                unitOfWork.Moradas.Remove(firstElement);
+                unitOfWork.Complete();
+                var actualFirstDelete = unitOfWork.Moradas.GetAll();
+
+                unitOfWork.Moradas.RemoveRange(actualFirstDelete);
+                unitOfWork.Complete();
+                var actualSecondDelete = unitOfWork.Moradas.GetAll();
+
+
+                //assert
+                Assert.AreEqual(3, actualBefore.Count());
+                Assert.AreEqual(2, actualFirstDelete.Count());
+                Assert.AreEqual(0, actualSecondDelete.Count());
+            }
+        }
+
+        [TestMethod()]
+        public void MoradaRepository_UpdateDBTest()
+        {
+
+            //Teste with a Dabase in sqlite ...
+
+            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
+            {
+                //arrange
+
+                var guid = Guid.NewGuid();
+                var expected = new List<Morada>() {
+                    new Morada
+                    {
+                        Identificador = guid,
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                    new Morada
+                    {
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+                    new Morada
+                    {
+                        Endereco = "Rua do Teste 1",
+                        Localidade = "Odivelas",
+                        CodigoPostal = "1000999",
+                        Observacoes = "Observacoes para teste"
+                    },
+
+                };
+
+                unitOfWork.Moradas.AddRange(expected);
+                unitOfWork.Complete();
+                var actualBefore = unitOfWork.Moradas.GetAll();
+
+                var enderecoEsperado = "Rua do Teste 2";
+                var dadoAlterado = "9999000";
+
+                var DateExpected = DateTime.Today;
+
+                //act
+                var firstElement = unitOfWork.Moradas.Get(guid);
+                firstElement.Endereco = enderecoEsperado;
+
+                unitOfWork.Moradas.Update(firstElement);
+                unitOfWork.Complete();
+                firstElement = unitOfWork.Moradas.Get(guid);
+                var actualFirstUpdate = unitOfWork.Moradas.GetAll();
+
+                foreach (var item in actualFirstUpdate)
+                {
+                    item.CodigoPostal = dadoAlterado;
+                }
+                unitOfWork.Moradas.UpdateRange(actualFirstUpdate);
+                unitOfWork.Complete();
+                var actualSecondUpdate = unitOfWork.Moradas.GetAll();
+
+
+                var DateModifiedCount = actualSecondUpdate.Count(x =>
+                       x.DataUltimaAlteracao.Value.Year == DateExpected.Year
+                    && x.DataUltimaAlteracao.Value.Month == DateExpected.Month
+                    && x.DataUltimaAlteracao.Value.Day == DateExpected.Day);
+
+                var dadosAlterados = actualSecondUpdate.Count(x => x.CodigoPostal == dadoAlterado);
+
+                //assert
+                Assert.AreEqual(3, actualBefore.Count());
+                Assert.AreEqual(enderecoEsperado, firstElement.Endereco);
+                Assert.AreEqual(3, dadosAlterados);
+                Assert.AreEqual(3, DateModifiedCount);
+
+            }
+        }
 
 
     }
