@@ -13,10 +13,6 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
         public MoradaRepository(ProjetoDBContext context) : base(context)
         {
         }
-        public ProjetoDBContext ProjetoDBContext 
-        {
-            get { return ProjetoDBContext; }
-        }
 
     }
 }

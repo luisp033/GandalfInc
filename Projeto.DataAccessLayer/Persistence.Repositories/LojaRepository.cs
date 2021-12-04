@@ -13,10 +13,10 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
         public LojaRepository(ProjetoDBContext context) : base(context)
         {
         }
-        public ProjetoDBContext ProjetoDBContext 
-        {
-            get { return ProjetoDBContext; }
-        }
+        //public ProjetoDBContext ProjetoDBContext 
+        //{
+        //    get { return ProjetoDBContext; }
+        //}
 
     }
 }

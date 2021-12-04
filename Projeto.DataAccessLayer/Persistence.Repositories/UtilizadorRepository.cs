@@ -10,17 +10,16 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
 {
     public class UtilizadorRepository : Repository<Utilizador>, IUtilizadorRepository
     {
+
+        private readonly ProjetoDBContext context;
         public UtilizadorRepository(ProjetoDBContext context) : base(context)
         {
-        }
-        public ProjetoDBContext ProjetoDBContext 
-        {
-            get { return ProjetoDBContext; }
+            this.context = context;
         }
 
         public IEnumerable<Utilizador> ObtemUtilizadoresActivos()
         {
-            return ProjetoDBContext.Utilizadores.Where(x => x.Ativo).ToList();
+            return context.Utilizadores.Where(x => x.Ativo).ToList();
         }
 
     }
