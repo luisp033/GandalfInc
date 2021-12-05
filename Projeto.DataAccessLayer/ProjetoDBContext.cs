@@ -79,5 +79,8 @@ namespace Projeto.DataAccessLayer
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<DetalheVenda> DetalheVendas { get; set; }
+        public DbSet<PontoDeVendaSessao> PontoDeVendaSessoes { get; set; }
     }
+
+
 }

@@ -84,19 +84,19 @@ namespace Projeto.DataAccessLayer.Repositorios
                         && x.Ativo).ToList();
         }
 
-        public Utilizador Login(PontoDeVenda t, string email, string senha)
-        {
-            var postoDeVenda = ObterPorIdentificador(t.Identificador);
-            var utilizador = repoUtilizadores.Login(email, senha);
+        //public Utilizador Login(PontoDeVenda t, string email, string senha)
+        //{
+        //    var postoDeVenda = ObterPorIdentificador(t.Identificador);
+        //    var utilizador = repoUtilizadores.Login(email, senha);
 
-            postoDeVenda.UtilizadorLogado = utilizador;
+        //    postoDeVenda.UtilizadorLogado = utilizador;
 
-            return utilizador;
-        }
-        public static void Logout(PontoDeVenda t) 
-        {
-            t.UtilizadorLogado = null;
-        }
+        //    return utilizador;
+        //}
+        //public static void Logout(PontoDeVenda t) 
+        //{
+        //    t.UtilizadorLogado = null;
+        //}
 
 
 

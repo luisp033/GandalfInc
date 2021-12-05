@@ -14,8 +14,7 @@ namespace Projeto.DataAccessLayer.Faturacao
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Identificador { get; set; }
-        public PontoDeVenda PontoDeVenda { get; set; }
-        public Utilizador Vendedor { get; set; }
+        public PontoDeVendaSessao PontoDeVendaSessao { get; set; }
         public Cliente Cliente { get; set; }
         public DateTime? DataHoraVenda { get; set; }
         public int NumeroSerie { get; set; }

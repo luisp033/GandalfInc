@@ -20,14 +20,14 @@ namespace Projeto.BusinessLogicLayer
             this.venda = venda;
         }
 
-        public Guid IniciarNovaVenda(PontoDeVenda pontodeVenda, Utilizador vendedor)
-        {
+        //public Guid IniciarNovaVenda(PontoDeVenda pontodeVenda, Utilizador vendedor)
+        //{
 
-            venda.PontoDeVenda = pontodeVenda;
-            venda.Vendedor = vendedor;
+        //    venda.PontoDeVenda = pontodeVenda;
+        //    venda.Vendedor = vendedor;
 
-            return venda.Identificador;
-        }
+        //    return venda.Identificador;
+        //}
 
         public string AdicionarProduto(string ean, int quantidade)
         {
@@ -111,26 +111,26 @@ namespace Projeto.BusinessLogicLayer
             return $"Compra efetuada com sucesso";
         }
 
-        public void GerarRecibo()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"Fatura Recibo FRD {venda.DataHoraVenda.Value.Year}/{venda.NumeroSerie}");
-            sb.AppendLine($"Loja: {venda.PontoDeVenda.Loja.NumeroFiscal} - Ponto de Venda: {venda.PontoDeVenda.Identificador} ");
-            sb.AppendLine($"Loja: {venda.PontoDeVenda.Loja.Morada}");
-            sb.AppendLine($"Vendedor: {venda.Vendedor.Nome} Identificador: {venda.Vendedor.Identificador} ");
-            sb.AppendLine($"Data da Fatura/Recibo: {venda.DataHoraVenda} ");
-            sb.AppendLine($"Tipo Pagamento: {venda.TipoPagamento} ");
-            sb.AppendLine($"Valor Pagamento: {venda.ValorPagamento} ");
-            foreach (var item in venda.DetalheVenda)
-            {
-                sb.AppendLine($"Id: {item.EstoqueIdentificador} Nome: {item.Produto.Nome}  - Valor Unitario: {item.Produto.PrecoUnitario} -  Desconto : {item.Desconto} - PrecoFinal : {item.PrecoFinal}");
-            }
+        //public void GerarRecibo()
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.AppendLine($"Fatura Recibo FRD {venda.DataHoraVenda.Value.Year}/{venda.NumeroSerie}");
+        //    sb.AppendLine($"Loja: {venda.PontoDeVenda.Loja.NumeroFiscal} - Ponto de Venda: {venda.PontoDeVenda.Identificador} ");
+        //    sb.AppendLine($"Loja: {venda.PontoDeVenda.Loja.Morada}");
+        //    sb.AppendLine($"Vendedor: {venda.Vendedor.Nome} Identificador: {venda.Vendedor.Identificador} ");
+        //    sb.AppendLine($"Data da Fatura/Recibo: {venda.DataHoraVenda} ");
+        //    sb.AppendLine($"Tipo Pagamento: {venda.TipoPagamento} ");
+        //    sb.AppendLine($"Valor Pagamento: {venda.ValorPagamento} ");
+        //    foreach (var item in venda.DetalheVenda)
+        //    {
+        //        sb.AppendLine($"Id: {item.EstoqueIdentificador} Nome: {item.Produto.Nome}  - Valor Unitario: {item.Produto.PrecoUnitario} -  Desconto : {item.Desconto} - PrecoFinal : {item.PrecoFinal}");
+        //    }
 
-            Console.WriteLine(sb);
+        //    Console.WriteLine(sb);
 
-            //Poderíamos escrever usando a notação LINQ
-            //DetalheVenda.Produtos.Select(x => sb.AppendLine($"Nome: {x.Nome}  - Valor Unitario: {x.PrecoUnitario} - Número de Série: {x.NumeroSerie}"))
-        }
+        //    //Poderíamos escrever usando a notação LINQ
+        //    //DetalheVenda.Produtos.Select(x => sb.AppendLine($"Nome: {x.Nome}  - Valor Unitario: {x.PrecoUnitario} - Número de Série: {x.NumeroSerie}"))
+        //}
 
     }
 }

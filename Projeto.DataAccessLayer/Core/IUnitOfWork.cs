@@ -15,6 +15,8 @@ namespace Projeto.DataAccessLayer.Core
         ILojaRepository Lojas { get; }
 
         IMoradaRepository Moradas { get; }
+        IPontoDeVendaRepository PontoDeVendas { get; }
+        IPontoDeVendaSessaoRepository PontoDeVendaSessoes { get; }
 
         int Complete();
     }

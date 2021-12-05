@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211204110025_Entidade_PontoVenda")]
+    partial class Entidade_PontoVenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,33 +279,6 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.ToTable("PontoDeVendas");
                 });
 
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.PontoDeVendaSessao", b =>
-                {
-                    b.Property<Guid>("Identificador")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DataLogin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataLogout")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("PontoDeVendaIdentificador")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UtilizadorIdentificador")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Identificador");
-
-                    b.HasIndex("PontoDeVendaIdentificador");
-
-                    b.HasIndex("UtilizadorIdentificador");
-
-                    b.ToTable("PontoDeVendaSessoes");
-                });
-
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Produto", b =>
                 {
                     b.Property<Guid>("Identificador")
@@ -426,7 +401,7 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<int>("NumeroSerie")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PontoDeVendaSessaoIdentificador")
+                    b.Property<Guid?>("PontoDeVendaIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("TipoPagamento")
@@ -435,11 +410,16 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<decimal>("ValorPagamento")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid?>("VendedorIdentificador")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Identificador");
 
                     b.HasIndex("ClienteIdentificador");
 
-                    b.HasIndex("PontoDeVendaSessaoIdentificador");
+                    b.HasIndex("PontoDeVendaIdentificador");
+
+                    b.HasIndex("VendedorIdentificador");
 
                     b.ToTable("Vendas");
                 });
@@ -492,21 +472,6 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Navigation("Loja");
                 });
 
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.PontoDeVendaSessao", b =>
-                {
-                    b.HasOne("Projeto.DataAccessLayer.Entidades.PontoDeVenda", "PontoDeVenda")
-                        .WithMany()
-                        .HasForeignKey("PontoDeVendaIdentificador");
-
-                    b.HasOne("Projeto.DataAccessLayer.Entidades.Utilizador", "Utilizador")
-                        .WithMany()
-                        .HasForeignKey("UtilizadorIdentificador");
-
-                    b.Navigation("PontoDeVenda");
-
-                    b.Navigation("Utilizador");
-                });
-
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Produto", b =>
                 {
                     b.HasOne("Projeto.DataAccessLayer.Entidades.CategoriaProduto", "Categoria")
@@ -541,13 +506,19 @@ namespace Projeto.DataAccessLayer.Migrations
                         .WithMany("Compras")
                         .HasForeignKey("ClienteIdentificador");
 
-                    b.HasOne("Projeto.DataAccessLayer.Entidades.PontoDeVendaSessao", "PontoDeVendaSessao")
+                    b.HasOne("Projeto.DataAccessLayer.Entidades.PontoDeVenda", "PontoDeVenda")
                         .WithMany()
-                        .HasForeignKey("PontoDeVendaSessaoIdentificador");
+                        .HasForeignKey("PontoDeVendaIdentificador");
+
+                    b.HasOne("Projeto.DataAccessLayer.Entidades.Utilizador", "Vendedor")
+                        .WithMany()
+                        .HasForeignKey("VendedorIdentificador");
 
                     b.Navigation("Cliente");
 
-                    b.Navigation("PontoDeVendaSessao");
+                    b.Navigation("PontoDeVenda");
+
+                    b.Navigation("Vendedor");
                 });
 
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Cliente", b =>
