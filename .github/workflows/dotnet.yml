@@ -53,4 +53,10 @@ jobs:
         if: always()
         with:
           files: |
-            .\**\TestResults\*.xml
+             .\TestResults\*.xml            
+             **\*unittests.xml
+             *unittests.xml
+             **\**\unittests.xml
+             .\*unittests.xml
+             .\**\**\unittests.xml
+             TestResults/**/*.xml
