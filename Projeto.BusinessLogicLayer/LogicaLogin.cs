@@ -19,23 +19,25 @@ namespace Projeto.BusinessLogicLayer
         }
 
 
-        public PontoDeVendaSessao Login(PontoDeVenda pontoDeVenda, Utilizador utilizador)
+        public Tuple<PontoDeVendaSessao,string>  Login(PontoDeVenda pontoDeVenda, Utilizador utilizador)
         {
             PontoDeVendaSessao pontoDeVendaSessao = null;
-
+            string msg = null;
             using (var unitOfWork = new UnitOfWork(_context))
             {
 
                 var UtilizadorComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x=>x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null ).FirstOrDefault();
-                var PontoDeVendaComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.PontoDeVenda.Identificador == pontoDeVenda.Identificador && x.DataLogout == null).FirstOrDefault();;
+                var PontoDeVendaComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.PontoDeVenda.Identificador == pontoDeVenda.Identificador && x.DataLogout == null).FirstOrDefault();
 
                 if (UtilizadorComSessaoAberta != null)
                 {
-                    var msg = $"Utilizador {utilizador.Nome} tem uma sessão aberta";
+                    msg = "Utilizador já tem uma sessão aberta";
+                    return Tuple.Create((PontoDeVendaSessao)null, msg);
                 }
                 if (PontoDeVendaComSessaoAberta != null)
                 {
-                    var msg = $"Ponto de Venda {pontoDeVenda.Nome} já se encontra aberto";
+                    msg = "Ponto de Venda já se encontra aberto";
+                    return Tuple.Create((PontoDeVendaSessao)null, msg);
                 }
 
                 pontoDeVendaSessao = new PontoDeVendaSessao
@@ -47,9 +49,10 @@ namespace Projeto.BusinessLogicLayer
                 unitOfWork.PontoDeVendaSessoes.Add(pontoDeVendaSessao);
                 unitOfWork.Complete();
 
+                msg = $"Ponto de Venda: {pontoDeVenda.Nome} logado com sucesso pelo utilizador: {utilizador.Nome}.";
             }
 
-            return pontoDeVendaSessao;
+            return Tuple.Create(pontoDeVendaSessao,msg);
         }
 
         public string Logout(PontoDeVendaSessao pontoDeVendaSessao)

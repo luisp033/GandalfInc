@@ -41,7 +41,8 @@ namespace Projeto.DataAccessLayer.Persistence
 
         public void Dispose()
         {
-            _context.Dispose();
+            //_context.Dispose();
+            //Dispose();
         }
     }
 }
