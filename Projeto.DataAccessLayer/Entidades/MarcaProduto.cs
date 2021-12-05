@@ -6,6 +6,7 @@ namespace Projeto.DataAccessLayer.Entidades
     {
         [Required, MaxLength(255)]
         public string Nome { get; set; }
+        [MaxLength(255)]
         public string Origem { get; set; }   
     }
 }

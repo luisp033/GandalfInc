@@ -21,7 +21,10 @@ namespace Projeto.DataAccessLayer.Persistence
             Moradas = new MoradaRepository(_context);
             PontoDeVendas = new PontoDeVendaRepository(_context);
             PontoDeVendaSessoes = new PontoDeVendaSessaoRepository(_context);
-
+            CategoriaProdutos = new CategoriaProdutoRepository(_context);
+            Clientes = new ClienteRepository(_context);
+            MarcaProdutos = new MarcaProdutoRepository(_context);
+            Produtos = new ProdutoRepository(_context);
         }
 
         public IUtilizadorRepository Utilizadores { get; private set; }
@@ -33,6 +36,13 @@ namespace Projeto.DataAccessLayer.Persistence
         public IPontoDeVendaRepository PontoDeVendas { get; private set; }
 
         public IPontoDeVendaSessaoRepository PontoDeVendaSessoes { get; private set; }
+
+        public ICategoriaProdutoRepository CategoriaProdutos { get; private set; }
+
+        public IClienteRepository Clientes { get; private set; }
+
+        public IProdutoRepository Produtos { get; private set; }
+        public IMarcaProdutoRepository MarcaProdutos { get; private set; }
 
         public int Complete()
         {
