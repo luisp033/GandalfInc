@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Projeto.DataAccessLayer.Persistence
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public sealed class UnitOfWork : IUnitOfWork 
     {
         private readonly ProjetoDBContext _context;
         public UnitOfWork(ProjetoDBContext context)

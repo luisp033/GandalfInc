@@ -12,8 +12,8 @@ namespace Projeto.DataAccessLayer
     public class ProjetoDBContext: DbContext
     {
 
-        private DataBaseType Tipo;
-        private string CnnString;
+        private readonly DataBaseType Tipo;
+        private readonly string CnnString;
         public ProjetoDBContext(DataBaseType tipo = DataBaseType.SqlServer)
         {
             Tipo = tipo;
@@ -27,7 +27,7 @@ namespace Projeto.DataAccessLayer
             else
             {
                 CnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;";
-                //Database.EnsureCreated();
+                //Database.EnsureCreated()
             }
         }
 
