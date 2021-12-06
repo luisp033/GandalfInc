@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211206210733_Acerto_Vendas_Estoque_TipoPagamento_DetalheVenda")]
+    partial class Acerto_Vendas_Estoque_TipoPagamento_DetalheVenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,9 +124,14 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<Guid?>("ProdutoIdentificador")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("VendaIdentificador")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Identificador");
 
                     b.HasIndex("ProdutoIdentificador");
+
+                    b.HasIndex("VendaIdentificador");
 
                     b.ToTable("Estoques");
                 });
@@ -495,7 +502,13 @@ namespace Projeto.DataAccessLayer.Migrations
                         .WithMany()
                         .HasForeignKey("ProdutoIdentificador");
 
+                    b.HasOne("Projeto.DataAccessLayer.Faturacao.Venda", "Venda")
+                        .WithMany()
+                        .HasForeignKey("VendaIdentificador");
+
                     b.Navigation("Produto");
+
+                    b.Navigation("Venda");
                 });
 
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Loja", b =>

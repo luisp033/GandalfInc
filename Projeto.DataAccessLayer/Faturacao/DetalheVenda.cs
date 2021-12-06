@@ -9,11 +9,11 @@ namespace Projeto.DataAccessLayer.Faturacao
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid EstoqueIdentificador { get; set; }
-        public Produto Produto { get; set; }
+        public Guid Identificador { get; set; }
+        public Venda Venda { get; set; }
+        public Estoque EstoqueProduto { get; set; }
         public decimal Desconto { get; set; }
         public decimal PrecoFinal { get; set; }
-        public string NumeroSerie { get; set; }
 
     }
 }

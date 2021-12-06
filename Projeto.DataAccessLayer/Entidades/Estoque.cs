@@ -1,6 +1,8 @@
-﻿using Projeto.DataAccessLayer.Repositorios;
+﻿using Projeto.DataAccessLayer.Faturacao;
+using Projeto.DataAccessLayer.Repositorios;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Projeto.DataAccessLayer.Entidades
@@ -8,24 +10,12 @@ namespace Projeto.DataAccessLayer.Entidades
     public class Estoque : Entidade
     {
 
-        //private readonly RepositorioProduto repositorioProduto; //TODO ACERTAR
-        //public Estoque(RepositorioProduto repoProduto)
-        //{
-        //    repositorioProduto = repoProduto;
-        //}
-
-        public string Ean { get; set; }
+        [Required]
+        public Produto Produto { get; set; }
+        [MaxLength(50)]
         public string NumeroSerie { get; set; }
+        [Required]
         public DateTime DataEntrada { get; set; }
-        public DateTime? DataVenda { get; set; }
-        public Guid? IdentificadorVenda { get; set; }
-        public virtual Produto Produto{ get; set; }
-
-        //public override string ToString()
-        //{
-        //    var nomeProduto = repositorioProduto.ObterPorEan(Ean)?.Nome;
-        //    return $"Ean: {Ean} - DataEntrada: {DataEntrada} - Data Saida:{DataVenda} - Venda: {IdentificadorVenda} - Nome Produto: {nomeProduto} ";
-        //}
 
     }
 }

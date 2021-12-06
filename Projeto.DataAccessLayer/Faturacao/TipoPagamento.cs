@@ -1,10 +1,22 @@
-﻿namespace Projeto.DataAccessLayer.Faturacao
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Projeto.DataAccessLayer.Faturacao
 {
-    public enum TipoPagamento
+    public class TipoPagamento
     {
-        Indefinido = 0,
-        Multibanco = 1,
-        Dinheiro = 2,
-        MbWay = 3
+
+
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
+        [Required, MaxLength(100)]
+        public string Name { get; set; }
+
     }
 }

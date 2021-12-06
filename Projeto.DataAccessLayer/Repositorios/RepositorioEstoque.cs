@@ -15,22 +15,22 @@ namespace Projeto.DataAccessLayer.Repositorios
         {
             
 
-            if (dados == null)
-            {
-                ListaEstoques = new List<Estoque>();
+            //if (dados == null)
+            //{
+            //    ListaEstoques = new List<Estoque>();
 
-                for (int i = 10001; i < 10021; i++)
-                {
-                    for (int j = 0; j < 5; j++)
-                    {
-                        ListaEstoques.Add(new Estoque() { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"SN{i}/{DateTime.Now.Millisecond}"});
-                    }
-                }
-            }
-            else
-            {
-                ListaEstoques = dados;
-            }
+            //    for (int i = 10001; i < 10021; i++)
+            //    {
+            //        for (int j = 0; j < 5; j++)
+            //        {
+            //            ListaEstoques.Add(new Estoque() { DataEntrada = DateTime.Today, Ean = i.ToString() , NumeroSerie = $"SN{i}/{DateTime.Now.Millisecond}"});
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    ListaEstoques = dados;
+            //}
 
         }
 
@@ -60,65 +60,65 @@ namespace Projeto.DataAccessLayer.Repositorios
             return ListaEstoques;
         }
 
-        public List<Estoque> ObterListaPorEan(string ean)
-        {
-            return ListaEstoques.Where(x => x.Ean == ean).ToList();
-        }
+        //public List<Estoque> ObterListaPorEan(string ean)
+        //{
+        //    return ListaEstoques.Where(x => x.Ean == ean).ToList();
+        //}
 
-        public List<Estoque> BloquearProdutosDoEstoqueParaVenda(string ean, int quantidade , Guid identificadorVenda) 
-        {
-            var result = ListaEstoques.Where(x => 
-                                            x.Ean == ean && 
-                                            x.Ativo && 
-                                            !x.DataVenda.HasValue)
-                                      .Take(quantidade).ToList();
+        //public List<Estoque> BloquearProdutosDoEstoqueParaVenda(string ean, int quantidade , Guid identificadorVenda) 
+        //{
+        //    var result = ListaEstoques.Where(x => 
+        //                                    x.Ean == ean && 
+        //                                    x.Ativo && 
+        //                                    !x.DataVenda.HasValue)
+        //                              .Take(quantidade).ToList();
 
-            if (result.Count == quantidade)
-            {
-                var dataVenda = DateTime.Now;
-                foreach (var item in result)
-                {
-                    item.DataVenda = dataVenda;
-                    item.IdentificadorVenda = identificadorVenda;
-                }
-            }
-            else
-            {
-                result = null;
-            }
+        //    if (result.Count == quantidade)
+        //    {
+        //        var dataVenda = DateTime.Now;
+        //        foreach (var item in result)
+        //        {
+        //            item.DataVenda = dataVenda;
+        //            item.IdentificadorVenda = identificadorVenda;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        result = null;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public bool DesbloquearProdutosDoEstoqueEmVenda(Guid estoqueIdentificador) 
-        {
-            bool result =false;
+        //public bool DesbloquearProdutosDoEstoqueEmVenda(Guid estoqueIdentificador) 
+        //{
+        //    bool result =false;
 
-            // só remove se estiver numa venda não finalizada (IdentificadorVenda == null)
-            var estoque = ListaEstoques.FirstOrDefault(x =>
-                                            x.Identificador == estoqueIdentificador &&
-                                            x.Ativo &&
-                                            x.DataVenda.HasValue &&
-                                            x.IdentificadorVenda.HasValue);
+        //    // só remove se estiver numa venda não finalizada (IdentificadorVenda == null)
+        //    var estoque = ListaEstoques.FirstOrDefault(x =>
+        //                                    x.Identificador == estoqueIdentificador &&
+        //                                    x.Ativo &&
+        //                                    x.DataVenda.HasValue &&
+        //                                    x.IdentificadorVenda.HasValue);
 
-            if (estoque != null)
-            {
-                estoque.DataVenda = null;
-                estoque.IdentificadorVenda = null;
-                result = true;
-            }
+        //    if (estoque != null)
+        //    {
+        //        estoque.DataVenda = null;
+        //        estoque.IdentificadorVenda = null;
+        //        result = true;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public void DesativarProdutosPagos(Guid vendaIdentificador)
-        {
-            var listaEstoque = ListaEstoques.Where(x => x.IdentificadorVenda == vendaIdentificador && x.Ativo);
-            foreach (var item in listaEstoque)
-            {
-                item.Ativo = false;
-            }
-        }
+        //public void DesativarProdutosPagos(Guid vendaIdentificador)
+        //{
+        //    var listaEstoque = ListaEstoques.Where(x => x.IdentificadorVenda == vendaIdentificador && x.Ativo);
+        //    foreach (var item in listaEstoque)
+        //    {
+        //        item.Ativo = false;
+        //    }
+        //}
 
     }
 }

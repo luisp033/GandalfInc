@@ -31,6 +31,18 @@ namespace Projeto.DataAccessLayer
             }
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<TipoPagamento>()
+                   .HasData(
+                     new TipoPagamento { Id = 0, Name = "Indefenido" },
+                     new TipoPagamento { Id = 1, Name = "Multibanco" },
+                     new TipoPagamento { Id = 2, Name = "MbWay" },
+                     new TipoPagamento { Id = 3, Name = "Dinheiro" }
+                   );
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (Tipo is DataBaseType.Sqlite)
@@ -80,6 +92,7 @@ namespace Projeto.DataAccessLayer
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<DetalheVenda> DetalheVendas { get; set; }
         public DbSet<PontoDeVendaSessao> PontoDeVendaSessoes { get; set; }
+        public DbSet<TipoPagamento> TipoPagamentos { get; set; }
     }
 
 

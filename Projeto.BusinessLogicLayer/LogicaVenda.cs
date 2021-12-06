@@ -31,82 +31,82 @@ namespace Projeto.BusinessLogicLayer
 
         public string AdicionarProduto(string ean, int quantidade)
         {
-            if (venda.TipoPagamento.HasValue)
-            {
-                return $"Compra já terminada não pode efetuar operações";
-            }
+            //if (venda.TipoPagamento.HasValue)
+            //{
+            //    return $"Compra já terminada não pode efetuar operações";
+            //}
 
-            // Bloquear produto do estoque
-            var listaEstoque = repositorioEstoque.BloquearProdutosDoEstoqueParaVenda(ean, quantidade, venda.Identificador);
+            //// Bloquear produto do estoque
+            //var listaEstoque = repositorioEstoque.BloquearProdutosDoEstoqueParaVenda(ean, quantidade, venda.Identificador);
 
-            if (listaEstoque == null)
-            {
-                return $"Produto(s) não disponíveis para venda";
-            }
+            //if (listaEstoque == null)
+            //{
+            //    return $"Produto(s) não disponíveis para venda";
+            //}
 
-            // Adicionar a nossa lista de detalhe
-            var produto = repositorioProduto.ObterPorEan(listaEstoque[0].Ean);
-            var desconto = 0;
-            foreach (var item in listaEstoque)
-            {
-                venda.DetalheVenda.Add(new DetalheVenda() { Desconto = 0.0m, Produto = produto, PrecoFinal = produto.PrecoUnitario - desconto, NumeroSerie = item.NumeroSerie, EstoqueIdentificador = item.Identificador });
-            }
+            //// Adicionar a nossa lista de detalhe
+            //var produto = repositorioProduto.ObterPorEan(listaEstoque[0].Ean);
+            //var desconto = 0;
+            //foreach (var item in listaEstoque)
+            //{
+            //    venda.DetalheVenda.Add(new DetalheVenda() { Desconto = 0.0m, Produto = produto, PrecoFinal = produto.PrecoUnitario - desconto, NumeroSerie = item.NumeroSerie, EstoqueIdentificador = item.Identificador });
+            //}
             return $"Produto(s) adicionado(s) com sucesso";
         }
 
         public string RemoverProduto(Guid estoqueIdentificador)
         {
-            if (venda.TipoPagamento.HasValue)
-            {
-                return $"Compra já terminada não pode efetuar operações";
-            }
+            //if (venda.TipoPagamento.HasValue)
+            //{
+            //    return $"Compra já terminada não pode efetuar operações";
+            //}
 
-            var produtoParaApagar = venda.DetalheVenda.FirstOrDefault(x => x.EstoqueIdentificador == estoqueIdentificador);
+            //var produtoParaApagar = venda.DetalheVenda.FirstOrDefault(x => x.EstoqueIdentificador == estoqueIdentificador);
 
-            if (produtoParaApagar == null)
-            {
-                return $"Produto não disponível para remoção";
-            }
+            //if (produtoParaApagar == null)
+            //{
+            //    return $"Produto não disponível para remoção";
+            //}
 
-            // Desbloquear produto do estoque
-            var remocaoComSucesso = repositorioEstoque.DesbloquearProdutosDoEstoqueEmVenda(produtoParaApagar.EstoqueIdentificador);
+            //// Desbloquear produto do estoque
+            //var remocaoComSucesso = repositorioEstoque.DesbloquearProdutosDoEstoqueEmVenda(produtoParaApagar.EstoqueIdentificador);
 
-            if (!remocaoComSucesso)
-            {
-                return $"Não foi possível remover o produto - Contacte IT";
-            }
+            //if (!remocaoComSucesso)
+            //{
+            //    return $"Não foi possível remover o produto - Contacte IT";
+            //}
 
-            venda.DetalheVenda.Remove(produtoParaApagar);
+            //venda.DetalheVenda.Remove(produtoParaApagar);
 
             return $"Produto(s) removido(s) com sucesso";
         }
         public string CancelarVenda()
         {
-            if (venda.TipoPagamento.HasValue)
-            {
-                return $"Compra já terminada não pode efetuar operações";
-            }
+            //if (venda.TipoPagamento.HasValue)
+            //{
+            //    return $"Compra já terminada não pode efetuar operações";
+            //}
 
-            var listaParaApagar = venda.DetalheVenda.Select(x => x.EstoqueIdentificador).ToList();
-            foreach (var item in listaParaApagar)
-            {
-                RemoverProduto(item);
-            }
+            //var listaParaApagar = venda.DetalheVenda.Select(x => x.EstoqueIdentificador).ToList();
+            //foreach (var item in listaParaApagar)
+            //{
+            //    RemoverProduto(item);
+            //}
             return $"Todos os produtos foram removidos";
         }
 
         public string FinalizarPagamento(TipoPagamento tipoPagamento, Cliente cliente)
         {
-            if (venda.TipoPagamento.HasValue)
-            {
-                return $"Compra já terminada não pode efetuar operações";
-            }
+            //if (venda.TipoPagamento.HasValue)
+            //{
+            //    return $"Compra já terminada não pode efetuar operações";
+            //}
 
-            venda.Cliente = cliente;
-            venda.TipoPagamento = tipoPagamento;
-            venda.ValorPagamento = venda.DetalheVenda.Sum(x => x.PrecoFinal);
-            venda.DataHoraVenda = DateTime.Now;
-            repositorioEstoque.DesativarProdutosPagos(venda.Identificador);
+            //venda.Cliente = cliente;
+            //venda.TipoPagamento = tipoPagamento;
+            //venda.ValorPagamento = venda.DetalheVenda.Sum(x => x.PrecoFinal);
+            //venda.DataHoraVenda = DateTime.Now;
+            //repositorioEstoque.DesativarProdutosPagos(venda.Identificador);
 
             return $"Compra efetuada com sucesso";
         }
