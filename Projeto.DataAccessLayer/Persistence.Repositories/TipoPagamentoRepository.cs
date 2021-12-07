@@ -3,11 +3,11 @@ using Projeto.DataAccessLayer.Entidades;
 
 namespace Projeto.DataAccessLayer.Persistence.Repositories
 {
-    public class PontoDeVendaSessaoRepository : Repository<PontoDeVendaSessao>, IPontoDeVendaSessaoRepository
+    public class TipoPagamentoRepository : Repository<TipoPagamento>, ITipoPagamentoRepository
     {
 
         private readonly ProjetoDBContext context;
-        public PontoDeVendaSessaoRepository(ProjetoDBContext context) : base(context)
+        public TipoPagamentoRepository(ProjetoDBContext context) : base(context)
         {
             this.context = context;
         }

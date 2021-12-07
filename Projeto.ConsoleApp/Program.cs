@@ -1,10 +1,6 @@
-﻿
-using Projeto.BusinessLogicLayer;
-using Projeto.DataAccessLayer;
+﻿using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Entidades;
-using Projeto.DataAccessLayer.Faturacao;
 using Projeto.DataAccessLayer.Persistence;
-using Projeto.DataAccessLayer.Repositorios;
 using System;
 
 namespace Projeto.ConsoleApp

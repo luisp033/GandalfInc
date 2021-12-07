@@ -1,12 +1,6 @@
 ﻿using Projeto.DataAccessLayer.Core;
 using Projeto.DataAccessLayer.Core.Repositories;
-using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projeto.DataAccessLayer.Persistence
 {
@@ -25,6 +19,7 @@ namespace Projeto.DataAccessLayer.Persistence
             Clientes = new ClienteRepository(_context);
             MarcaProdutos = new MarcaProdutoRepository(_context);
             Produtos = new ProdutoRepository(_context);
+            TipoPagamentos = new TipoPagamentoRepository(_context);
         }
 
         public IUtilizadorRepository Utilizadores { get; private set; }
@@ -43,6 +38,9 @@ namespace Projeto.DataAccessLayer.Persistence
 
         public IProdutoRepository Produtos { get; private set; }
         public IMarcaProdutoRepository MarcaProdutos { get; private set; }
+
+        public ITipoPagamentoRepository TipoPagamentos { get; private set; }
+
 
         public int Complete()
         {

@@ -1,9 +1,9 @@
-﻿using Projeto.DataAccessLayer.Entidades;
+﻿
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Projeto.DataAccessLayer.Faturacao
+namespace Projeto.DataAccessLayer.Entidades
 {
     public class DetalheVenda
     {

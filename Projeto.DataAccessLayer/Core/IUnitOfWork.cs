@@ -1,10 +1,5 @@
 ﻿using Projeto.DataAccessLayer.Core.Repositories;
-using Projeto.DataAccessLayer.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projeto.DataAccessLayer.Core
 {
@@ -19,6 +14,9 @@ namespace Projeto.DataAccessLayer.Core
         IClienteRepository Clientes { get; }
         IProdutoRepository Produtos { get; }
         IMarcaProdutoRepository MarcaProdutos { get; }
+        ITipoPagamentoRepository TipoPagamentos { get; }
+
+
 
         int Complete();
     }

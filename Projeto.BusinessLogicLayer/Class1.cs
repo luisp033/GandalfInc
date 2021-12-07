@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Projeto.BusinessLogicLayer
+﻿namespace Projeto.BusinessLogicLayer
 {
     public class Class1
     {

@@ -2,7 +2,7 @@
 
 namespace Projeto.DataAccessLayer.Core.Repositories
 {
-    public interface ICategoriaProdutoRepository : IRepository<CategoriaProduto>
+    public interface ITipoPagamentoRepository : IRepository<TipoPagamento>
     {
 
     }

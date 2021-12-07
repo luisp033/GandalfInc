@@ -1,13 +1,8 @@
-﻿using Projeto.DataAccessLayer.Entidades;
-using Projeto.DataAccessLayer.Repositorios;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
-namespace Projeto.DataAccessLayer.Faturacao
+namespace Projeto.DataAccessLayer.Entidades
 {
     public class Venda 
     {

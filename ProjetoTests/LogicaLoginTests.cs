@@ -1,13 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projeto.BusinessLogicLayer.Tests
 {

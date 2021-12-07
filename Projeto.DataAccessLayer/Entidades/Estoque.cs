@@ -1,9 +1,5 @@
-﻿using Projeto.DataAccessLayer.Faturacao;
-using Projeto.DataAccessLayer.Repositorios;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Projeto.DataAccessLayer.Entidades
 {

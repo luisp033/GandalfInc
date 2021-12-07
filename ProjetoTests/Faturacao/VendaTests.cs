@@ -1,7 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Projeto.DataAccessLayer.Faturacao;
-using Projeto.DataAccessLayer.Repositorios;
-using System.Linq;
 
 namespace Projeto.Lib.Faturacao.Tests
 {
