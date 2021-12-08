@@ -21,13 +21,18 @@ namespace Projeto.BusinessLogicLayer.Tests
             Utilizador expectedUtilizador = null;
             Loja expectedLoja = null;
             PontoDeVenda expectedPos = null;
-            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
             {
+                //arrange
+                var unitOfWork = new UnitOfWork(contexto);
+
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = tipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -45,21 +50,21 @@ namespace Projeto.BusinessLogicLayer.Tests
                 };
                 unitOfWork.PontoDeVendas.Add(expectedPos);
                 unitOfWork.Complete();
+
+                // Act
+                var x = new LogicaLogin(contexto);
+                var posSessao = x.Login(expectedPos, expectedUtilizador);
+                var DateLoginActual = new DateTime(posSessao.Item1.DataLogin.Year, posSessao.Item1.DataLogin.Month, posSessao.Item1.DataLogin.Day, 0, 0, 0);
+                var DateLoginExpected = DateTime.Today;
+
+                // Assert
+                Assert.IsNotNull(posSessao.Item1);
+                Assert.AreEqual(posSessao.Item1.Utilizador.Identificador, expectedUtilizador.Identificador);
+                Assert.AreEqual(posSessao.Item1.PontoDeVenda.Identificador, expectedPos.Identificador);
+                Assert.IsNull(posSessao.Item1.DataLogout);
+                Assert.AreEqual(DateLoginExpected, DateLoginActual);
+
             }
-
-            // Act
-            var x = new LogicaLogin(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite));
-            var posSessao = x.Login(expectedPos, expectedUtilizador);
-            var DateLoginActual = new DateTime(posSessao.Item1.DataLogin.Year, posSessao.Item1.DataLogin.Month, posSessao.Item1.DataLogin.Day, 0, 0, 0);
-            var DateLoginExpected = DateTime.Today;
-
-            // Assert
-            Assert.IsNotNull(posSessao.Item1);
-            Assert.AreEqual(posSessao.Item1.Utilizador.Identificador, expectedUtilizador.Identificador);
-            Assert.AreEqual(posSessao.Item1.PontoDeVenda.Identificador, expectedPos.Identificador);
-            Assert.IsNull(posSessao.Item1.DataLogout);
-            Assert.AreEqual(DateLoginExpected, DateLoginActual);
-
         }
 
         [TestMethod()]
@@ -71,11 +76,13 @@ namespace Projeto.BusinessLogicLayer.Tests
             {
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -122,19 +129,21 @@ namespace Projeto.BusinessLogicLayer.Tests
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
 
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var utilizadores = new List<Utilizador>{
                     new Utilizador
                     {
                         Nome = "User Teste1",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Empregado,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador
                     {
                         Nome = "User Teste2",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Empregado,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     }
                 };
@@ -177,20 +186,21 @@ namespace Projeto.BusinessLogicLayer.Tests
             {
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var utilizadores = new List<Utilizador>{
                     new Utilizador
                     {
                         Nome = "User Teste1",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Empregado,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador
                     {
                         Nome = "User Teste2",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Empregado,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     }
                 };

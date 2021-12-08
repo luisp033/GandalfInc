@@ -1,5 +1,4 @@
 ﻿using Projeto.DataAccessLayer.Entidades;
-using Projeto.DataAccessLayer.Repositorios;
 using System;
 
 namespace Projeto.BusinessLogicLayer
@@ -7,13 +6,13 @@ namespace Projeto.BusinessLogicLayer
     public class LogicaVenda
     {
         private readonly Venda venda = null;
-        private readonly RepositorioEstoque repositorioEstoque;
-        private readonly RepositorioProduto repositorioProduto;
+        //private readonly RepositorioEstoque repositorioEstoque;
+        //private readonly RepositorioProduto repositorioProduto;
 
-        public LogicaVenda(Venda venda,RepositorioEstoque repoEstoque, RepositorioProduto repoProduto)
-        {
-            this.venda = venda;
-        }
+        //public LogicaVenda(Venda venda,RepositorioEstoque repoEstoque, RepositorioProduto repoProduto)
+        //{
+        //    this.venda = venda;
+        //}
 
         //public Guid IniciarNovaVenda(PontoDeVenda pontodeVenda, Utilizador vendedor)
         //{

@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Faturacao\" />
     <Folder Include="Persistence\" />
   </ItemGroup>
 

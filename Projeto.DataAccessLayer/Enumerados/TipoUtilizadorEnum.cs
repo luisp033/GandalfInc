@@ -1,6 +1,6 @@
 ﻿namespace Projeto.DataAccessLayer
 {
-    public enum TipoUtilizador
+    public enum TipoUtilizadorEnum
     {
         Indefinido = 0,
         Empregado = 1,

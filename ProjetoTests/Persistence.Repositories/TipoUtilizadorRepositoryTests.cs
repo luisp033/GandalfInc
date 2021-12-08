@@ -8,25 +8,25 @@ using System.Linq;
 namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 {
     [TestClass()]
-    public class TipoPagamentoRepositoryTests
+    public class TipoUtilizadorRepositoryTests
     {
 
         [TestMethod()]
-        public void TipoPagamentoRepository_SeedDataVersusEnumeradoDBTest()
+        public void TipoUtilizadorRepository_SeedDataVersusEnumeradoDBTest()
         {
             //Teste with a Dabase in sqlite ...
             using (var contexto = new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite))
             {
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
-                var expectedEnums = Enum.GetValues(typeof(TipoPagamentoEnum)).Length;
+                var expectedEnums = Enum.GetValues(typeof(TipoUtilizadorEnum)).Length;
                 var allMatch = true;
 
                 //act
-                var actual = unitOfWork.TipoPagamentos.GetAll();
+                var actual = unitOfWork.TipoUtilizadores.GetAll();
                 foreach (var item in actual)
                 {
-                    if (!Enum.IsDefined(typeof(TipoPagamentoEnum), item.Id))
+                    if (!Enum.IsDefined(typeof(TipoUtilizadorEnum), item.Id))
                     {
                         allMatch = false;
                     }
@@ -40,7 +40,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
         }
 
         [TestMethod()]
-        public void TipoPagamentoRepository_InsertDBTest()
+        public void TipoUtilizadorRepository_InsertDBTest()
         {
             //Teste with a Dabase in sqlite ...
             using (var contexto = new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite))
@@ -48,20 +48,20 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 //arrange
 
                 var unitOfWork = new UnitOfWork(contexto);
-                var expectedName = "Cheque";
-                var enumsOnCode = Enum.GetValues(typeof(TipoPagamentoEnum)).Length + 1;
+                var expectedName = "Boss";
+                var enumsOnCode = Enum.GetValues(typeof(TipoUtilizadorEnum)).Length + 1;
 
-                var expected = new TipoPagamento
+                var expected = new TipoUtilizador
                 {
                     Id = enumsOnCode,
                     Name = expectedName
                 };
 
                 //act
-                unitOfWork.TipoPagamentos.Add(expected);
+                unitOfWork.TipoUtilizadores.Add(expected);
                 unitOfWork.Complete();
 
-                var actual = unitOfWork.TipoPagamentos.Find(x => x.Id == enumsOnCode).FirstOrDefault();
+                var actual = unitOfWork.TipoUtilizadores.Find(x => x.Id == enumsOnCode).FirstOrDefault();
 
                 //assert
                 Assert.IsNotNull(actual);
@@ -73,7 +73,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
 
         [TestMethod()]
-        public void TipoPagamentoRepository_AddRangeAndGetAllDBTest()
+        public void TipoUtilizadorRepository_AddRangeAndGetAllDBTest()
         {
 
             //Teste with a Dabase in sqlite ...
@@ -82,26 +82,26 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
 
-                var enumsOnCode = Enum.GetValues(typeof(TipoPagamentoEnum)).Length + 1;
+                var enumsOnCode = Enum.GetValues(typeof(TipoUtilizadorEnum)).Length + 1;
 
-                var expected = new List<TipoPagamento>() {
-                    new TipoPagamento
+                var expected = new List<TipoUtilizador>() {
+                    new TipoUtilizador
                     {
                         Id = enumsOnCode++,
                         Name = "Dollar"
                     },
-                    new TipoPagamento
+                    new TipoUtilizador
                     {
                         Id = enumsOnCode,
                         Name = "Euro"
                     }
                 };
 
-                unitOfWork.TipoPagamentos.AddRange(expected);
+                unitOfWork.TipoUtilizadores.AddRange(expected);
                 unitOfWork.Complete();
 
                 //act
-                var actual = unitOfWork.TipoPagamentos.GetAll();
+                var actual = unitOfWork.TipoUtilizadores.GetAll();
 
                 //assert
                 Assert.IsNotNull(actual);
@@ -111,34 +111,34 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
         }
 
         [TestMethod()]
-        public void TipoPagamentoRepository_RemoveDBTest()
+        public void TipoUtilizadorRepository_RemoveDBTest()
         {
             //Teste with a Dabase in sqlite ...
             using (var contexto = new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite))
             {
                 //arrange
                 var unitOfWork = new UnitOfWork(contexto);
-                var actualBefore = unitOfWork.TipoPagamentos.GetAll();
+                var actualBefore = unitOfWork.TipoUtilizadores.GetAll();
 
                 //act
-                var firstElement = unitOfWork.TipoPagamentos.Find(x=>x.Id == 1).FirstOrDefault();
-                unitOfWork.TipoPagamentos.Remove(firstElement);
+                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.Id == 1).FirstOrDefault();
+                unitOfWork.TipoUtilizadores.Remove(firstElement);
                 unitOfWork.Complete();
-                var actualFirstDelete = unitOfWork.TipoPagamentos.GetAll();
+                var actualFirstDelete = unitOfWork.TipoUtilizadores.GetAll();
 
-                unitOfWork.TipoPagamentos.RemoveRange(actualFirstDelete);
+                unitOfWork.TipoUtilizadores.RemoveRange(actualFirstDelete);
                 unitOfWork.Complete();
-                var actualSecondDelete = unitOfWork.TipoPagamentos.GetAll();
+                var actualSecondDelete = unitOfWork.TipoUtilizadores.GetAll();
 
                 //assert
-                Assert.AreEqual(4, actualBefore.Count());
-                Assert.AreEqual(3, actualFirstDelete.Count());
+                Assert.AreEqual(3, actualBefore.Count());
+                Assert.AreEqual(2, actualFirstDelete.Count());
                 Assert.AreEqual(0, actualSecondDelete.Count());
             }
         }
 
         [TestMethod()]
-        public void TipoPagamentoRepository_UpdateDBTest()
+        public void TipoUtilizadorRepository_UpdateDBTest()
         {
 
             //Teste with a Dabase in sqlite ...
@@ -149,25 +149,25 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var unitOfWork = new UnitOfWork(contexto);
 
                 //act
-                var firstElement = unitOfWork.TipoPagamentos.Find(x => x.Id == 1).FirstOrDefault();
-                firstElement.Name = "E"+firstElement.Name;
-                unitOfWork.TipoPagamentos.Update(firstElement);
+                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.Id == 1).FirstOrDefault();
+                firstElement.Name = "E" + firstElement.Name;
+                unitOfWork.TipoUtilizadores.Update(firstElement);
                 unitOfWork.Complete();
 
-                var actualFirstUpdate = unitOfWork.TipoPagamentos.GetAll();
+                var actualFirstUpdate = unitOfWork.TipoUtilizadores.GetAll();
 
                 foreach (var item in actualFirstUpdate)
                 {
                     item.Name = "E" + item.Name;
                 }
-                unitOfWork.TipoPagamentos.UpdateRange(actualFirstUpdate);
+                unitOfWork.TipoUtilizadores.UpdateRange(actualFirstUpdate);
                 unitOfWork.Complete();
-                var actualSecondUpdate = unitOfWork.TipoPagamentos.GetAll();
+                var actualSecondUpdate = unitOfWork.TipoUtilizadores.GetAll();
 
                 var nomesAlterados = actualSecondUpdate.Count(x => x.Name.StartsWith("E"));
 
                 //assert
-                Assert.AreEqual(4, nomesAlterados);
+                Assert.AreEqual(3, nomesAlterados);
 
             }
         }

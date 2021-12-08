@@ -19,11 +19,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
 
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -80,11 +82,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
 
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -143,12 +147,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -205,12 +210,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);
@@ -286,12 +292,13 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = expectedTipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expectedUtilizador);

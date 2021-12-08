@@ -18,6 +18,7 @@ namespace Projeto.DataAccessLayer.Core
         IEstoqueRepository Estoques { get; }
         IVendaRepository Vendas { get; }
         IDetalheVendaRepository DetalheVendas { get; }
+        ITipoUtilizadorRepository TipoUtilizadores { get; }
 
         int Complete();
     }

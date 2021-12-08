@@ -18,12 +18,14 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var expected = new Utilizador
                 {
                     Identificador = Guid.NewGuid(),
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = tipoUtilizador,
                     Senha = "123"
                 };
                 var DateExpected = DateTime.Today;
@@ -52,15 +54,16 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
-                var guid = Guid.NewGuid();
-
                 //arrange
+                var guid = Guid.NewGuid();
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Indefinido).First();
+
                 var expected = new Utilizador
                 {
                     Identificador = guid,
                     Nome = "User Teste",
                     Email = "email@teste.pt",
-                    Tipo = TipoUtilizador.Indefinido,
+                    Tipo = tipoUtilizador,
                     Senha = "123"
                 };
                 unitOfWork.Utilizadores.Add(expected);
@@ -84,20 +87,22 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 //arrange
                 var expected = new List<Utilizador>() {
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Indefinido,
+                        Tipo = tipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste 2",
                         Email = "email2@teste.pt",
-                        Tipo = TipoUtilizador.Gerente,
+                        Tipo = tipoUtilizador,
                         Senha = "123"
                     },
                 };
@@ -124,26 +129,28 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
                 var guid = Guid.NewGuid();
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+
                 var expected = new List<Utilizador>() {
                     new Utilizador{
                         Identificador = guid,
                         Nome = "User Teste",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Indefinido,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste 2",
                         Email = "email2@teste.pt",
-                        Tipo = TipoUtilizador.Gerente,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste 2",
                         Email = "email2@teste.pt",
-                        Tipo = TipoUtilizador.Gerente,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                 };
@@ -180,26 +187,28 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
                 var guid = Guid.NewGuid();
                 //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Gerente).First();
+
                 var expected = new List<Utilizador>() {
                     new Utilizador{
                         Identificador = guid,
                         Nome = "User Teste",
                         Email = "email@teste.pt",
-                        Tipo = TipoUtilizador.Indefinido,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste 2",
                         Email = "email2@teste.pt",
-                        Tipo = TipoUtilizador.Gerente,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                     new Utilizador{
                         Identificador = Guid.NewGuid(),
                         Nome = "User Teste 2",
                         Email = "email2@teste.pt",
-                        Tipo = TipoUtilizador.Gerente,
+                        Tipo = expectedTipoUtilizador,
                         Senha = "123"
                     },
                 };

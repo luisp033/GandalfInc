@@ -156,19 +156,21 @@ namespace Projeto.ConsoleApp
                 }
                 Console.WriteLine("-----------------------------------------{Inserindo 2 users}-");
 
+
+
                 unitOfWork.Utilizadores.Add(new Utilizador
                 {
                     Nome = "Elias Empregado",
                     Email = "elias@mail.pt",
-                    Tipo = TipoUtilizador.Empregado,
+                    Tipo = new TipoUtilizador { Id = 1, Name = "Empregado"},
                     Senha = "123",
-                });
+                }); ;
 
                 unitOfWork.Utilizadores.Add(new Utilizador
                 {
                     Nome = "Garcia Gerente",
                     Email = "garcia@mail.pt",
-                    Tipo = TipoUtilizador.Gerente,
+                    Tipo = new TipoUtilizador { Id = 2, Name = "Gerente" },
                     Senha = "123",
                 });
                 unitOfWork.Complete();

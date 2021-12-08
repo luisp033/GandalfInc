@@ -37,6 +37,13 @@ namespace Projeto.DataAccessLayer
                      new TipoPagamento { Id = 3, Name = "Dinheiro" }
                    );
 
+            modelBuilder.Entity<TipoUtilizador>()
+                   .HasData(
+                     new TipoPagamento { Id = 0, Name = "Indefenido" },
+                     new TipoPagamento { Id = 1, Name = "Empregado" },
+                     new TipoPagamento { Id = 2, Name = "Gerente" }
+                   );
+
 
             modelBuilder.Entity<DetalheVenda>()
                 .HasOne(b => b.Estoque)

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211208012544_Add_TipoUtilizador")]
+    partial class Add_TipoUtilizador
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

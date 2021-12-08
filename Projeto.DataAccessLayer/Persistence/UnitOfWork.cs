@@ -23,6 +23,7 @@ namespace Projeto.DataAccessLayer.Persistence
             Estoques = new EstoqueRepository(_context);
             Vendas = new VendaRepository(_context);
             DetalheVendas = new DetalheVendaRepository(_context);
+            TipoUtilizadores = new TipoUtilizadorRepository(_context);
         }
 
         public IUtilizadorRepository Utilizadores { get; private set; }
@@ -50,6 +51,8 @@ namespace Projeto.DataAccessLayer.Persistence
         public IVendaRepository Vendas { get; private set; }
 
         public IDetalheVendaRepository DetalheVendas { get; private set; }
+
+        public ITipoUtilizadorRepository TipoUtilizadores { get; private set; }
 
         public int Complete()
         {
