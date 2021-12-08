@@ -56,10 +56,6 @@ namespace Projeto.DataAccessLayer
                 .WithOne(i => i.Estoque)
                 .HasForeignKey<DetalheVenda>(b => b.EstoqueId);
 
-            //modelBuilder.Entity<DetalheVenda>()
-            //    .HasOne(b => b.Venda)
-            //    .WithMany(i => i.DetalheVendas);
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

@@ -1,15 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Projeto.BusinessLogicLayer.Tests
 {
     [TestClass()]
-    public class LogicaLoginTests
+    public class LogicaSistemaTests
     {
         [TestMethod()]
         public void LoginComSucesso_Test()
@@ -52,7 +55,7 @@ namespace Projeto.BusinessLogicLayer.Tests
                 unitOfWork.Complete();
 
                 // Act
-                var x = new LogicaLogin(contexto);
+                var x = new LogicaSistema(contexto);
                 var posSessao = x.Login(expectedPos, expectedUtilizador);
                 var DateLoginActual = new DateTime(posSessao.Item1.DataLogin.Year, posSessao.Item1.DataLogin.Month, posSessao.Item1.DataLogin.Day, 0, 0, 0);
                 var DateLoginExpected = DateTime.Today;
@@ -101,14 +104,14 @@ namespace Projeto.BusinessLogicLayer.Tests
                 unitOfWork.PontoDeVendas.Add(expectedPos);
                 unitOfWork.Complete();
 
-                var x = new LogicaLogin(contexto);
-                var expectSessao = x.Login(expectedPos,expectedUtilizador);
+                var x = new LogicaSistema(contexto);
+                var expectSessao = x.Login(expectedPos, expectedUtilizador);
 
                 // Act
                 var msgActual = x.Logout(expectSessao.Item1);
 
                 var actualSessao = unitOfWork.PontoDeVendaSessoes.Find(x => x.Identificador == expectSessao.Item1.Identificador).FirstOrDefault();
-                var dataLogoutExpected = new DateTime(actualSessao.DataLogout.Value.Year, actualSessao.DataLogout.Value.Month, actualSessao.DataLogout.Value.Day); 
+                var dataLogoutExpected = new DateTime(actualSessao.DataLogout.Value.Year, actualSessao.DataLogout.Value.Month, actualSessao.DataLogout.Value.Day);
 
                 //Assert
                 Assert.IsNull(msgActual);
@@ -163,7 +166,7 @@ namespace Projeto.BusinessLogicLayer.Tests
                 unitOfWork.PontoDeVendas.Add(expectedPos);
                 unitOfWork.Complete();
 
-                var x = new LogicaLogin(contexto);
+                var x = new LogicaSistema(contexto);
                 var otherSessao = x.Login(expectedPos, utilizadores[0]);
 
 
@@ -212,9 +215,9 @@ namespace Projeto.BusinessLogicLayer.Tests
                 };
                 unitOfWork.Lojas.Add(expectedLoja);
 
-                var posList = new List<PontoDeVenda>  
+                var posList = new List<PontoDeVenda>
                 {
-                    new PontoDeVenda{ 
+                    new PontoDeVenda{
                         Nome = "POS Teste1",
                         Loja = expectedLoja
                     },
@@ -226,7 +229,7 @@ namespace Projeto.BusinessLogicLayer.Tests
                 unitOfWork.PontoDeVendas.AddRange(posList);
                 unitOfWork.Complete();
 
-                var x = new LogicaLogin(contexto);
+                var x = new LogicaSistema(contexto);
                 var otherSessao = x.Login(posList[0], utilizadores[0]);
 
                 // Act
@@ -242,5 +245,84 @@ namespace Projeto.BusinessLogicLayer.Tests
             }
         }
 
+        [TestMethod()]
+        public void VerificaSeExistePeloMenosUmUtilizadorGerenteTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+
+                //Arrange
+                var unitOfWork = new UnitOfWork(contexto);
+
+                var utilizadorEmpregado = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var utilizadorGerente = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Gerente).First();
+
+                var logicaSistema = new LogicaSistema(contexto);
+
+                //Act
+
+                var expectedNotFound1 = logicaSistema.VerificaSeExisteUmUtilizadorGerente();
+                var utilizadores = new List<Utilizador>{
+                    new Utilizador
+                    {
+                        Nome = "User Teste1",
+                        Email = "email@teste.pt",
+                        Tipo = utilizadorEmpregado,
+                        Senha = "123"
+                    },
+
+                };
+                unitOfWork.Utilizadores.AddRange(utilizadores);
+                unitOfWork.Complete();
+                var expectedNotFound2 = logicaSistema.VerificaSeExisteUmUtilizadorGerente();
+
+                var utilizadores2 = new List<Utilizador>{
+                    new Utilizador
+                    {
+                        Nome = "User Teste1",
+                        Email = "email@teste.pt",
+                        Tipo = utilizadorGerente,
+                        Senha = "123"
+                    },
+
+                };
+                unitOfWork.Utilizadores.AddRange(utilizadores2);
+                unitOfWork.Complete();
+                var expectedFound = logicaSistema.VerificaSeExisteUmUtilizadorGerente();
+
+
+                //Assert
+                Assert.IsFalse(expectedNotFound1);
+                Assert.IsFalse(expectedNotFound2);
+                Assert.IsTrue(expectedFound);
+
+            }
+
+
+        }
+
+        [TestMethod()]
+        public void InsereUtilizadorTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var resultadoNOK = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
     }
 }
