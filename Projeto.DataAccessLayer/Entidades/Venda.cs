@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,10 @@ namespace Projeto.DataAccessLayer.Entidades
         public int NumeroSerie { get; set; }
         public TipoPagamento TipoPagamento { get; set; }
         public decimal ValorPagamento { get; set; }
+
+        public List<DetalheVenda> DetalheVendas { get; set; }
+
+
 
     }
 }

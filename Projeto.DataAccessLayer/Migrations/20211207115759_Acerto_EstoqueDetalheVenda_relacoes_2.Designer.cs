@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211207115759_Acerto_EstoqueDetalheVenda_relacoes_2")]
+    partial class Acerto_EstoqueDetalheVenda_relacoes_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,21 +108,22 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<decimal>("Desconto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("EstoqueId")
+                    b.Property<Guid?>("EstoqueId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("PrecoFinal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("VendaId")
+                    b.Property<Guid?>("VendaIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Identificador");
 
                     b.HasIndex("EstoqueId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[EstoqueId] IS NOT NULL");
 
-                    b.HasIndex("VendaId");
+                    b.HasIndex("VendaIdentificador");
 
                     b.ToTable("DetalheVendas");
                 });
@@ -497,13 +500,11 @@ namespace Projeto.DataAccessLayer.Migrations
                 {
                     b.HasOne("Projeto.DataAccessLayer.Entidades.Estoque", "Estoque")
                         .WithOne("DetalheVenda")
-                        .HasForeignKey("Projeto.DataAccessLayer.Entidades.DetalheVenda", "EstoqueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Projeto.DataAccessLayer.Entidades.DetalheVenda", "EstoqueId");
 
                     b.HasOne("Projeto.DataAccessLayer.Entidades.Venda", "Venda")
-                        .WithMany("DetalheVendas")
-                        .HasForeignKey("VendaId");
+                        .WithMany()
+                        .HasForeignKey("VendaIdentificador");
 
                     b.Navigation("Estoque");
 
@@ -597,11 +598,6 @@ namespace Projeto.DataAccessLayer.Migrations
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Estoque", b =>
                 {
                     b.Navigation("DetalheVenda");
-                });
-
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Venda", b =>
-                {
-                    b.Navigation("DetalheVendas");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,6 +20,9 @@ namespace Projeto.DataAccessLayer.Persistence
             MarcaProdutos = new MarcaProdutoRepository(_context);
             Produtos = new ProdutoRepository(_context);
             TipoPagamentos = new TipoPagamentoRepository(_context);
+            Estoques = new EstoqueRepository(_context);
+            Vendas = new VendaRepository(_context);
+            DetalheVendas = new DetalheVendaRepository(_context);
         }
 
         public IUtilizadorRepository Utilizadores { get; private set; }
@@ -37,10 +40,16 @@ namespace Projeto.DataAccessLayer.Persistence
         public IClienteRepository Clientes { get; private set; }
 
         public IProdutoRepository Produtos { get; private set; }
+
         public IMarcaProdutoRepository MarcaProdutos { get; private set; }
 
         public ITipoPagamentoRepository TipoPagamentos { get; private set; }
 
+        public IEstoqueRepository Estoques { get; private set; }
+
+        public IVendaRepository Vendas { get; private set; }
+
+        public IDetalheVendaRepository DetalheVendas { get; private set; }
 
         public int Complete()
         {

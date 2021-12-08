@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211207120153_Acerto_EstoqueDetalheVenda_relacoes_3")]
+    partial class Acerto_EstoqueDetalheVenda_relacoes_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,7 +114,7 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<decimal>("PrecoFinal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("VendaId")
+                    b.Property<Guid?>("VendaIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Identificador");
@@ -120,7 +122,7 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.HasIndex("EstoqueId")
                         .IsUnique();
 
-                    b.HasIndex("VendaId");
+                    b.HasIndex("VendaIdentificador");
 
                     b.ToTable("DetalheVendas");
                 });
@@ -502,8 +504,8 @@ namespace Projeto.DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("Projeto.DataAccessLayer.Entidades.Venda", "Venda")
-                        .WithMany("DetalheVendas")
-                        .HasForeignKey("VendaId");
+                        .WithMany()
+                        .HasForeignKey("VendaIdentificador");
 
                     b.Navigation("Estoque");
 
@@ -597,11 +599,6 @@ namespace Projeto.DataAccessLayer.Migrations
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Estoque", b =>
                 {
                     b.Navigation("DetalheVenda");
-                });
-
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Venda", b =>
-                {
-                    b.Navigation("DetalheVendas");
                 });
 #pragma warning restore 612, 618
         }

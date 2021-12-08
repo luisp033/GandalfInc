@@ -15,8 +15,9 @@ namespace Projeto.DataAccessLayer.Core
         IProdutoRepository Produtos { get; }
         IMarcaProdutoRepository MarcaProdutos { get; }
         ITipoPagamentoRepository TipoPagamentos { get; }
-
-
+        IEstoqueRepository Estoques { get; }
+        IVendaRepository Vendas { get; }
+        IDetalheVendaRepository DetalheVendas { get; }
 
         int Complete();
     }

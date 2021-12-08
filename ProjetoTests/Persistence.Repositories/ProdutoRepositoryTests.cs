@@ -186,7 +186,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
                 unitOfWork.Produtos.RemoveRange(actualFirstDelete);
                 unitOfWork.Complete();
-                var actualSecondDelete = unitOfWork.Clientes.GetAll();
+                var actualSecondDelete = unitOfWork.Produtos.GetAll();
 
                 //assert
                 Assert.AreEqual(3, actualBefore.Count());

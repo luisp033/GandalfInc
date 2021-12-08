@@ -10,10 +10,16 @@ namespace Projeto.DataAccessLayer.Entidades
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Identificador { get; set; }
-        public Venda Venda { get; set; }
-        public Estoque EstoqueProduto { get; set; }
+
+
         public decimal Desconto { get; set; }
+        [Required]
         public decimal PrecoFinal { get; set; }
+        [Required]
+        public Guid EstoqueId { get; set; }
+        public Estoque Estoque { get; set; }
+        public Guid? VendaId { get; set; }
+        public Venda Venda { get; set; }
 
     }
 }

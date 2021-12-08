@@ -13,5 +13,8 @@ namespace Projeto.DataAccessLayer.Entidades
         [Required]
         public DateTime DataEntrada { get; set; }
 
+        public Guid? DetalheVendaId { get; set; }
+        public DetalheVenda DetalheVenda { get; set; }
+
     }
 }

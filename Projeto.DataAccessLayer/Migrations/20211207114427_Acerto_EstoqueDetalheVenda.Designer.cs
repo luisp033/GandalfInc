@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projeto.DataAccessLayer;
 
 namespace Projeto.DataAccessLayer.Migrations
 {
     [DbContext(typeof(ProjetoDBContext))]
-    partial class ProjetoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211207114427_Acerto_EstoqueDetalheVenda")]
+    partial class Acerto_EstoqueDetalheVenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,21 +108,15 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<decimal>("Desconto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("EstoqueId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("PrecoFinal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("VendaId")
+                    b.Property<Guid?>("VendaIdentificador")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Identificador");
 
-                    b.HasIndex("EstoqueId")
-                        .IsUnique();
-
-                    b.HasIndex("VendaId");
+                    b.HasIndex("VendaIdentificador");
 
                     b.ToTable("DetalheVendas");
                 });
@@ -154,6 +150,10 @@ namespace Projeto.DataAccessLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Identificador");
+
+                    b.HasIndex("DetalheVendaId")
+                        .IsUnique()
+                        .HasFilter("[DetalheVendaId] IS NOT NULL");
 
                     b.HasIndex("ProdutoIdentificador");
 
@@ -495,26 +495,24 @@ namespace Projeto.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.DetalheVenda", b =>
                 {
-                    b.HasOne("Projeto.DataAccessLayer.Entidades.Estoque", "Estoque")
-                        .WithOne("DetalheVenda")
-                        .HasForeignKey("Projeto.DataAccessLayer.Entidades.DetalheVenda", "EstoqueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Projeto.DataAccessLayer.Entidades.Venda", "Venda")
-                        .WithMany("DetalheVendas")
-                        .HasForeignKey("VendaId");
-
-                    b.Navigation("Estoque");
+                        .WithMany()
+                        .HasForeignKey("VendaIdentificador");
 
                     b.Navigation("Venda");
                 });
 
             modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Estoque", b =>
                 {
+                    b.HasOne("Projeto.DataAccessLayer.Entidades.DetalheVenda", "DetalheVenda")
+                        .WithOne("EstoqueProduto")
+                        .HasForeignKey("Projeto.DataAccessLayer.Entidades.Estoque", "DetalheVendaId");
+
                     b.HasOne("Projeto.DataAccessLayer.Entidades.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoIdentificador");
+
+                    b.Navigation("DetalheVenda");
 
                     b.Navigation("Produto");
                 });
@@ -594,14 +592,9 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Navigation("TipoPagamento");
                 });
 
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Estoque", b =>
+            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.DetalheVenda", b =>
                 {
-                    b.Navigation("DetalheVenda");
-                });
-
-            modelBuilder.Entity("Projeto.DataAccessLayer.Entidades.Venda", b =>
-                {
-                    b.Navigation("DetalheVendas");
+                    b.Navigation("EstoqueProduto");
                 });
 #pragma warning restore 612, 618
         }

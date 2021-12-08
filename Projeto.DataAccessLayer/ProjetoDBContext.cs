@@ -36,6 +36,23 @@ namespace Projeto.DataAccessLayer
                      new TipoPagamento { Id = 2, Name = "MbWay" },
                      new TipoPagamento { Id = 3, Name = "Dinheiro" }
                    );
+
+
+            modelBuilder.Entity<DetalheVenda>()
+                .HasOne(b => b.Estoque)
+                .WithOne(i => i.DetalheVenda)
+                .HasForeignKey<Estoque>(b => b.DetalheVendaId);
+
+
+            modelBuilder.Entity<Estoque>()
+                .HasOne(b => b.DetalheVenda)
+                .WithOne(i => i.Estoque)
+                .HasForeignKey<DetalheVenda>(b => b.EstoqueId);
+
+            //modelBuilder.Entity<DetalheVenda>()
+            //    .HasOne(b => b.Venda)
+            //    .WithMany(i => i.DetalheVendas);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
