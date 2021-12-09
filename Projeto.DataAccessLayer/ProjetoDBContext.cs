@@ -22,7 +22,7 @@ namespace Projeto.DataAccessLayer
             else
             {
                 CnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;";
-                //Database.EnsureCreated()
+                //Database.EnsureCreated();
             }
         }
 
@@ -108,6 +108,7 @@ namespace Projeto.DataAccessLayer
         public DbSet<DetalheVenda> DetalheVendas { get; set; }
         public DbSet<PontoDeVendaSessao> PontoDeVendaSessoes { get; set; }
         public DbSet<TipoPagamento> TipoPagamentos { get; set; }
+        public DbSet<TipoUtilizador> TipoUtilizadores { get; set; }
     }
 
 

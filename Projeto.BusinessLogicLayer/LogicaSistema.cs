@@ -75,25 +75,39 @@ namespace Projeto.BusinessLogicLayer
         }
 
 
+      
+        
+
         public Resultado InsereUtilizador(string nome, string email, string senha , TipoUtilizadorEnum tipo) 
         {
+
+
+            #region Validacoes
 
             if (String.IsNullOrEmpty(nome))
             {
                 return new Resultado(false, "Nome obrigatório");
             }
-
+            if (String.IsNullOrEmpty(email))
+            {
+                return new Resultado(false, "Email obrigatório");
+            }
+            if (String.IsNullOrEmpty(senha))
+            {
+                return new Resultado(false, "Senha obrigatória");
+            }   
+            #endregion
 
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x=>x.Id ==(int)tipo).FirstOrDefault();
+                //var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x=>x.Id ==(int)tipo).FirstOrDefault();
 
                 Utilizador user = new Utilizador
                 {
                     Nome = nome,
                     Email = email,
                     Senha = senha,
-                    Tipo = tipoUtilizador
+                    Tipo = unitOfWork.TipoUtilizadores.GetTipoUtilizadorByEnum(tipo)
                 };
 
                 unitOfWork.Utilizadores.Add(user);
@@ -114,7 +128,6 @@ namespace Projeto.BusinessLogicLayer
         {
             using (var unitOfWork = new UnitOfWork(_context))
             {
-
                 return unitOfWork.Utilizadores.Find(x=>x.Tipo.Id == (int)TipoUtilizadorEnum.Gerente && x.Ativo).Any();
             }
         }

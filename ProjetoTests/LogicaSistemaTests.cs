@@ -315,11 +315,15 @@ namespace Projeto.BusinessLogicLayer.Tests
                 string expectedEmail = "Luis@mail.pt";
                 string expectedSenha = "456";
 
-                var resultadoNOK = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemNome = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemEmail = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemSenha = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
                 var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
 
                 //Assert
-                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
+                Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
                 Assert.IsTrue(resultadoOK.Sucesso);
 
             }

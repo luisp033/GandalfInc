@@ -7,11 +7,11 @@ namespace Projeto.DataAccessLayer.Entidades
         [Required, MaxLength(255)]
         public string Nome { get; set; }
 
-        [EmailAddress]
+        [Required, EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }
 
-        [MaxLength(255)]
+        [Required,MaxLength(255)]
         public string Senha { get; set; }
 
         public TipoUtilizador Tipo { get; set; }
