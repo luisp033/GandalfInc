@@ -32,11 +32,14 @@ namespace WinFormsApp1
                 {
                     // mostra o pedido de login
                     pnlRegistoUtilizador.Visible = false;
+                    pnlLoginUtilizador.Visible = true;
+                    pnlLoginUtilizador.Location = new Point(266,163);
                 }
                 else
                 {
                     // sistema novo, permite criar um utilizador gerente...
                     pnlRegistoUtilizador.Visible = true;
+                    pnlLoginUtilizador.Visible = false;
                 }
 
             }

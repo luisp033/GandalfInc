@@ -38,11 +38,15 @@ namespace WinFormsApp1
             this.label2 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnlLoginUtilizador = new System.Windows.Forms.Panel();
             this.pnlRegistoUtilizador.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlRegistoUtilizador
             // 
+            this.pnlRegistoUtilizador.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlRegistoUtilizador.BackColor = System.Drawing.Color.Gainsboro;
             this.pnlRegistoUtilizador.Controls.Add(this.btnRegistar);
             this.pnlRegistoUtilizador.Controls.Add(this.label4);
@@ -128,11 +132,21 @@ namespace WinFormsApp1
             this.label1.TabIndex = 0;
             this.label1.Text = "O sistema não tem nenhum utilizador Gerente, é necessário registar um utilizador";
             // 
+            // pnlLoginUtilizador
+            // 
+            this.pnlLoginUtilizador.BackColor = System.Drawing.Color.LightCyan;
+            this.pnlLoginUtilizador.Location = new System.Drawing.Point(365, 58);
+            this.pnlLoginUtilizador.Name = "pnlLoginUtilizador";
+            this.pnlLoginUtilizador.Size = new System.Drawing.Size(467, 269);
+            this.pnlLoginUtilizador.TabIndex = 2;
+            this.pnlLoginUtilizador.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 600);
+            this.Controls.Add(this.pnlLoginUtilizador);
             this.Controls.Add(this.pnlRegistoUtilizador);
             this.Name = "Form1";
             this.Text = "Gandalf Inc- Ponto de Venda";
@@ -153,6 +167,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel pnlLoginUtilizador;
     }
 }
 
