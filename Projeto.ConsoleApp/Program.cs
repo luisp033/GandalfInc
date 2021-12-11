@@ -162,7 +162,7 @@ namespace Projeto.ConsoleApp
                 {
                     Nome = "Elias Empregado",
                     Email = "elias@mail.pt",
-                    Tipo = new TipoUtilizador { Id = 1, Name = "Empregado"},
+                    Tipo = new TipoUtilizador { TipoId = 1, Name = "Empregado"},
                     Senha = "123",
                 }); ;
 
@@ -170,7 +170,7 @@ namespace Projeto.ConsoleApp
                 {
                     Nome = "Garcia Gerente",
                     Email = "garcia@mail.pt",
-                    Tipo = new TipoUtilizador { Id = 2, Name = "Gerente" },
+                    Tipo = new TipoUtilizador { TipoId = 2, Name = "Gerente" },
                     Senha = "123",
                 });
                 unitOfWork.Complete();

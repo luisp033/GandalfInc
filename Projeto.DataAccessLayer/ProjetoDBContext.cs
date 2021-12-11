@@ -39,9 +39,9 @@ namespace Projeto.DataAccessLayer
 
             modelBuilder.Entity<TipoUtilizador>()
                    .HasData(
-                     new TipoPagamento { Id = 0, Name = "Indefenido" },
-                     new TipoPagamento { Id = 1, Name = "Empregado" },
-                     new TipoPagamento { Id = 2, Name = "Gerente" }
+                     new TipoUtilizador { TipoId = 0, Name = "Indefenido" },
+                     new TipoUtilizador { TipoId = 1, Name = "Empregado" },
+                     new TipoUtilizador { TipoId = 2, Name = "Gerente" }
                    );
 
 

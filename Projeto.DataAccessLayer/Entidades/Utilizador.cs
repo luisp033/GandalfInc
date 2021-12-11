@@ -11,9 +11,9 @@ namespace Projeto.DataAccessLayer.Entidades
         [MaxLength(255)]
         public string Email { get; set; }
 
-        [Required,MaxLength(255)]
+        [Required, MaxLength(255)]
         public string Senha { get; set; }
-
+        [Required]
         public TipoUtilizador Tipo { get; set; }
 
     }

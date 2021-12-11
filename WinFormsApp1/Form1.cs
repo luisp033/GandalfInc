@@ -1,5 +1,6 @@
 ﻿using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
+using Projeto.DataAccessLayer.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,6 +62,42 @@ namespace WinFormsApp1
                 }
             }
 
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            using (var contexto = new ProjetoDBContext())
+            {
+                LogicaSistema sistema = new LogicaSistema(contexto);
+
+                var resultado = sistema.Login(txtEmailLogin.Text, txtSenhaLogin.Text);
+
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(this,resultado.Mensagem,"");
+
+                    VerificaSistema();
+                }
+                else
+                {
+                    if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
+                    {
+                        //Form da gestão
+                        MessageBox.Show("Form da gestão");
+                    }
+                    else if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
+                    {
+                        //Form da venda
+                        MessageBox.Show("Form da venda");
+                    }
+                    else 
+                    {
+                        VerificaSistema();
+                    }
+
+                }
+
+            }
         }
     }
 }

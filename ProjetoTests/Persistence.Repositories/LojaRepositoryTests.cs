@@ -20,7 +20,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
                 //arrange
                 var id = Guid.NewGuid();
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador {
                     Identificador = Guid.NewGuid(),
@@ -82,7 +82,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {
@@ -150,7 +150,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {
@@ -244,7 +244,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expectedUtilizador = new Utilizador
                 {

@@ -26,7 +26,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var actual = unitOfWork.TipoUtilizadores.GetAll();
                 foreach (var item in actual)
                 {
-                    if (!Enum.IsDefined(typeof(TipoUtilizadorEnum), item.Id))
+                    if (!Enum.IsDefined(typeof(TipoUtilizadorEnum), item.TipoId))
                     {
                         allMatch = false;
                     }
@@ -53,7 +53,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
                 var expected = new TipoUtilizador
                 {
-                    Id = enumsOnCode,
+                    TipoId = enumsOnCode,
                     Name = expectedName
                 };
 
@@ -61,11 +61,11 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 unitOfWork.TipoUtilizadores.Add(expected);
                 unitOfWork.Complete();
 
-                var actual = unitOfWork.TipoUtilizadores.Find(x => x.Id == enumsOnCode).FirstOrDefault();
+                var actual = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == enumsOnCode).FirstOrDefault();
 
                 //assert
                 Assert.IsNotNull(actual);
-                Assert.AreEqual(enumsOnCode, actual.Id);
+                Assert.AreEqual(enumsOnCode, actual.TipoId);
                 Assert.AreEqual(expectedName, actual.Name);
 
             }
@@ -87,12 +87,12 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var expected = new List<TipoUtilizador>() {
                     new TipoUtilizador
                     {
-                        Id = enumsOnCode++,
+                        TipoId = enumsOnCode++,
                         Name = "Dollar"
                     },
                     new TipoUtilizador
                     {
-                        Id = enumsOnCode,
+                        TipoId = enumsOnCode,
                         Name = "Euro"
                     }
                 };
@@ -121,7 +121,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var actualBefore = unitOfWork.TipoUtilizadores.GetAll();
 
                 //act
-                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.Id == 1).FirstOrDefault();
+                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == 1).FirstOrDefault();
                 unitOfWork.TipoUtilizadores.Remove(firstElement);
                 unitOfWork.Complete();
                 var actualFirstDelete = unitOfWork.TipoUtilizadores.GetAll();
@@ -149,7 +149,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                 var unitOfWork = new UnitOfWork(contexto);
 
                 //act
-                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.Id == 1).FirstOrDefault();
+                var firstElement = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == 1).FirstOrDefault();
                 firstElement.Name = "E" + firstElement.Name;
                 unitOfWork.TipoUtilizadores.Update(firstElement);
                 unitOfWork.Complete();

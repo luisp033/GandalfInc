@@ -18,7 +18,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
                 //arrange
-                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expected = new Utilizador
                 {
@@ -56,7 +56,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
                 //arrange
                 var guid = Guid.NewGuid();
-                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Indefinido).First();
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expected = new Utilizador
                 {
@@ -71,10 +71,17 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
                 //act
                 var actual = unitOfWork.Utilizadores.Get(guid);
+                var actualFind = unitOfWork.Utilizadores.Find(x=>x.Identificador == guid).FirstOrDefault();
 
                 //assert
                 Assert.IsNotNull(actual);
                 Assert.AreEqual(expected.Identificador, actual.Identificador);
+                Assert.AreEqual((int)TipoUtilizadorEnum.Empregado, actual.Tipo.TipoId);
+
+                Assert.IsNotNull(actualFind);
+                Assert.AreEqual(expected.Identificador, actualFind.Identificador);
+                Assert.AreEqual((int)TipoUtilizadorEnum.Empregado, actualFind.Tipo.TipoId);
+
 
             }
         }
@@ -87,7 +94,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
 
             using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
             {
-                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 //arrange
                 var expected = new List<Utilizador>() {
@@ -129,7 +136,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
                 var guid = Guid.NewGuid();
                 //arrange
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
 
                 var expected = new List<Utilizador>() {
                     new Utilizador{
@@ -187,7 +194,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             {
                 var guid = Guid.NewGuid();
                 //arrange
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Gerente).First();
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Gerente).First();
 
                 var expected = new List<Utilizador>() {
                     new Utilizador{

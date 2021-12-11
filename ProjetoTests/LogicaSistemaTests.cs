@@ -14,61 +14,6 @@ namespace Projeto.BusinessLogicLayer.Tests
     [TestClass()]
     public class LogicaSistemaTests
     {
-        [TestMethod()]
-        public void LoginComSucesso_Test()
-        {
-            //Teste with a Dabase in sqlite ...
-
-            //arrange
-
-            Utilizador expectedUtilizador = null;
-            Loja expectedLoja = null;
-            PontoDeVenda expectedPos = null;
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //arrange
-                var unitOfWork = new UnitOfWork(contexto);
-
-                var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
-
-                expectedUtilizador = new Utilizador
-                {
-                    Nome = "User Teste",
-                    Email = "email@teste.pt",
-                    Tipo = tipoUtilizador,
-                    Senha = "123"
-                };
-                unitOfWork.Utilizadores.Add(expectedUtilizador);
-
-                expectedLoja = new Loja
-                {
-                    Nome = "Loja 1",
-                };
-                unitOfWork.Lojas.Add(expectedLoja);
-
-                expectedPos = new PontoDeVenda
-                {
-                    Nome = "POS Teste1",
-                    Loja = expectedLoja
-                };
-                unitOfWork.PontoDeVendas.Add(expectedPos);
-                unitOfWork.Complete();
-
-                // Act
-                var x = new LogicaSistema(contexto);
-                var posSessao = x.Login(expectedPos, expectedUtilizador);
-                var DateLoginActual = new DateTime(posSessao.Item1.DataLogin.Year, posSessao.Item1.DataLogin.Month, posSessao.Item1.DataLogin.Day, 0, 0, 0);
-                var DateLoginExpected = DateTime.Today;
-
-                // Assert
-                Assert.IsNotNull(posSessao.Item1);
-                Assert.AreEqual(posSessao.Item1.Utilizador.Identificador, expectedUtilizador.Identificador);
-                Assert.AreEqual(posSessao.Item1.PontoDeVenda.Identificador, expectedPos.Identificador);
-                Assert.IsNull(posSessao.Item1.DataLogout);
-                Assert.AreEqual(DateLoginExpected, DateLoginActual);
-
-            }
-        }
 
         [TestMethod()]
         public void LogoutComSucesso_Test()
@@ -78,170 +23,48 @@ namespace Projeto.BusinessLogicLayer.Tests
             using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
             {
                 //arrange
-                var unitOfWork = new UnitOfWork(contexto);
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var logicaSistema = new LogicaSistema(contexto);
 
-                var expectedUtilizador = new Utilizador
-                {
-                    Nome = "User Teste",
-                    Email = "email@teste.pt",
-                    Tipo = expectedTipoUtilizador,
-                    Senha = "123"
-                };
-                unitOfWork.Utilizadores.Add(expectedUtilizador);
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
+                var expectedPos1 = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador1 = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado1 = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedSessaoMessage = "Sessão fechada com sucesso";
+                var aberturadeSessao = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado1.Objeto, (PontoDeVenda)expectedPos1.Objeto);
 
-                var expectedLoja = new Loja
-                {
-                    Nome = "Loja 1",
-                };
-                unitOfWork.Lojas.Add(expectedLoja);
-
-                var expectedPos = new PontoDeVenda
-                {
-                    Nome = "POS Teste1",
-                    Loja = expectedLoja
-                };
-                unitOfWork.PontoDeVendas.Add(expectedPos);
-                unitOfWork.Complete();
-
-                var x = new LogicaSistema(contexto);
-                var expectSessao = x.Login(expectedPos, expectedUtilizador);
-
-                // Act
-                var msgActual = x.Logout(expectSessao.Item1);
-
-                var actualSessao = unitOfWork.PontoDeVendaSessoes.Find(x => x.Identificador == expectSessao.Item1.Identificador).FirstOrDefault();
-                var dataLogoutExpected = new DateTime(actualSessao.DataLogout.Value.Year, actualSessao.DataLogout.Value.Month, actualSessao.DataLogout.Value.Day);
+                //Act
+                var fechoSessao = logicaSistema.Logout((PontoDeVendaSessao)aberturadeSessao.Objeto);
 
                 //Assert
-                Assert.IsNull(msgActual);
-                Assert.AreEqual(DateTime.Today, dataLogoutExpected);
-
+                Assert.IsNotNull(fechoSessao);
+                Assert.AreEqual(expectedSessaoMessage, fechoSessao.Mensagem);
             }
-
-
         }
 
         [TestMethod()]
-        public void LoginFalhadoPostoJaEstaAberto_Test()
+        public void LogoutComFalha_Test()
         {
             //Teste with a Dabase in sqlite ...
 
             using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
             {
                 //arrange
-                var unitOfWork = new UnitOfWork(contexto);
+                var logicaSistema = new LogicaSistema(contexto);
 
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
+                var expectedPos1 = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador1 = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado1 = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedSessaoMessage = "Sessão inválida ou inexistente";
+                var aberturadeSessao = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado1.Objeto, (PontoDeVenda)expectedPos1.Objeto);
+                var fechoSessao = logicaSistema.Logout((PontoDeVendaSessao)aberturadeSessao.Objeto);
 
-                var utilizadores = new List<Utilizador>{
-                    new Utilizador
-                    {
-                        Nome = "User Teste1",
-                        Email = "email@teste.pt",
-                        Tipo = expectedTipoUtilizador,
-                        Senha = "123"
-                    },
-                    new Utilizador
-                    {
-                        Nome = "User Teste2",
-                        Email = "email@teste.pt",
-                        Tipo = expectedTipoUtilizador,
-                        Senha = "123"
-                    }
-                };
-                unitOfWork.Utilizadores.AddRange(utilizadores);
-
-                var expectedLoja = new Loja
-                {
-                    Nome = "Loja 1",
-                };
-                unitOfWork.Lojas.Add(expectedLoja);
-
-                var expectedPos = new PontoDeVenda
-                {
-                    Nome = "POS Teste1",
-                    Loja = expectedLoja
-                };
-                unitOfWork.PontoDeVendas.Add(expectedPos);
-                unitOfWork.Complete();
-
-                var x = new LogicaSistema(contexto);
-                var otherSessao = x.Login(expectedPos, utilizadores[0]);
-
-
-                // Act
-                var actualSessao = x.Login(expectedPos, utilizadores[1]);
+                //Act
+                var atualFechoSessao = logicaSistema.Logout((PontoDeVendaSessao)aberturadeSessao.Objeto);
 
                 //Assert
-                Assert.IsNull(actualSessao.Item1);
-                Assert.AreEqual("Ponto de Venda já se encontra aberto", actualSessao.Item2);
-
-            }
-        }
-
-        [TestMethod()]
-        public void LoginFalhadoUtilizadorJaEstaLogado_Test()
-        {
-            //Teste with a Dabase in sqlite ...
-
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //arrange
-                var unitOfWork = new UnitOfWork(contexto);
-                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
-
-                var utilizadores = new List<Utilizador>{
-                    new Utilizador
-                    {
-                        Nome = "User Teste1",
-                        Email = "email@teste.pt",
-                        Tipo = expectedTipoUtilizador,
-                        Senha = "123"
-                    },
-                    new Utilizador
-                    {
-                        Nome = "User Teste2",
-                        Email = "email@teste.pt",
-                        Tipo = expectedTipoUtilizador,
-                        Senha = "123"
-                    }
-                };
-                unitOfWork.Utilizadores.AddRange(utilizadores);
-
-                var expectedLoja = new Loja
-                {
-                    Nome = "Loja 1",
-                };
-                unitOfWork.Lojas.Add(expectedLoja);
-
-                var posList = new List<PontoDeVenda>
-                {
-                    new PontoDeVenda{
-                        Nome = "POS Teste1",
-                        Loja = expectedLoja
-                    },
-                    new PontoDeVenda{
-                        Nome = "POS Teste2",
-                        Loja = expectedLoja
-                    }
-                };
-                unitOfWork.PontoDeVendas.AddRange(posList);
-                unitOfWork.Complete();
-
-                var x = new LogicaSistema(contexto);
-                var otherSessao = x.Login(posList[0], utilizadores[0]);
-
-                // Act
-                var actualSessao1 = x.Login(posList[0], utilizadores[0]);
-                var actualSessao2 = x.Login(posList[1], utilizadores[0]);
-
-                //Assert
-                Assert.IsNull(actualSessao1.Item1);
-                Assert.IsNull(actualSessao2.Item1);
-                Assert.AreEqual("Utilizador já tem uma sessão aberta", actualSessao1.Item2);
-                Assert.AreEqual("Utilizador já tem uma sessão aberta", actualSessao2.Item2);
-
+                Assert.IsNotNull(atualFechoSessao);
+                Assert.AreEqual(expectedSessaoMessage, atualFechoSessao.Mensagem);
             }
         }
 
@@ -255,8 +78,8 @@ namespace Projeto.BusinessLogicLayer.Tests
                 //Arrange
                 var unitOfWork = new UnitOfWork(contexto);
 
-                var utilizadorEmpregado = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Empregado).First();
-                var utilizadorGerente = unitOfWork.TipoUtilizadores.Find(x => x.Id == (int)TipoUtilizadorEnum.Gerente).First();
+                var utilizadorEmpregado = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
+                var utilizadorGerente = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Gerente).First();
 
                 var logicaSistema = new LogicaSistema(contexto);
 
@@ -325,6 +148,212 @@ namespace Projeto.BusinessLogicLayer.Tests
                 Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
                 Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
                 Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void InsereLojaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada espectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+
+                //Act
+                var resultadoNOKSemNome = logicaSistema.InsereLoja(null, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+                var resultadoOKSoComNome = logicaSistema.InsereLoja(expectedNome, null, null, null, null);
+                var resultadoOK = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsTrue(resultadoOKSoComNome.Sucesso);
+                Assert.IsTrue(resultadoOKSoComNome.Objeto is Loja);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is Loja);
+
+            }
+        }
+
+        [TestMethod()]
+        public void InserePontoDeVendaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+
+                //Act
+                var resultadoNOKSemNome = logicaSistema.InserePontoDeVenda(null, (Loja)expectedLojaCreated.Objeto);
+                var resultadoOKSemLoja = logicaSistema.InserePontoDeVenda(expectedNome, null);
+                var resultadoOK = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsFalse(resultadoOKSemLoja.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is PontoDeVenda);
+
+            }
+        }
+
+        [TestMethod()]
+        public void LoginCredenciaisErradasTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                //Act
+                var expectedErroSemDados = logicaSistema.Login("luis@mail.pt", "888");
+                var resultadoOK = logicaSistema.InsereUtilizador("Luis", "luis@mail.pt", "456", TipoUtilizadorEnum.Gerente);
+                var expectedErroComDados1 = logicaSistema.Login("luis@mail.pt", "888");
+                var expectedErroComDados2 = logicaSistema.Login("xxx@mail.pt", "456");
+                var expectedErroComDados3 = logicaSistema.Login("", "");
+                var expectedErroComDados4 = logicaSistema.Login(email: null, senha: null);
+
+                //Assert
+                Assert.IsFalse(expectedErroSemDados.Sucesso);
+                Assert.IsFalse(expectedErroComDados1.Sucesso);
+                Assert.IsFalse(expectedErroComDados2.Sucesso);
+                Assert.IsFalse(expectedErroComDados3.Sucesso);
+                Assert.IsFalse(expectedErroComDados4.Sucesso);
+            }
+        }
+
+        [TestMethod()]
+        public void LoginCredenciaisCorrectasGerente()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+                logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Gerente);
+                logicaSistema.InsereUtilizador("Luis2", "luis2@mail.pt", "456", TipoUtilizadorEnum.Empregado);
+
+                //Act
+
+                var expectedgerente = logicaSistema.Login("luis1@mail.pt", "123");
+
+                //Assert
+                Assert.IsNotNull(expectedgerente);
+                Assert.IsTrue(expectedgerente.Objeto is Utilizador);
+                Assert.AreEqual("Luis1", ((Utilizador)expectedgerente.Objeto).Nome);
+            }
+        }
+
+        [TestMethod()]
+        public void LoginCredenciaisCorrectasEmpregadoSemPOSAberto()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1",null,null,null,null);
+                var expectedPos = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedSessaoMessage = $"Ponto de Venda: {((PontoDeVenda)expectedPos.Objeto).Nome} logado com sucesso pelo utilizador: {((Utilizador)expectedUtilizadorLogado.Objeto).Nome}.";
+
+                //Act
+                var actualSessaoNova = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado.Objeto, (PontoDeVenda)expectedPos.Objeto);
+
+                //Assert
+                Assert.IsNotNull(actualSessaoNova);
+                Assert.AreEqual(expectedSessaoMessage, actualSessaoNova.Mensagem);
+            }
+        }
+
+        [TestMethod()]
+        public void LoginCredenciaisCorrectasEmpregadoComoMesmoPOSAberto()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
+                var expectedPos = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedSessaoMessage = "Continuação da sessão que já estava aberta neste ponto de venda para este utilizador.";
+
+                //Act
+                var primeiraAberturadeSessao = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado.Objeto, (PontoDeVenda)expectedPos.Objeto);
+                var mesmaSessaoJaAberta = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado.Objeto, (PontoDeVenda)expectedPos.Objeto);
+
+                //Assert
+                Assert.IsNotNull(primeiraAberturadeSessao);
+                Assert.IsNotNull(mesmaSessaoJaAberta);
+                Assert.AreEqual(expectedSessaoMessage, mesmaSessaoJaAberta.Mensagem);
+
+            }
+        }
+ 
+        [TestMethod()]
+        public void LoginCredenciaisCorrectasEmpregadoComoOutorPOSAberto()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
+                var expectedPos1 = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedPos2 = logicaSistema.InserePontoDeVenda("POS 2", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedSessaoMessage = $"O utilizador tem uma sessão aberta no Ponto de venda {((PontoDeVenda)expectedPos1.Objeto).Nome}";
+
+                //Act
+                var primeiraAberturadeSessao = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado.Objeto, (PontoDeVenda)expectedPos1.Objeto);
+                var tentativaDeAberturaNoutroPos = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado.Objeto, (PontoDeVenda)expectedPos2.Objeto);
+
+                //Assert
+                Assert.IsNotNull(primeiraAberturadeSessao);
+                Assert.IsNotNull(tentativaDeAberturaNoutroPos);
+                Assert.AreEqual(expectedSessaoMessage, tentativaDeAberturaNoutroPos.Mensagem);
+
+            }
+        }
+
+        [TestMethod()]
+        public void LoginCredenciaisCorrectasEmpregadoComoOutorPOSAbertoPorOutroUtilizador()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
+                var expectedPos1 = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
+                var expectedUtilizador1 = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizador2 = logicaSistema.InsereUtilizador("Luis2", "luis2@mail.pt", "456", TipoUtilizadorEnum.Empregado);
+                var expectedUtilizadorLogado1 = logicaSistema.Login("luis1@mail.pt", "123");
+                var expectedUtilizadorLogado2 = logicaSistema.Login("luis2@mail.pt", "456");
+                var expectedSessaoMessage = $"Este ponto de venda tem uma sessão aberta para o utilizador {((Utilizador)expectedUtilizadorLogado1.Objeto).Nome}";
+
+                //Act
+                var primeiraAberturadeSessao = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado1.Objeto, (PontoDeVenda)expectedPos1.Objeto);
+                var tentativaDeAberturaPorOutroUtilizador = logicaSistema.AberturaSessao((Utilizador)expectedUtilizadorLogado2.Objeto, (PontoDeVenda)expectedPos1.Objeto);
+
+                //Assert
+                Assert.IsNotNull(primeiraAberturadeSessao);
+                Assert.IsNotNull(tentativaDeAberturaPorOutroUtilizador);
+                Assert.AreEqual(expectedSessaoMessage, tentativaDeAberturaPorOutroUtilizador.Mensagem);
 
             }
         }

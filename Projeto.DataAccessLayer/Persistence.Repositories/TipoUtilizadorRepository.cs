@@ -16,7 +16,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
 
         public TipoUtilizador GetTipoUtilizadorByEnum(TipoUtilizadorEnum tipoUtilizadorEnum)
         {
-            return context.TipoUtilizadores.FirstOrDefault(x => x.Id == (int)tipoUtilizadorEnum);
+            return context.TipoUtilizadores.FirstOrDefault(x => x.TipoId == (int)tipoUtilizadorEnum);
         }
     }
 }

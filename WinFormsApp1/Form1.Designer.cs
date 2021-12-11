@@ -39,7 +39,14 @@ namespace WinFormsApp1
             this.txtNome = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLoginUtilizador = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtSenhaLogin = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtEmailLogin = new System.Windows.Forms.TextBox();
             this.pnlRegistoUtilizador.SuspendLayout();
+            this.pnlLoginUtilizador.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlRegistoUtilizador
@@ -135,11 +142,71 @@ namespace WinFormsApp1
             // pnlLoginUtilizador
             // 
             this.pnlLoginUtilizador.BackColor = System.Drawing.Color.LightCyan;
+            this.pnlLoginUtilizador.Controls.Add(this.label7);
+            this.pnlLoginUtilizador.Controls.Add(this.btnLogin);
+            this.pnlLoginUtilizador.Controls.Add(this.label5);
+            this.pnlLoginUtilizador.Controls.Add(this.txtSenhaLogin);
+            this.pnlLoginUtilizador.Controls.Add(this.label6);
+            this.pnlLoginUtilizador.Controls.Add(this.txtEmailLogin);
             this.pnlLoginUtilizador.Location = new System.Drawing.Point(365, 58);
             this.pnlLoginUtilizador.Name = "pnlLoginUtilizador";
             this.pnlLoginUtilizador.Size = new System.Drawing.Size(467, 269);
             this.pnlLoginUtilizador.TabIndex = 2;
             this.pnlLoginUtilizador.Visible = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(31, 23);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(80, 30);
+            this.label7.TabIndex = 42;
+            this.label7.Text = "Acesso";
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnLogin.Location = new System.Drawing.Point(332, 209);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(117, 31);
+            this.btnLogin.TabIndex = 41;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = false;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(35, 116);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(39, 15);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "Senha";
+            // 
+            // txtSenhaLogin
+            // 
+            this.txtSenhaLogin.Location = new System.Drawing.Point(31, 134);
+            this.txtSenhaLogin.Name = "txtSenhaLogin";
+            this.txtSenhaLogin.PasswordChar = '*';
+            this.txtSenhaLogin.Size = new System.Drawing.Size(418, 23);
+            this.txtSenhaLogin.TabIndex = 34;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(35, 68);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(36, 15);
+            this.label6.TabIndex = 31;
+            this.label6.Text = "Email";
+            // 
+            // txtEmailLogin
+            // 
+            this.txtEmailLogin.Location = new System.Drawing.Point(31, 87);
+            this.txtEmailLogin.Name = "txtEmailLogin";
+            this.txtEmailLogin.Size = new System.Drawing.Size(418, 23);
+            this.txtEmailLogin.TabIndex = 33;
             // 
             // Form1
             // 
@@ -152,6 +219,8 @@ namespace WinFormsApp1
             this.Text = "Gandalf Inc- Ponto de Venda";
             this.pnlRegistoUtilizador.ResumeLayout(false);
             this.pnlRegistoUtilizador.PerformLayout();
+            this.pnlLoginUtilizador.ResumeLayout(false);
+            this.pnlLoginUtilizador.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -168,6 +237,12 @@ namespace WinFormsApp1
         private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlLoginUtilizador;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtSenhaLogin;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtEmailLogin;
     }
 }
 

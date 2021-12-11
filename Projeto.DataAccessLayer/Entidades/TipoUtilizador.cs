@@ -7,7 +7,7 @@ namespace Projeto.DataAccessLayer.Entidades
     {
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public int TipoId { get; set; }
 
         [Required, MaxLength(100)]
         public string Name { get; set; }

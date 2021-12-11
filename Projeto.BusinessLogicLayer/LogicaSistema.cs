@@ -15,29 +15,40 @@ namespace Projeto.BusinessLogicLayer
             _context = context;
         }
 
-
-        public Tuple<PontoDeVendaSessao, string> Login(PontoDeVenda pontoDeVenda, Utilizador utilizador)
+        #region Acessos
+        public Resultado AberturaSessao(Utilizador utilizador, PontoDeVenda pontoDeVenda)
         {
-            PontoDeVendaSessao pontoDeVendaSessao = null;
-            string msg = null;
             using (var unitOfWork = new UnitOfWork(_context))
             {
+                #region Validacoes
+                if (utilizador == null)
+                {
+                    return new Resultado(false, "Utilizador obrigatório.");
+                }
+                if (pontoDeVenda == null)
+                {
+                    return new Resultado(false, "Ponto de venda obrigatório.");
+                }
+                #endregion
 
                 var UtilizadorComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null).FirstOrDefault();
-                var PontoDeVendaComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.PontoDeVenda.Identificador == pontoDeVenda.Identificador && x.DataLogout == null).FirstOrDefault();
-
                 if (UtilizadorComSessaoAberta != null)
                 {
-                    msg = "Utilizador já tem uma sessão aberta";
-                    return Tuple.Create((PontoDeVendaSessao)null, msg);
-                }
-                if (PontoDeVendaComSessaoAberta != null)
-                {
-                    msg = "Ponto de Venda já se encontra aberto";
-                    return Tuple.Create((PontoDeVendaSessao)null, msg);
+                    if (UtilizadorComSessaoAberta.PontoDeVenda.Identificador == pontoDeVenda.Identificador)
+                    { 
+                        return new Resultado(true, "Continuação da sessão que já estava aberta neste ponto de venda para este utilizador.", UtilizadorComSessaoAberta);
+                    }
+
+                    return new Resultado(false, $"O utilizador tem uma sessão aberta no Ponto de venda {UtilizadorComSessaoAberta.PontoDeVenda.Nome}");
                 }
 
-                pontoDeVendaSessao = new PontoDeVendaSessao
+                var PontoDeVendaComSessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.PontoDeVenda.Identificador == pontoDeVenda.Identificador && x.DataLogout == null).FirstOrDefault();
+                if (PontoDeVendaComSessaoAberta != null)
+                {
+                    return new Resultado(false, $"Este ponto de venda tem uma sessão aberta para o utilizador {PontoDeVendaComSessaoAberta.Utilizador.Nome}");
+                }
+
+                var pontoDeVendaSessao = new PontoDeVendaSessao
                 {
                     Utilizador = utilizador,
                     PontoDeVenda = pontoDeVenda,
@@ -46,23 +57,68 @@ namespace Projeto.BusinessLogicLayer
                 unitOfWork.PontoDeVendaSessoes.Add(pontoDeVendaSessao);
                 unitOfWork.Complete();
 
-                msg = $"Ponto de Venda: {pontoDeVenda.Nome} logado com sucesso pelo utilizador: {utilizador.Nome}.";
+                return new Resultado(true, $"Ponto de Venda: {pontoDeVenda.Nome} logado com sucesso pelo utilizador: {utilizador.Nome}.", pontoDeVendaSessao);
             }
-
-            return Tuple.Create(pontoDeVendaSessao, msg);
         }
 
-        public string Logout(PontoDeVendaSessao pontoDeVendaSessao)
+        public Resultado Login(string email, string senha)
         {
-            string result = null;
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
 
+                var lixo = unitOfWork.Utilizadores.GetAll();
+
+                var utilizador = unitOfWork.Utilizadores
+                                            .Find(x=>x.Email == email && x.Senha == senha && x.Ativo)
+                                            .FirstOrDefault();
+
+                if (utilizador == null) 
+                {
+                    return new Resultado(false, "Utilizador ou senha inválidos");
+                }
+
+                if (utilizador.Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
+                {
+                    return new Resultado(true, "Utilizador ou senha inválidos", utilizador);
+                }
+                else if (utilizador.Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
+                {
+                    
+                    var sessaoAbertaParaUtilizador = unitOfWork.PontoDeVendaSessoes
+                                                            .Find(x => x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null)
+                                                            .FirstOrDefault();
+                    if (sessaoAbertaParaUtilizador != null)
+                    {
+                        return new Resultado(true, $"Utilizador logado com sucesso no POS {sessaoAbertaParaUtilizador.PontoDeVenda.Nome} da Loja {sessaoAbertaParaUtilizador.PontoDeVenda.Loja.Nome}", sessaoAbertaParaUtilizador);
+                    }
+
+                    return new Resultado(true, $"Utilizador valido para abertura", utilizador);
+                }
+                else 
+                {
+                    return new Resultado(false, "Tipo de utilizador não implementado.");
+                }
+            }
+        }
+
+
+        public bool VerificaSeExisteUmUtilizadorGerente()
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                return unitOfWork.Utilizadores.Find(x=>x.Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente && x.Ativo).Any();
+            }
+        }
+
+        public Resultado Logout(PontoDeVendaSessao pontoDeVendaSessao)
+        {
             using (var unitOfWork = new UnitOfWork(_context))
             {
                 var sessaoAberta = unitOfWork.PontoDeVendaSessoes.Get(pontoDeVendaSessao.Identificador);
 
                 if (sessaoAberta == null || sessaoAberta.DataLogout != null)
                 {
-                    return $"Sessão inválida ou já terminada";
+                    return new Resultado(true, "Sessão inválida ou inexistente");
                 }
 
                 sessaoAberta.DataLogout = DateTime.Now;
@@ -70,18 +126,88 @@ namespace Projeto.BusinessLogicLayer
                 unitOfWork.Complete();
             }
 
-            return result;
-
+            return new Resultado(true, "Sessão fechada com sucesso");
         }
 
+        #endregion
 
-      
-        
+
+
+
+
+        #region Insercoes
+
+        public Resultado InserePontoDeVenda(string nome, Loja loja)
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            }
+
+            if (loja == null)
+            {
+                return new Resultado(false, "Loja obrigatória");
+            }
+
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                PontoDeVenda pontoDeVenda = new PontoDeVenda
+                {
+                    Nome = nome,
+                    Loja = loja
+                };
+
+                unitOfWork.PontoDeVendas.Add(pontoDeVenda);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Ponto de venda não inserido");
+                }
+
+                return new Resultado(true, "Ponto de venda inserido com sucesso", pontoDeVenda);
+            }
+        }
+
+        public Resultado InsereLoja(string nome, string numeroFiscal, string email, string telefone, Morada morada) 
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            } 
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                Loja loja = new Loja
+                {
+                    Nome = nome,
+                    NumeroFiscal = numeroFiscal,
+                    Email = email,
+                    Telefone = telefone,
+                    Morada = morada
+                };
+
+                unitOfWork.Lojas.Add(loja);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Loja não inserida");
+                }
+
+                return new Resultado(true, "Loja inserida com sucesso", loja);
+            }
+        }
 
         public Resultado InsereUtilizador(string nome, string email, string senha , TipoUtilizadorEnum tipo) 
         {
-
-
             #region Validacoes
 
             if (String.IsNullOrEmpty(nome))
@@ -100,14 +226,14 @@ namespace Projeto.BusinessLogicLayer
 
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                //var tipoUtilizador = unitOfWork.TipoUtilizadores.Find(x=>x.Id ==(int)tipo).FirstOrDefault();
+                var tipoUtilizador = unitOfWork.TipoUtilizadores.GetTipoUtilizadorByEnum(tipo);
 
                 Utilizador user = new Utilizador
                 {
                     Nome = nome,
                     Email = email,
                     Senha = senha,
-                    Tipo = unitOfWork.TipoUtilizadores.GetTipoUtilizadorByEnum(tipo)
+                    Tipo = tipoUtilizador
                 };
 
                 unitOfWork.Utilizadores.Add(user);
@@ -123,13 +249,6 @@ namespace Projeto.BusinessLogicLayer
 
         }
 
-
-        public bool VerificaSeExisteUmUtilizadorGerente()
-        {
-            using (var unitOfWork = new UnitOfWork(_context))
-            {
-                return unitOfWork.Utilizadores.Find(x=>x.Tipo.Id == (int)TipoUtilizadorEnum.Gerente && x.Ativo).Any();
-            }
-        }
+        #endregion
     }
 }
