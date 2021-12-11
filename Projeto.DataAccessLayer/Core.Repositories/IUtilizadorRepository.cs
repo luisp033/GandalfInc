@@ -5,7 +5,5 @@ namespace Projeto.DataAccessLayer.Core.Repositories
 {
     public interface IUtilizadorRepository : IRepository<Utilizador>
     {
-        IEnumerable<Utilizador> ObtemUtilizadoresActivos();
-
     }
 }

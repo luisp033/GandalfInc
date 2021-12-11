@@ -13,9 +13,9 @@ using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class FormLogin : Form
     {
-        public Form1()
+        public FormLogin()
         {
             InitializeComponent();
 
@@ -80,10 +80,18 @@ namespace WinFormsApp1
                 }
                 else
                 {
+                    txtEmailLogin.Text = "";
+                    txtSenhaLogin.Text = "";
+
                     if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
                     {
                         //Form da gestão
-                        MessageBox.Show("Form da gestão");
+                        var m = new FormGestao
+                        {
+                            Tag = this
+                        };
+                        m.Show();
+                        this.Hide();
                     }
                     else if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                     {

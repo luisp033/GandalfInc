@@ -65,9 +65,7 @@ namespace Projeto.BusinessLogicLayer
         {
             using (var unitOfWork = new UnitOfWork(_context))
             {
-
-                var lixo = unitOfWork.Utilizadores.GetAll();
-
+                //unitOfWork.TipoUtilizadores.GetAll();
                 var utilizador = unitOfWork.Utilizadores
                                             .Find(x=>x.Email == email && x.Senha == senha && x.Ativo)
                                             .FirstOrDefault();
@@ -79,18 +77,18 @@ namespace Projeto.BusinessLogicLayer
 
                 if (utilizador.Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
                 {
-                    return new Resultado(true, "Utilizador ou senha inválidos", utilizador);
+                    return new Resultado(true, "Utilizador valido para abertura", utilizador);
                 }
                 else if (utilizador.Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                 {
                     
-                    var sessaoAbertaParaUtilizador = unitOfWork.PontoDeVendaSessoes
-                                                            .Find(x => x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null)
-                                                            .FirstOrDefault();
-                    if (sessaoAbertaParaUtilizador != null)
-                    {
-                        return new Resultado(true, $"Utilizador logado com sucesso no POS {sessaoAbertaParaUtilizador.PontoDeVenda.Nome} da Loja {sessaoAbertaParaUtilizador.PontoDeVenda.Loja.Nome}", sessaoAbertaParaUtilizador);
-                    }
+                    //var sessaoAbertaParaUtilizador = unitOfWork.PontoDeVendaSessoes
+                    //                                        .Find(x => x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null)
+                    //                                        .FirstOrDefault();
+                    //if (sessaoAbertaParaUtilizador != null)
+                    //{
+                    //    return new Resultado(true, $"Utilizador logado com sucesso no POS {sessaoAbertaParaUtilizador.PontoDeVenda.Nome} da Loja {sessaoAbertaParaUtilizador.PontoDeVenda.Loja.Nome}", sessaoAbertaParaUtilizador);
+                    //}
 
                     return new Resultado(true, $"Utilizador valido para abertura", utilizador);
                 }
