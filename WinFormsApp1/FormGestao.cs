@@ -21,8 +21,20 @@ namespace WinFormsApp1
         private void btnSair_Click(object sender, EventArgs e)
         {
             var formLogin = (FormLogin)Tag;
+
+            formLogin.Top = this.Top;
+            formLogin.Left = this.Left;
             formLogin.Show();
             Close();
+        }
+
+        private void btnLojas_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoLojas frmGestaoLojas = new FormGestaoLojas()) 
+            {
+                frmGestaoLojas.StartPosition = FormStartPosition.CenterParent;
+                frmGestaoLojas.ShowDialog(this); 
+            }
         }
     }
 }

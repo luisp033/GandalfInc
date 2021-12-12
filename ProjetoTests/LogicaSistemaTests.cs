@@ -14,7 +14,146 @@ namespace Projeto.BusinessLogicLayer.Tests
     [TestClass()]
     public class LogicaSistemaTests
     {
+        #region Lojas
+        [TestMethod()]
+        public void InsereLojaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
 
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada espectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+
+                //Act
+                var resultadoNOKSemNome = logicaSistema.InsereLoja(null, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+                var resultadoOKSoComNome = logicaSistema.InsereLoja(expectedNome, null, null, null, null);
+                var resultadoOK = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsTrue(resultadoOKSoComNome.Sucesso);
+                Assert.IsTrue(resultadoOKSoComNome.Objeto is Loja);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is Loja);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaLojaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada expectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+                var expectedLoja = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, expectedMorada);
+                var expectedId = ((Loja)expectedLoja.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaLoja(expectedId);
+                var resultadoNOK = logicaSistema.ApagaLoja(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemLojaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada espectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+                var expectedLoja = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+                var expectedId = ((Loja)expectedLoja.Objeto).Identificador;
+
+                //Act
+                var actualLoja = logicaSistema.ObtemLoja(expectedId);
+                var actualId = ((Loja)actualLoja.Objeto).Identificador;
+
+
+                //Assert
+                Assert.IsNotNull(actualLoja);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraLojaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada expectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+                var expectedLoja = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, expectedMorada);
+                var expectedId = ((Loja)expectedLoja.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraLoja(expectedId, "Loja Teste Alterado", expectedNumeroFiscal, expectedEmail, expectedTelefone, expectedMorada);
+                var resultadoNOK = logicaSistema.AlteraLoja(Guid.NewGuid(), expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, expectedMorada);
+                var actualLoja = logicaSistema.ObtemLoja(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Loja Teste Alterado", ((Loja)actualLoja.Objeto).Nome);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllLojasTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Loja Teste";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedTelefone = "960123456";
+                string expectedNumeroFiscal = "123456789";
+                Morada espectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
+                logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+                logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
+
+                //Act
+                var lojas = logicaSistema.GetAllLojas();
+
+                //Assert
+                Assert.IsNotNull(lojas);
+                Assert.AreEqual(2, lojas.Count());
+            }
+        }
+        #endregion
+
+        #region Logins
         [TestMethod()]
         public void LogoutComSucesso_Test()
         {
@@ -126,87 +265,6 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
 
         [TestMethod()]
-        public void InsereUtilizadorTest()
-        {
-
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //Arrange
-                var logicaSistema = new LogicaSistema(contexto);
-
-                string expectedNome = "Luis";
-                string expectedEmail = "Luis@mail.pt";
-                string expectedSenha = "456";
-
-                var resultadoNOKSemNome = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoNOKSemEmail = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoNOKSemSenha = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-
-                //Assert
-                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
-                Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
-                Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
-                Assert.IsTrue(resultadoOK.Sucesso);
-
-            }
-        }
-
-        [TestMethod()]
-        public void InsereLojaTest()
-        {
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //Arrange
-                var logicaSistema = new LogicaSistema(contexto);
-
-                string expectedNome = "Loja Teste";
-                string expectedEmail = "Luis@mail.pt";
-                string expectedTelefone = "960123456";
-                string expectedNumeroFiscal = "123456789";
-                Morada espectedMorada = new Morada() { Endereco = "Rua do la vai", CodigoPostal = "1234567", Localidade = "Lisboa" };
-
-                //Act
-                var resultadoNOKSemNome = logicaSistema.InsereLoja(null, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
-                var resultadoOKSoComNome = logicaSistema.InsereLoja(expectedNome, null, null, null, null);
-                var resultadoOK = logicaSistema.InsereLoja(expectedNome, expectedNumeroFiscal, expectedEmail, expectedTelefone, espectedMorada);
-
-                //Assert
-                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
-                Assert.IsTrue(resultadoOKSoComNome.Sucesso);
-                Assert.IsTrue(resultadoOKSoComNome.Objeto is Loja);
-                Assert.IsTrue(resultadoOK.Sucesso);
-                Assert.IsTrue(resultadoOK.Objeto is Loja);
-
-            }
-        }
-
-        [TestMethod()]
-        public void InserePontoDeVendaTest()
-        {
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //Arrange
-                var logicaSistema = new LogicaSistema(contexto);
-
-                string expectedNome = "Pos Teste";
-                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
-
-                //Act
-                var resultadoNOKSemNome = logicaSistema.InserePontoDeVenda(null, (Loja)expectedLojaCreated.Objeto);
-                var resultadoOKSemLoja = logicaSistema.InserePontoDeVenda(expectedNome, null);
-                var resultadoOK = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
-
-                //Assert
-                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
-                Assert.IsFalse(resultadoOKSemLoja.Sucesso);
-                Assert.IsTrue(resultadoOK.Sucesso);
-                Assert.IsTrue(resultadoOK.Objeto is PontoDeVenda);
-
-            }
-        }
-
-        [TestMethod()]
         public void LoginCredenciaisErradasTest()
         {
 
@@ -262,7 +320,7 @@ namespace Projeto.BusinessLogicLayer.Tests
                 //Arrange
                 var logicaSistema = new LogicaSistema(contexto);
 
-                var expectedLoja = logicaSistema.InsereLoja("Loja 1",null,null,null,null);
+                var expectedLoja = logicaSistema.InsereLoja("Loja 1", null, null, null, null);
                 var expectedPos = logicaSistema.InserePontoDeVenda("POS 1", (Loja)expectedLoja.Objeto);
                 var expectedUtilizador = logicaSistema.InsereUtilizador("Luis1", "luis1@mail.pt", "123", TipoUtilizadorEnum.Empregado);
                 var expectedUtilizadorLogado = logicaSistema.Login("luis1@mail.pt", "123");
@@ -302,7 +360,7 @@ namespace Projeto.BusinessLogicLayer.Tests
 
             }
         }
- 
+
         [TestMethod()]
         public void LoginCredenciaisCorrectasEmpregadoComoOutorPOSAberto()
         {
@@ -356,6 +414,60 @@ namespace Projeto.BusinessLogicLayer.Tests
                 Assert.AreEqual(expectedSessaoMessage, tentativaDeAberturaPorOutroUtilizador.Mensagem);
 
             }
+        } 
+        #endregion
+
+        [TestMethod()]
+        public void InsereUtilizadorTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var resultadoNOKSemNome = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemEmail = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemSenha = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
+                Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
         }
+
+        [TestMethod()]
+        public void InserePontoDeVendaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+
+                //Act
+                var resultadoNOKSemNome = logicaSistema.InserePontoDeVenda(null, (Loja)expectedLojaCreated.Objeto);
+                var resultadoOKSemLoja = logicaSistema.InserePontoDeVenda(expectedNome, null);
+                var resultadoOK = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsFalse(resultadoOKSemLoja.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is PontoDeVenda);
+
+            }
+        }
+
     }
 }

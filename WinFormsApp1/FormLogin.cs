@@ -86,10 +86,10 @@ namespace WinFormsApp1
                     if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
                     {
                         //Form da gestão
-                        var m = new FormGestao
-                        {
-                            Tag = this
-                        };
+                        var m = new FormGestao();
+                        m.Tag = this;
+                        m.Top = this.Top;
+                        m.Left = this.Left;
                         m.Show();
                         this.Hide();
                     }

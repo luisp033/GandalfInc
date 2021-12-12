@@ -2,6 +2,7 @@
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Persistence;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Projeto.BusinessLogicLayer
@@ -35,7 +36,7 @@ namespace Projeto.BusinessLogicLayer
                 if (UtilizadorComSessaoAberta != null)
                 {
                     if (UtilizadorComSessaoAberta.PontoDeVenda.Identificador == pontoDeVenda.Identificador)
-                    { 
+                    {
                         return new Resultado(true, "Continuação da sessão que já estava aberta neste ponto de venda para este utilizador.", UtilizadorComSessaoAberta);
                     }
 
@@ -67,10 +68,10 @@ namespace Projeto.BusinessLogicLayer
             {
                 //unitOfWork.TipoUtilizadores.GetAll();
                 var utilizador = unitOfWork.Utilizadores
-                                            .Find(x=>x.Email == email && x.Senha == senha && x.Ativo)
+                                            .Find(x => x.Email == email && x.Senha == senha && x.Ativo)
                                             .FirstOrDefault();
 
-                if (utilizador == null) 
+                if (utilizador == null)
                 {
                     return new Resultado(false, "Utilizador ou senha inválidos");
                 }
@@ -81,7 +82,7 @@ namespace Projeto.BusinessLogicLayer
                 }
                 else if (utilizador.Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                 {
-                    
+
                     //var sessaoAbertaParaUtilizador = unitOfWork.PontoDeVendaSessoes
                     //                                        .Find(x => x.Utilizador.Identificador == utilizador.Identificador && x.DataLogout == null)
                     //                                        .FirstOrDefault();
@@ -92,7 +93,7 @@ namespace Projeto.BusinessLogicLayer
 
                     return new Resultado(true, $"Utilizador valido para abertura", utilizador);
                 }
-                else 
+                else
                 {
                     return new Resultado(false, "Tipo de utilizador não implementado.");
                 }
@@ -104,7 +105,7 @@ namespace Projeto.BusinessLogicLayer
         {
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                return unitOfWork.Utilizadores.Find(x=>x.Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente && x.Ativo).Any();
+                return unitOfWork.Utilizadores.Find(x => x.Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente && x.Ativo).Any();
             }
         }
 
@@ -171,38 +172,7 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
-        public Resultado InsereLoja(string nome, string numeroFiscal, string email, string telefone, Morada morada) 
-        {
-
-            #region Validacoes
-            if (String.IsNullOrEmpty(nome))
-            {
-                return new Resultado(false, "Nome obrigatório");
-            } 
-            #endregion
-
-            using (var unitOfWork = new UnitOfWork(_context))
-            {
-                Loja loja = new Loja
-                {
-                    Nome = nome,
-                    NumeroFiscal = numeroFiscal,
-                    Email = email,
-                    Telefone = telefone,
-                    Morada = morada
-                };
-
-                unitOfWork.Lojas.Add(loja);
-                var affected = unitOfWork.Complete();
-
-                if (affected == 0)
-                {
-                    return new Resultado(false, "Loja não inserida");
-                }
-
-                return new Resultado(true, "Loja inserida com sucesso", loja);
-            }
-        }
+   
 
         public Resultado InsereUtilizador(string nome, string email, string senha , TipoUtilizadorEnum tipo) 
         {
@@ -246,6 +216,120 @@ namespace Projeto.BusinessLogicLayer
             }
 
         }
+
+        #endregion
+
+
+
+        #region GestaoLoja
+
+        public Resultado InsereLoja(string nome, string numeroFiscal, string email, string telefone, Morada morada)
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            }
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                Loja loja = new Loja
+                {
+                    Nome = nome,
+                    NumeroFiscal = numeroFiscal,
+                    Email = email,
+                    Telefone = telefone,
+                    Morada = morada
+                };
+
+                unitOfWork.Lojas.Add(loja);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Loja não inserida");
+                }
+
+                return new Resultado(true, "Loja inserida com sucesso", loja);
+            }
+        }
+
+        public Resultado AlteraLoja(Guid identificador, string nome, string numeroFiscal, string email, string telefone, Morada morada)
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            }
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+
+                var loja = unitOfWork.Lojas.Get(identificador);
+                if (loja == null)
+                {
+                    return new Resultado(false, "Loja inexistente");
+                }
+
+                loja.Nome = nome;
+
+                unitOfWork.Lojas.Update(loja);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Loja não alterada");
+                }
+
+                return new Resultado(true, "Loja alterada com sucesso", loja);
+            }
+        }
+
+        public Resultado ObtemLoja(Guid identificador)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var loja = unitOfWork.Lojas.Get(identificador);
+
+                return new Resultado(true, "Loja lida com sucesso", loja);
+            }
+        }
+
+        public Resultado ApagaLoja(Guid identificador)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var loja = unitOfWork.Lojas.Get(identificador);
+                if (loja == null)
+                {
+                    return new Resultado(false, "Loja inexistente");
+                }
+
+                unitOfWork.Lojas.Remove(loja);
+                var affected = unitOfWork.Complete();
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Loja não removida");
+                }
+
+                return new Resultado(true, "Loja removida com sucesso");
+            }
+        }
+
+        public List<Loja> GetAllLojas()
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var result = unitOfWork.Lojas.GetAll().ToList();
+                return result;
+            }
+        } 
 
         #endregion
     }
