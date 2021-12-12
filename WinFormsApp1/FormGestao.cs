@@ -64,5 +64,14 @@ namespace WinFormsApp1
                 frm.ShowDialog(this);
             }
         }
+
+        private void btnMarcas_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoMarcas frm = new FormGestaoMarcas())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+            }
+        }
     }
 }

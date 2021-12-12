@@ -15,6 +15,129 @@ namespace Projeto.BusinessLogicLayer.Tests
     public class LogicaSistemaTests
     {
 
+        #region Marcas
+
+        [TestMethod()]
+        public void InsereMarcaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                string expectedOrigem = "Oeste";
+
+                //Act
+                var resultadoOK = logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+                var resultadoNOKSemNome = logicaSistema.InsereMarca(null, expectedOrigem);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is MarcaProduto);
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaMarcaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                string expectedOrigem = "Oeste";
+                var inserted = logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+                var expectedId = ((MarcaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaMarca(expectedId);
+                var resultadoNOK = logicaSistema.ApagaMarca(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemMarcaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                string expectedOrigem = "Oeste";
+                var inserted = logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+                var expectedId = ((MarcaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var actual = logicaSistema.ObtemMarca(expectedId);
+                var actualId = ((MarcaProduto)actual.Objeto).Identificador;
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraMarcaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                string expectedOrigem = "Oeste";
+                var inserted = logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+                var expectedId = ((MarcaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraMarca(expectedId, "Nome Alterado", "Origem Alterada");
+                var resultadoNOK = logicaSistema.AlteraMarca(Guid.NewGuid(), expectedNome, expectedOrigem);
+                var actual = logicaSistema.ObtemMarca(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Nome Alterado", ((MarcaProduto)actual.Objeto).Nome);
+                Assert.AreEqual("Origem Alterada", ((MarcaProduto)actual.Objeto).Origem);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllMarcaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                string expectedOrigem = "Oeste";
+                logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+                logicaSistema.InsereMarca(expectedNome, expectedOrigem);
+
+                //Act
+                var actual = logicaSistema.GetAllMarcas();
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(2, actual.Count());
+            }
+        }
+
+        #endregion
+
+
         #region Categorias
 
         [TestMethod()]
