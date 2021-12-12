@@ -15,6 +15,7 @@ namespace Projeto.BusinessLogicLayer.Tests
     public class LogicaSistemaTests
     {
         #region Lojas
+
         [TestMethod()]
         public void InsereLojaTest()
         {
@@ -153,7 +154,6 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
         #endregion
 
-
         #region Utilizadores
 
         [TestMethod()]
@@ -235,7 +235,6 @@ namespace Projeto.BusinessLogicLayer.Tests
 
             }
         }
-
 
         [TestMethod()]
         public void AlteraUtilizadorTest()
@@ -554,7 +553,7 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
         #endregion
 
-
+        #region Pontos de Venda
 
         [TestMethod()]
         public void InserePontoDeVendaTest()
@@ -581,6 +580,105 @@ namespace Projeto.BusinessLogicLayer.Tests
             }
         }
 
+        [TestMethod()]
+        public void GetAllPontoDeVendasTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+
+                //Act
+                logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+                logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+
+                //Act
+                var pontoDeVendas = logicaSistema.GetAllPontoDeVendas();
+
+                //Assert
+                Assert.IsNotNull(pontoDeVendas);
+                Assert.AreEqual(2, pontoDeVendas.Count());
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemPontoDeVendaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+                var expectedPontoDeVenda = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+                var expectedId = ((PontoDeVenda)expectedPontoDeVenda.Objeto).Identificador;
+
+                //Act
+                var actual = logicaSistema.ObtemPontoDeVenda(expectedId);
+                var actualId = ((PontoDeVenda)actual.Objeto).Identificador;
+
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraPontoDeVendaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+                var expectedPontoDeVenda = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+                var expectedId = ((PontoDeVenda)expectedPontoDeVenda.Objeto).Identificador;
+
+                //Act
+                var actualOK = logicaSistema.AlteraPontoDeVenda(expectedId, "POS Teste Alterado", ((Loja)expectedLojaCreated.Objeto).Identificador);
+                var actualNOK = logicaSistema.AlteraPontoDeVenda(Guid.NewGuid(), "Erro", ((Loja)expectedLojaCreated.Objeto).Identificador);
+                var actualUtilizador = logicaSistema.ObtemUtilizador(expectedId);
+
+                //Assert
+                Assert.IsTrue(actualOK.Sucesso);
+                Assert.IsFalse(actualNOK.Sucesso);
+                Assert.AreEqual("POS Teste Alterado", ((PontoDeVenda)actualOK.Objeto).Nome);
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaPontoDeVendaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Pos Teste";
+                var expectedLojaCreated = logicaSistema.InsereLoja("Loja do teste", null, null, null, null);
+                var expectedPontoDeVenda = logicaSistema.InserePontoDeVenda(expectedNome, (Loja)expectedLojaCreated.Objeto);
+                var expectedId = ((PontoDeVenda)expectedPontoDeVenda.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaPontoDeVenda(expectedId);
+                var resultadoNOK = logicaSistema.ApagaPontoDeVenda(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        #endregion
 
     }
 }

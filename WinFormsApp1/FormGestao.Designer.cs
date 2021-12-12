@@ -70,6 +70,7 @@ namespace WinFormsApp1
             this.btnPontoVendas.TabIndex = 2;
             this.btnPontoVendas.Text = "Pontos de Venda";
             this.btnPontoVendas.UseVisualStyleBackColor = true;
+            this.btnPontoVendas.Click += new System.EventHandler(this.btnPontoVendas_Click);
             // 
             // btnUtilizadores
             // 

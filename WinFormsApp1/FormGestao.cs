@@ -46,5 +46,14 @@ namespace WinFormsApp1
                 frm.ShowDialog(this);
             }
         }
+
+        private void btnPontoVendas_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoPontoDeVendas frm = new FormGestaoPontoDeVendas())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+            }
+        }
     }
 }

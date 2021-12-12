@@ -1,7 +1,7 @@
 ﻿
 namespace WinFormsApp1
 {
-    partial class FormGestaoUtilizadores
+    partial class FormGestaoPontoDeVendas
     {
         /// <summary>
         /// Required designer variable.
@@ -30,9 +30,9 @@ namespace WinFormsApp1
         private void InitializeComponent()
         {
             this.btnInsert = new System.Windows.Forms.Button();
-            this.dgvUtilizadores = new System.Windows.Forms.DataGridView();
+            this.dgvPontoVenda = new System.Windows.Forms.DataGridView();
             this.btnSair = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUtilizadores)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPontoVenda)).BeginInit();
             this.SuspendLayout();
             // 
             // btnInsert
@@ -40,44 +40,44 @@ namespace WinFormsApp1
             this.btnInsert.Location = new System.Drawing.Point(12, 10);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(205, 23);
-            this.btnInsert.TabIndex = 7;
-            this.btnInsert.Text = "Adicionar novo utilizador";
+            this.btnInsert.TabIndex = 10;
+            this.btnInsert.Text = "Adicionar novo ponto de venda";
             this.btnInsert.UseVisualStyleBackColor = true;
             this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
             // 
-            // dgvUtilizadores
+            // dgvPontoVenda
             // 
-            this.dgvUtilizadores.AllowUserToAddRows = false;
-            this.dgvUtilizadores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUtilizadores.Location = new System.Drawing.Point(12, 54);
-            this.dgvUtilizadores.Name = "dgvUtilizadores";
-            this.dgvUtilizadores.RowTemplate.Height = 25;
-            this.dgvUtilizadores.RowTemplate.ReadOnly = true;
-            this.dgvUtilizadores.Size = new System.Drawing.Size(776, 313);
-            this.dgvUtilizadores.TabIndex = 6;
-            this.dgvUtilizadores.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUtilizadores_CellClick);
+            this.dgvPontoVenda.AllowUserToAddRows = false;
+            this.dgvPontoVenda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPontoVenda.Location = new System.Drawing.Point(12, 54);
+            this.dgvPontoVenda.Name = "dgvPontoVenda";
+            this.dgvPontoVenda.RowTemplate.Height = 25;
+            this.dgvPontoVenda.RowTemplate.ReadOnly = true;
+            this.dgvPontoVenda.Size = new System.Drawing.Size(776, 313);
+            this.dgvPontoVenda.TabIndex = 9;
+            this.dgvPontoVenda.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvpontoDeVenda_CellClick);
             // 
             // btnSair
             // 
             this.btnSair.Location = new System.Drawing.Point(652, 394);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(126, 46);
-            this.btnSair.TabIndex = 5;
+            this.btnSair.TabIndex = 8;
             this.btnSair.Text = "Sair";
             this.btnSair.UseVisualStyleBackColor = true;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
-            // FormGestaoUtilizadores
+            // FormGestaoPontoDeVendas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnInsert);
-            this.Controls.Add(this.dgvUtilizadores);
+            this.Controls.Add(this.dgvPontoVenda);
             this.Controls.Add(this.btnSair);
-            this.Name = "FormGestaoUtilizadores";
-            this.Text = "Gestao Utilizadores";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUtilizadores)).EndInit();
+            this.Name = "FormGestaoPontoDeVendas";
+            this.Text = "Gestao ponto de vendas";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPontoVenda)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -85,7 +85,7 @@ namespace WinFormsApp1
         #endregion
 
         private System.Windows.Forms.Button btnInsert;
-        private System.Windows.Forms.DataGridView dgvUtilizadores;
+        private System.Windows.Forms.DataGridView dgvPontoVenda;
         private System.Windows.Forms.Button btnSair;
     }
 }
