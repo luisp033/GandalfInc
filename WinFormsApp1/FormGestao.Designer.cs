@@ -92,6 +92,7 @@ namespace WinFormsApp1
             this.btnCategorias.TabIndex = 4;
             this.btnCategorias.Text = "Categorias";
             this.btnCategorias.UseVisualStyleBackColor = true;
+            this.btnCategorias.Click += new System.EventHandler(this.btnCategorias_Click);
             // 
             // btnMarcas
             // 

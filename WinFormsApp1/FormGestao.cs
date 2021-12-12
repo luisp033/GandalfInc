@@ -55,5 +55,14 @@ namespace WinFormsApp1
                 frm.ShowDialog(this);
             }
         }
+
+        private void btnCategorias_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoCategorias frm = new FormGestaoCategorias())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+            }
+        }
     }
 }

@@ -167,7 +167,7 @@ namespace Projeto.BusinessLogicLayer
                 return new Resultado(true, "Ponto de venda inserido com sucesso", pontoDeVenda);
             }
         }
-        
+
         public List<PontoDeVenda> GetAllPontoDeVendas()
         {
             using (var unitOfWork = new UnitOfWork(_context))
@@ -250,7 +250,7 @@ namespace Projeto.BusinessLogicLayer
         #endregion
 
         #region GestaoUtilizador
-        public Resultado InsereUtilizador(string nome, string email, string senha , TipoUtilizadorEnum tipo) 
+        public Resultado InsereUtilizador(string nome, string email, string senha, TipoUtilizadorEnum tipo)
         {
             #region Validacoes
 
@@ -265,7 +265,7 @@ namespace Projeto.BusinessLogicLayer
             if (String.IsNullOrEmpty(senha))
             {
                 return new Resultado(false, "Senha obrigatória");
-            }   
+            }
             #endregion
 
             using (var unitOfWork = new UnitOfWork(_context))
@@ -306,7 +306,7 @@ namespace Projeto.BusinessLogicLayer
         {
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                var utilizador = unitOfWork.Utilizadores.Find(x=>x.Identificador == identificador).FirstOrDefault();
+                var utilizador = unitOfWork.Utilizadores.Find(x => x.Identificador == identificador).FirstOrDefault();
 
                 return new Resultado(true, "Utilizador lido com sucesso", utilizador);
             }
@@ -490,8 +490,122 @@ namespace Projeto.BusinessLogicLayer
                 var result = unitOfWork.Lojas.GetAll().ToList();
                 return result;
             }
-        } 
+        }
 
         #endregion
+
+        #region Categorias
+
+        
+
+        public Resultado InsereCategoria(string nome, int ordem)
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            }
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                CategoriaProduto categoria = new CategoriaProduto
+                {
+                    Nome = nome,
+                    OrdemApresentacao = ordem
+                };
+
+                unitOfWork.CategoriaProdutos.Add(categoria);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Categoria não inserida");
+                }
+
+                return new Resultado(true, "Categoria inserida com sucesso", categoria);
+            }
+        }
+
+        public List<CategoriaProduto> GetAllCategorias()
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var result = unitOfWork.CategoriaProdutos.GetAll().ToList();
+                return result;
+            }
+        }
+
+        public Resultado ObtemCategoria(Guid identificador)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var categoria = unitOfWork.CategoriaProdutos.Get(identificador);
+
+                return new Resultado(true, "Categoria lida com sucesso", categoria);
+            }
+        }
+
+        public Resultado AlteraCategoria(Guid identificador, string nome, int ordem)
+        {
+
+            #region Validacoes
+            if (String.IsNullOrEmpty(nome))
+            {
+                return new Resultado(false, "Nome obrigatório");
+            }
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+
+                var categoria = unitOfWork.CategoriaProdutos.Get(identificador);
+                if (categoria == null)
+                {
+                    return new Resultado(false, "Categoria inexistente");
+                }
+
+                categoria.Nome = nome;
+                categoria.OrdemApresentacao = ordem;
+
+                unitOfWork.CategoriaProdutos.Update(categoria);
+                var affected = unitOfWork.Complete();
+
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Categoria não alterada");
+                }
+
+                return new Resultado(true, "Categoria alterada com sucesso", categoria);
+            }
+        }
+
+        public Resultado ApagaCategoria(Guid identificador)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var categoria = unitOfWork.CategoriaProdutos.Get(identificador);
+                if (categoria == null)
+                {
+                    return new Resultado(false, "Categoria inexistente");
+                }
+
+                unitOfWork.CategoriaProdutos.Remove(categoria);
+                var affected = unitOfWork.Complete();
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Categoria não removida");
+                }
+
+                return new Resultado(true, "Categoria removida com sucesso");
+            }
+        }
+
+
+        #endregion
+
     }
 }

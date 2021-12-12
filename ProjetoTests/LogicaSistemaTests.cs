@@ -14,6 +14,130 @@ namespace Projeto.BusinessLogicLayer.Tests
     [TestClass()]
     public class LogicaSistemaTests
     {
+
+        #region Categorias
+
+        [TestMethod()]
+        public void InsereCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                int expectedOrdem = 0;
+
+                //Act
+                var resultadoOK = logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+                var resultadoNOKSemNome = logicaSistema.InsereCategoria(null, expectedOrdem);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is CategoriaProduto);
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                int expectedOrdem = 0;
+                var inserted = logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+                var expectedId = ((CategoriaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaCategoria(expectedId);
+                var resultadoNOK = logicaSistema.ApagaCategoria(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                int expectedOrdem = 0;
+                var inserted = logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+                var expectedId = ((CategoriaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var actual = logicaSistema.ObtemCategoria(expectedId);
+                var actualId = ((CategoriaProduto)actual.Objeto).Identificador;
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                int expectedOrdem = 0;
+                var inserted = logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+                var expectedId = ((CategoriaProduto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraCategoria(expectedId, "Nome Alterado", 5);
+                var resultadoNOK = logicaSistema.AlteraCategoria(Guid.NewGuid(), expectedNome, 0);
+                var actual= logicaSistema.ObtemCategoria(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Nome Alterado", ((CategoriaProduto)actual.Objeto).Nome);
+                Assert.AreEqual(5, ((CategoriaProduto)actual.Objeto).OrdemApresentacao);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Frutas";
+                int expectedOrdem = 0;
+                logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+                logicaSistema.InsereCategoria(expectedNome, expectedOrdem);
+
+                //Act
+                var actual = logicaSistema.GetAllCategorias();
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(2, actual.Count());
+            }
+        }
+
+        #endregion
+
+
         #region Lojas
 
         [TestMethod()]
