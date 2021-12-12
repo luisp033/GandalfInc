@@ -29,12 +29,12 @@ namespace WinFormsApp1
                 this.dgvLojas.DataSource = sistema.GetAllLojas();
 
                 DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.Name = "uninstall_column";
+                editButtonColumn.Name = "edit_column";
                 editButtonColumn.Text = "Editar";
                 editButtonColumn.HeaderText = "Action";
                 editButtonColumn.UseColumnTextForButtonValue = true;
                 int columnIndex = 0;
-                if (dgvLojas.Columns["uninstall_column"] == null)
+                if (dgvLojas.Columns["edit_column"] == null)
                 {
                     dgvLojas.Columns.Insert(columnIndex, editButtonColumn);
                 }

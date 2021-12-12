@@ -153,6 +153,143 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
         #endregion
 
+
+        #region Utilizadores
+
+        [TestMethod()]
+        public void InsereUtilizadorTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var resultadoNOKSemNome = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemEmail = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOKSemSenha = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
+                Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaUtilizadorTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var expectedUtilizador = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var expectedId = ((Utilizador)expectedUtilizador.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaUtilizador(expectedId);
+                var resultadoNOK = logicaSistema.ApagaUtilizador(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemUtilizadorTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var expectedUtilizador = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var expectedId = ((Utilizador)expectedUtilizador.Objeto).Identificador;
+
+                //Act
+                var actualUtilizador = logicaSistema.ObtemUtilizador(expectedId);
+                var actualId = ((Utilizador)actualUtilizador.Objeto).Identificador;
+
+
+                //Assert
+                Assert.IsNotNull(actualUtilizador);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+
+        [TestMethod()]
+        public void AlteraUtilizadorTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var expectedUtilizador = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var expectedId = ((Utilizador)expectedUtilizador.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraUtilizador(expectedId, "Utilizador Teste Alterado", expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var resultadoNOK = logicaSistema.AlteraUtilizador(Guid.NewGuid(), "Utilizador Teste Alterado", expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var actualUtilizador = logicaSistema.ObtemUtilizador(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Utilizador Teste Alterado", ((Utilizador)actualUtilizador.Objeto).Nome);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllUtilizadoresTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                string expectedNome = "Luis";
+                string expectedEmail = "Luis@mail.pt";
+                string expectedSenha = "456";
+
+                var expectedUtilizador1 = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
+                var expectedUtilizador2 = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Empregado);
+
+                //Act
+                var utilizadores = logicaSistema.GetAllUtilizadores();
+
+                //Assert
+                Assert.IsNotNull(utilizadores);
+                Assert.AreEqual(2, utilizadores.Count());
+            }
+        }
+
+        #endregion
+
         #region Logins
         [TestMethod()]
         public void LogoutComSucesso_Test()
@@ -414,35 +551,10 @@ namespace Projeto.BusinessLogicLayer.Tests
                 Assert.AreEqual(expectedSessaoMessage, tentativaDeAberturaPorOutroUtilizador.Mensagem);
 
             }
-        } 
+        }
         #endregion
 
-        [TestMethod()]
-        public void InsereUtilizadorTest()
-        {
 
-            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
-            {
-                //Arrange
-                var logicaSistema = new LogicaSistema(contexto);
-
-                string expectedNome = "Luis";
-                string expectedEmail = "Luis@mail.pt";
-                string expectedSenha = "456";
-
-                var resultadoNOKSemNome = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoNOKSemEmail = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoNOKSemSenha = logicaSistema.InsereUtilizador(null, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-                var resultadoOK = logicaSistema.InsereUtilizador(expectedNome, expectedEmail, expectedSenha, TipoUtilizadorEnum.Gerente);
-
-                //Assert
-                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
-                Assert.IsFalse(resultadoNOKSemEmail.Sucesso);
-                Assert.IsFalse(resultadoNOKSemSenha.Sucesso);
-                Assert.IsTrue(resultadoOK.Sucesso);
-
-            }
-        }
 
         [TestMethod()]
         public void InserePontoDeVendaTest()
@@ -468,6 +580,7 @@ namespace Projeto.BusinessLogicLayer.Tests
 
             }
         }
+
 
     }
 }

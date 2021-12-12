@@ -30,10 +30,20 @@ namespace WinFormsApp1
 
         private void btnLojas_Click(object sender, EventArgs e)
         {
-            using (FormGestaoLojas frmGestaoLojas = new FormGestaoLojas()) 
+            using (FormGestaoLojas frm = new FormGestaoLojas()) 
             {
-                frmGestaoLojas.StartPosition = FormStartPosition.CenterParent;
-                frmGestaoLojas.ShowDialog(this); 
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this); 
+            }
+        }
+
+
+        private void btnUtilizadores_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoUtilizadores frm = new FormGestaoUtilizadores())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
             }
         }
     }

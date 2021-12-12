@@ -49,7 +49,7 @@ namespace WinFormsApp1
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(123, 386);
+            this.btnCancelar.Location = new System.Drawing.Point(280, 386);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(135, 40);
             this.btnCancelar.TabIndex = 1;
@@ -85,7 +85,7 @@ namespace WinFormsApp1
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(281, 386);
+            this.btnDelete.Location = new System.Drawing.Point(154, 386);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(120, 40);
             this.btnDelete.TabIndex = 6;

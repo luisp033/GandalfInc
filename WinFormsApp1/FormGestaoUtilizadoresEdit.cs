@@ -13,23 +13,33 @@ using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
-    public partial class FormGestaoLojasEdit : Form
+    public partial class FormGestaoUtilizadoresEdit : Form
     {
 
         public Guid? Id { get; set; }
         private bool editMode = false;
 
-        public FormGestaoLojasEdit(Guid? id = null)
+        public FormGestaoUtilizadoresEdit(Guid? id = null)
         {
             InitializeComponent();
             Id = id;
             editMode = (Id != null);
+
+            LoadCombo();
             LoadForm();
         }
-
-        private void LoadForm() 
+        private void LoadCombo()
         {
-            if (!editMode) 
+            using (var contexto = new ProjetoDBContext())
+            {
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                this.cmbTipoUtilizador.DataSource = Enum.GetValues(typeof(TipoUtilizadorEnum));
+            }
+        }
+
+        private void LoadForm()
+        {
+            if (!editMode)
             {
                 btnDelete.Visible = false;
                 return;
@@ -38,7 +48,7 @@ namespace WinFormsApp1
             using (var contexto = new ProjetoDBContext())
             {
                 LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemLoja(Id.Value);
+                var resultado = sistema.ObtemUtilizador(Id.Value);
 
                 if (!resultado.Sucesso)
                 {
@@ -46,7 +56,12 @@ namespace WinFormsApp1
                     Close();
                 }
 
-                txtNome.Text = ((Loja)resultado.Objeto).Nome;
+                var utilizador = ((Utilizador)resultado.Objeto);
+
+                txtNome.Text = utilizador.Nome;
+                txtEmail.Text = utilizador.Email;
+                txtSenha.Text = utilizador.Senha;
+                cmbTipoUtilizador.SelectedItem = Enum.Parse(typeof(TipoUtilizadorEnum), utilizador.Tipo.TipoId.ToString());
             }
         }
 
@@ -61,9 +76,9 @@ namespace WinFormsApp1
             {
                 LogicaSistema sistema = new LogicaSistema(contexto);
 
-                if (editMode) 
+                if (editMode)
                 {
-                    var resultado = sistema.AlteraLoja(Id.Value, txtNome.Text, "123456789", "emailTeste", "999999999", null);
+                    var resultado = sistema.AlteraUtilizador(Id.Value, txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
                     if (!resultado.Sucesso)
                     {
                         MessageBox.Show(resultado.Mensagem);
@@ -71,7 +86,7 @@ namespace WinFormsApp1
                 }
                 else
                 {
-                    var resultado = sistema.InsereLoja(txtNome.Text, "123456789", "emailTeste", "999999999", null);
+                    var resultado = sistema.InsereUtilizador(txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
                     if (!resultado.Sucesso)
                     {
                         MessageBox.Show(resultado.Mensagem);
@@ -84,14 +99,14 @@ namespace WinFormsApp1
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Deseja apagar a loja seleccionada?", "Apagar Loja", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dr = MessageBox.Show("Deseja apagar o utilizador seleccionado?", "Apagar Utilizador", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dr == DialogResult.Yes)
             {
                 using (var contexto = new ProjetoDBContext())
                 {
                     LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaLoja(Id.Value);
+                    var resultado = sistema.ApagaUtilizador(Id.Value);
 
                     if (!resultado.Sucesso)
                     {
@@ -100,7 +115,6 @@ namespace WinFormsApp1
                 }
                 Close();
             }
-
         }
     }
 }

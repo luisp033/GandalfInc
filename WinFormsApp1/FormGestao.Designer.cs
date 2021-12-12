@@ -31,13 +31,13 @@ namespace WinFormsApp1
         {
             this.btnSair = new System.Windows.Forms.Button();
             this.btnLojas = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnPontoVendas = new System.Windows.Forms.Button();
+            this.btnUtilizadores = new System.Windows.Forms.Button();
+            this.btnCategorias = new System.Windows.Forms.Button();
+            this.btnMarcas = new System.Windows.Forms.Button();
+            this.btnProdutos = new System.Windows.Forms.Button();
+            this.btnStock = new System.Windows.Forms.Button();
+            this.btnClientes = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSair
@@ -61,88 +61,89 @@ namespace WinFormsApp1
             this.btnLojas.UseVisualStyleBackColor = true;
             this.btnLojas.Click += new System.EventHandler(this.btnLojas_Click);
             // 
-            // button1
+            // btnPontoVendas
             // 
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(14, 113);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 76);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Pontos de Venda";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnPontoVendas.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnPontoVendas.Location = new System.Drawing.Point(14, 113);
+            this.btnPontoVendas.Name = "btnPontoVendas";
+            this.btnPontoVendas.Size = new System.Drawing.Size(141, 76);
+            this.btnPontoVendas.TabIndex = 2;
+            this.btnPontoVendas.Text = "Pontos de Venda";
+            this.btnPontoVendas.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnUtilizadores
             // 
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.Location = new System.Drawing.Point(14, 207);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(141, 76);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Utilizadores";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnUtilizadores.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnUtilizadores.Location = new System.Drawing.Point(14, 207);
+            this.btnUtilizadores.Name = "btnUtilizadores";
+            this.btnUtilizadores.Size = new System.Drawing.Size(141, 76);
+            this.btnUtilizadores.TabIndex = 3;
+            this.btnUtilizadores.Text = "Utilizadores";
+            this.btnUtilizadores.UseVisualStyleBackColor = true;
+            this.btnUtilizadores.Click += new System.EventHandler(this.btnUtilizadores_Click);
             // 
-            // button4
+            // btnCategorias
             // 
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(178, 20);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(141, 76);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Categorias";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnCategorias.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnCategorias.Location = new System.Drawing.Point(178, 20);
+            this.btnCategorias.Name = "btnCategorias";
+            this.btnCategorias.Size = new System.Drawing.Size(141, 76);
+            this.btnCategorias.TabIndex = 4;
+            this.btnCategorias.Text = "Categorias";
+            this.btnCategorias.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btnMarcas
             // 
-            this.button5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(178, 113);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(141, 76);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Marcas";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnMarcas.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnMarcas.Location = new System.Drawing.Point(178, 113);
+            this.btnMarcas.Name = "btnMarcas";
+            this.btnMarcas.Size = new System.Drawing.Size(141, 76);
+            this.btnMarcas.TabIndex = 5;
+            this.btnMarcas.Text = "Marcas";
+            this.btnMarcas.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnProdutos
             // 
-            this.button6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button6.Location = new System.Drawing.Point(178, 207);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(141, 76);
-            this.button6.TabIndex = 6;
-            this.button6.Text = "Produtos";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnProdutos.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnProdutos.Location = new System.Drawing.Point(178, 207);
+            this.btnProdutos.Name = "btnProdutos";
+            this.btnProdutos.Size = new System.Drawing.Size(141, 76);
+            this.btnProdutos.TabIndex = 6;
+            this.btnProdutos.Text = "Produtos";
+            this.btnProdutos.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnStock
             // 
-            this.button7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(178, 305);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(141, 76);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Stock";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnStock.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnStock.Location = new System.Drawing.Point(178, 305);
+            this.btnStock.Name = "btnStock";
+            this.btnStock.Size = new System.Drawing.Size(141, 76);
+            this.btnStock.TabIndex = 7;
+            this.btnStock.Text = "Stock";
+            this.btnStock.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btnClientes
             // 
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button8.Location = new System.Drawing.Point(342, 20);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(141, 76);
-            this.button8.TabIndex = 8;
-            this.button8.Text = "Clientes";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnClientes.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnClientes.Location = new System.Drawing.Point(342, 20);
+            this.btnClientes.Name = "btnClientes";
+            this.btnClientes.Size = new System.Drawing.Size(141, 76);
+            this.btnClientes.TabIndex = 8;
+            this.btnClientes.Text = "Clientes";
+            this.btnClientes.UseVisualStyleBackColor = true;
             // 
             // FormGestao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 600);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnClientes);
+            this.Controls.Add(this.btnStock);
+            this.Controls.Add(this.btnProdutos);
+            this.Controls.Add(this.btnMarcas);
+            this.Controls.Add(this.btnCategorias);
+            this.Controls.Add(this.btnUtilizadores);
+            this.Controls.Add(this.btnPontoVendas);
             this.Controls.Add(this.btnLojas);
             this.Controls.Add(this.btnSair);
             this.Name = "FormGestao";
@@ -156,12 +157,12 @@ namespace WinFormsApp1
 
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Button btnLojas;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btnPontoVendas;
+        private System.Windows.Forms.Button btnUtilizadores;
+        private System.Windows.Forms.Button btnCategorias;
+        private System.Windows.Forms.Button btnMarcas;
+        private System.Windows.Forms.Button btnProdutos;
+        private System.Windows.Forms.Button btnStock;
+        private System.Windows.Forms.Button btnClientes;
     }
 }
