@@ -114,6 +114,7 @@ namespace WinFormsApp1
             this.btnProdutos.TabIndex = 6;
             this.btnProdutos.Text = "Produtos";
             this.btnProdutos.UseVisualStyleBackColor = true;
+            this.btnProdutos.Click += new System.EventHandler(this.btnProdutos_Click);
             // 
             // btnStock
             // 

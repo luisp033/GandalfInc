@@ -15,6 +15,152 @@ namespace Projeto.BusinessLogicLayer.Tests
     public class LogicaSistemaTests
     {
 
+        #region Produtos
+
+        [TestMethod()]
+        public void InsereProdutoTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid  expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+
+                //Act
+                var resultadoOK = logicaSistema.InsereProduto(expectedNome,expectedcategoria,expectedMarca,expectedEan,expectedPreco);
+                var resultadoNOKSemNome = logicaSistema.InsereProduto(null, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+
+                //Assert
+                Assert.IsFalse(resultadoNOKSemNome.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is Produto);
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaProdutoTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var inserted = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var expectedId = ((Produto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaProduto(expectedId);
+                var resultadoNOK = logicaSistema.ApagaProduto(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemProdutoTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var inserted = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var expectedId = ((Produto)inserted.Objeto).Identificador;
+
+                //Act
+                var actual = logicaSistema.ObtemProduto(expectedId);
+                var actualId = ((Produto)actual.Objeto).Identificador;
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraProdutoTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var inserted = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var expectedId = ((Produto)inserted.Objeto).Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraProduto(expectedId, "Nome Alterado", expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var resultadoNOK = logicaSistema.AlteraProduto(Guid.NewGuid(), expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var actual = logicaSistema.ObtemProduto(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Nome Alterado", ((Produto)actual.Objeto).Nome);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllProdutoTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+
+                //Act
+                var actual = logicaSistema.GetAllProdutos();
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(2, actual.Count());
+            }
+        }
+
+        #endregion
+
         #region Marcas
 
         [TestMethod()]
@@ -137,7 +283,6 @@ namespace Projeto.BusinessLogicLayer.Tests
 
         #endregion
 
-
         #region Categorias
 
         [TestMethod()]
@@ -259,7 +404,6 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
 
         #endregion
-
 
         #region Lojas
 
