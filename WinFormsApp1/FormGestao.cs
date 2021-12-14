@@ -82,5 +82,14 @@ namespace WinFormsApp1
                 frm.ShowDialog(this);
             }
         }
+
+        private void btnStock_Click(object sender, EventArgs e)
+        {
+            using (FormGestaoStocks frm = new FormGestaoStocks())
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+            }
+        }
     }
 }

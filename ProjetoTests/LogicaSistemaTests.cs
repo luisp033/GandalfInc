@@ -14,6 +14,158 @@ namespace Projeto.BusinessLogicLayer.Tests
     [TestClass()]
     public class LogicaSistemaTests
     {
+        #region Estoques
+        [TestMethod()]
+        public void InsereEstoqueTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var produtoTeste = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var expectedQtd = 5;
+
+                //Act
+                var resultadoOK = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, expectedQtd);
+                var resultadoNOK = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, 0);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Objeto is List<Estoque>);
+                Assert.AreEqual(expectedQtd, ((List<Estoque>)resultadoOK.Objeto).Count());
+            }
+        }
+
+        [TestMethod()]
+        public void ApagaEstoqueTest()
+        {
+
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var produtoTeste = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var inserted = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, 1);
+                var expectedId = ((List<Estoque>)inserted.Objeto)[0].Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.ApagaEstoque(expectedId);
+                var resultadoNOK = logicaSistema.ApagaEstoque(expectedId);
+
+                //Assert
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.IsTrue(resultadoOK.Sucesso);
+
+            }
+        }
+
+        [TestMethod()]
+        public void ObtemEstoqueTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var produtoTeste = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var inserted = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, 1);
+                var expectedId = ((List<Estoque>)inserted.Objeto)[0].Identificador;
+
+                //Act
+                var actual = logicaSistema.ObtemEstoque(expectedId);
+                var actualId = ((Estoque)actual.Objeto).Identificador;
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(expectedId, actualId);
+
+            }
+        }
+
+        [TestMethod()]
+        public void AlteraEstoqueTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var produtoTeste = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var inserted = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, 1);
+                var expectedId = ((List<Estoque>)inserted.Objeto)[0].Identificador;
+
+                //Act
+                var resultadoOK = logicaSistema.AlteraEstoque(expectedId, "Serie Alterado");
+                var resultadoNOK = logicaSistema.AlteraEstoque(Guid.NewGuid(), "Serie Alterado2");
+
+                var actual = logicaSistema.ObtemEstoque(expectedId);
+
+                //Assert
+                Assert.IsTrue(resultadoOK.Sucesso);
+                Assert.IsFalse(resultadoNOK.Sucesso);
+                Assert.AreEqual("Serie Alterado", ((Estoque)actual.Objeto).NumeroSerie);
+            }
+        }
+
+        [TestMethod()]
+        public void GetAllEstoqueTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria = logicaSistema.InsereCategoria("TV", 1);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria = ((CategoriaProduto)categoria.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                var produtoTeste = logicaSistema.InsereProduto(expectedNome, expectedcategoria, expectedMarca, expectedEan, expectedPreco);
+                var inserted = logicaSistema.InsereEstoque(((Produto)produtoTeste.Objeto).Identificador, 10);
+
+                //Act
+                var actual = logicaSistema.GetAllEstoque();
+
+                //Assert
+                Assert.IsNotNull(actual);
+                Assert.AreEqual(10, actual.Count());
+            }
+        }
+
+        #endregion
 
         #region Produtos
 
