@@ -255,6 +255,35 @@ namespace Projeto.BusinessLogicLayer.Tests
         }
 
         [TestMethod()]
+        public void ObtemProdutosPorCategoriaTest()
+        {
+            using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))
+            {
+                //Arrange
+                var logicaSistema = new LogicaSistema(contexto);
+
+                var marca = logicaSistema.InsereMarca("Sony", "Japão");
+                var categoria1 = logicaSistema.InsereCategoria("TV", 1);
+                var categoria2 = logicaSistema.InsereCategoria("PHONE", 2);
+                string expectedNome = "Produto Teste";
+                Guid expectedcategoria1 = ((CategoriaProduto)categoria1.Objeto).Identificador;
+                Guid expectedcategoria2 = ((CategoriaProduto)categoria2.Objeto).Identificador;
+                Guid expectedMarca = ((MarcaProduto)marca.Objeto).Identificador;
+                string expectedEan = "123";
+                decimal expectedPreco = 9.9m;
+                logicaSistema.InsereProduto(expectedNome, expectedcategoria1, expectedMarca, expectedEan, expectedPreco);
+                logicaSistema.InsereProduto(expectedNome, expectedcategoria1, expectedMarca, expectedEan, expectedPreco);
+                logicaSistema.InsereProduto(expectedNome, expectedcategoria2, expectedMarca, expectedEan, expectedPreco);
+
+                //Act
+                var actual = logicaSistema.ObtemProdutosPorCategoria(expectedcategoria1);
+
+                //Assert
+                Assert.AreEqual(2, ((List<Produto>)actual.Objeto).Count);
+            }
+        }
+
+        [TestMethod()]
         public void AlteraProdutoTest()
         {
             using (var contexto = new ProjetoDBContext(DataBaseType.Sqlite))

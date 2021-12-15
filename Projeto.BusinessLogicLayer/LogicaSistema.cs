@@ -944,6 +944,18 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
+        public Resultado ObtemProdutosPorCategoria(Guid identificador)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var produtos = unitOfWork.Produtos.Find(x => x.Categoria.Identificador == identificador).ToList();
+
+                return new Resultado(true, "Produtos lidos com sucesso", produtos);
+            }
+        }
+
+
         public Resultado ApagaProduto(Guid identificador)
         {
             using (var unitOfWork = new UnitOfWork(_context))

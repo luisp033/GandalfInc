@@ -208,14 +208,15 @@ namespace WinFormsApp1
             this.txtEmailLogin.Size = new System.Drawing.Size(418, 23);
             this.txtEmailLogin.TabIndex = 33;
             // 
-            // Form1
+            // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(974, 600);
             this.Controls.Add(this.pnlLoginUtilizador);
             this.Controls.Add(this.pnlRegistoUtilizador);
-            this.Name = "Form1";
+            this.Name = "FormLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Gandalf Inc- Ponto de Venda";
             this.pnlRegistoUtilizador.ResumeLayout(false);
             this.pnlRegistoUtilizador.PerformLayout();

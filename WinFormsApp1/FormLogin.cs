@@ -96,7 +96,12 @@ namespace WinFormsApp1
                     else if (((Utilizador)resultado.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                     {
                         //Form da venda
-                        MessageBox.Show("Form da venda");
+                        var m = new FormPontoVenda();
+                        m.Tag = this;
+                        m.Top = this.Top;
+                        m.Left = this.Left;
+                        m.Show();
+                        this.Hide();
                     }
                     else 
                     {
