@@ -15,13 +15,14 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoUtilizadoresEdit : Form
     {
-
+        private readonly ProjetoDBContext contexto;
         public Guid? Id { get; set; }
         private bool editMode = false;
 
-        public FormGestaoUtilizadoresEdit(Guid? id = null)
+        public FormGestaoUtilizadoresEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
 
@@ -30,11 +31,8 @@ namespace WinFormsApp1
         }
         private void LoadCombo()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                this.cmbTipoUtilizador.DataSource = Enum.GetValues(typeof(TipoUtilizadorEnum));
-            }
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            this.cmbTipoUtilizador.DataSource = Enum.GetValues(typeof(TipoUtilizadorEnum));
         }
 
         private void LoadForm()
@@ -45,24 +43,23 @@ namespace WinFormsApp1
                 return;
             }
 
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemUtilizador(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemUtilizador(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                var utilizador = ((Utilizador)resultado.Objeto);
-
-                txtNome.Text = utilizador.Nome;
-                txtEmail.Text = utilizador.Email;
-                txtSenha.Text = utilizador.Senha;
-                cmbTipoUtilizador.SelectedItem = Enum.Parse(typeof(TipoUtilizadorEnum), utilizador.Tipo.TipoId.ToString());
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            var utilizador = ((Utilizador)resultado.Objeto);
+
+            txtNome.Text = utilizador.Nome;
+            txtEmail.Text = utilizador.Email;
+            txtSenha.Text = utilizador.Senha;
+            cmbTipoUtilizador.SelectedItem = Enum.Parse(typeof(TipoUtilizadorEnum), utilizador.Tipo.TipoId.ToString());
+
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -72,27 +69,24 @@ namespace WinFormsApp1
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode)
+                var resultado = sistema.AlteraUtilizador(Id.Value, txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraUtilizador(Id.Value, txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
+            }
+            else
+            {
+                var resultado = sistema.InsereUtilizador(txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.InsereUtilizador(txtNome.Text, txtEmail.Text, txtSenha.Text, (TipoUtilizadorEnum)cmbTipoUtilizador.SelectedItem);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-
             }
             Close();
         }
@@ -103,15 +97,12 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaUtilizador(Id.Value);
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaUtilizador(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
                 Close();
             }

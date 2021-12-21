@@ -18,10 +18,12 @@ namespace WinFormsApp1
 
         public Guid? Id { get; set; }
         private bool editMode = false;
+        private readonly ProjetoDBContext contexto;
 
-        public FormGestaoProdutosEdit(Guid? id = null)
+        public FormGestaoProdutosEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
 
@@ -32,21 +34,18 @@ namespace WinFormsApp1
 
         private void LoadCombo()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
 
-                var categorias = sistema.GetAllCategorias();
-                this.cmbCategoria.DataSource = categorias;
-                this.cmbCategoria.DisplayMember = "Nome";
-                this.cmbCategoria.ValueMember = "Identificador";
+            LogicaSistema sistema = new LogicaSistema(contexto);
 
-                var marcas = sistema.GetAllMarcas();
-                this.cmbMarca.DataSource = marcas;
-                this.cmbMarca.DisplayMember = "Nome";
-                this.cmbMarca.ValueMember = "Identificador";
+            var categorias = sistema.GetAllCategorias();
+            this.cmbCategoria.DataSource = categorias;
+            this.cmbCategoria.DisplayMember = "Nome";
+            this.cmbCategoria.ValueMember = "Identificador";
 
-            }
+            var marcas = sistema.GetAllMarcas();
+            this.cmbMarca.DataSource = marcas;
+            this.cmbMarca.DisplayMember = "Nome";
+            this.cmbMarca.ValueMember = "Identificador";
         }
 
 
@@ -58,25 +57,23 @@ namespace WinFormsApp1
                 return;
             }
 
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemProduto(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemProduto(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                var produto = ((Produto)resultado.Objeto);
-                txtNome.Text = produto.Nome;
-                txtEan.Text = produto.Ean;
-                numPreco.Value = produto.PrecoUnitario;
-                cmbCategoria.SelectedValue = produto.Categoria.Identificador;
-                cmbMarca.SelectedValue = produto.Marca.Identificador;
-
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            var produto = ((Produto)resultado.Objeto);
+            txtNome.Text = produto.Nome;
+            txtEan.Text = produto.Ean;
+            numPreco.Value = produto.PrecoUnitario;
+            cmbCategoria.SelectedValue = produto.Categoria.Identificador;
+            cmbMarca.SelectedValue = produto.Marca.Identificador;
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -85,15 +82,13 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaProduto(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaProduto(Id.Value);
+
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
                 Close();
             }
@@ -106,27 +101,24 @@ namespace WinFormsApp1
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode)
+                var resultado = sistema.AlteraProduto(Id.Value, txtNome.Text, (Guid)cmbCategoria.SelectedValue, (Guid)cmbMarca.SelectedValue, txtEan.Text, numPreco.Value);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraProduto(Id.Value, txtNome.Text, (Guid)cmbCategoria.SelectedValue, (Guid)cmbMarca.SelectedValue, txtEan.Text, numPreco.Value);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
+            }
+            else
+            {
+                var resultado = sistema.InsereProduto(txtNome.Text, (Guid)cmbCategoria.SelectedValue, (Guid)cmbMarca.SelectedValue, txtEan.Text, numPreco.Value);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.InsereProduto(txtNome.Text, (Guid)cmbCategoria.SelectedValue, (Guid)cmbMarca.SelectedValue, txtEan.Text, numPreco.Value);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-
             }
             Close();
         }

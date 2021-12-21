@@ -17,16 +17,17 @@ namespace WinFormsApp1
     {
         public Guid? Id { get; set; }
         private bool editMode = false;
+        private readonly ProjetoDBContext contexto;
 
-        public FormGestaoStocksEdit(Guid? id = null)
+        public FormGestaoStocksEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
 
             LoadCombo();
             LoadForm();
-
         }
 
         private void LoadForm()
@@ -43,37 +44,28 @@ namespace WinFormsApp1
             numQtd.Visible = false;
             cmbProduto.Enabled = false;
 
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemEstoque(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemEstoque(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                var estoque = ((Estoque)resultado.Objeto);
-                txtSerie.Text = estoque.NumeroSerie;
-                cmbProduto.SelectedValue = estoque.Produto.Identificador;
-
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            var estoque = ((Estoque)resultado.Objeto);
+            txtSerie.Text = estoque.NumeroSerie;
+            cmbProduto.SelectedValue = estoque.Produto.Identificador;
         }
 
         private void LoadCombo()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var produtos = sistema.GetAllProdutos();
-                this.cmbProduto.DataSource = produtos;
-                this.cmbProduto.DisplayMember = "Nome";
-                this.cmbProduto.ValueMember = "Identificador";
-            }
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var produtos = sistema.GetAllProdutos();
+            this.cmbProduto.DataSource = produtos;
+            this.cmbProduto.DisplayMember = "Nome";
+            this.cmbProduto.ValueMember = "Identificador";
         }
-
-
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -81,15 +73,12 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaEstoque(Id.Value);
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaEstoque(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
                 Close();
             }
@@ -102,27 +91,23 @@ namespace WinFormsApp1
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode)
+                var resultado = sistema.AlteraEstoque(Id.Value, txtSerie.Text);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraEstoque(Id.Value, txtSerie.Text);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
+            }
+            else
+            {
+                var resultado = sistema.InsereEstoque((Guid)cmbProduto.SelectedValue, (int)numQtd.Value);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.InsereEstoque((Guid)cmbProduto.SelectedValue, (int)numQtd.Value);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-
             }
             Close();
         }

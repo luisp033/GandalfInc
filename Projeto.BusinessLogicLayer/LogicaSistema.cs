@@ -168,6 +168,15 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
+        public List<PontoDeVenda> GetAllPontoDeVendasByLoja(Guid idLoja)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var result = unitOfWork.PontoDeVendas.Find(x => x.Loja.Identificador == idLoja).ToList();
+                return result;
+            }
+        }
+
         public List<PontoDeVenda> GetAllPontoDeVendas()
         {
             using (var unitOfWork = new UnitOfWork(_context))
@@ -483,6 +492,15 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
+        public List<Loja> GetAllLojasComPontosDeVenda()
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var result = unitOfWork.Lojas.GetAllLojasComPontosDeVenda();
+                return result;
+            }
+        }
+
         public List<Loja> GetAllLojas()
         {
             using (var unitOfWork = new UnitOfWork(_context))
@@ -748,7 +766,8 @@ namespace Projeto.BusinessLogicLayer
                 List<Estoque> listaEstoques = new List<Estoque>();
                 for (int i = 0; i < qtd; i++)
                 {
-                    Estoque estoque = new Estoque { 
+                    Estoque estoque = new Estoque
+                    {
                         Produto = insProduto,
                         DataEntrada = DateTime.Today,
                         NumeroSerie = "Não definido"
@@ -870,7 +889,7 @@ namespace Projeto.BusinessLogicLayer
                     Marca = insMarca,
                     Ean = ean,
                     PrecoUnitario = preco
-                    
+
                 };
 
                 unitOfWork.Produtos.Add(produto);
@@ -938,7 +957,7 @@ namespace Projeto.BusinessLogicLayer
 
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                var produto = unitOfWork.Produtos.Find(x=>x.Identificador == identificador).FirstOrDefault();
+                var produto = unitOfWork.Produtos.Find(x => x.Identificador == identificador).FirstOrDefault();
 
                 return new Resultado(true, "Produto lido com sucesso", produto);
             }
@@ -978,6 +997,144 @@ namespace Projeto.BusinessLogicLayer
         }
 
         #endregion
+
+        #region Vendas
+
+        /// <summary>
+        /// Devolve a venda em curso para a sessão, se esta não existir cria uma venda nova
+        /// </summary>
+        /// <param name="pontoVendaSessaoId"></param>
+        /// <returns></returns>
+        public Resultado GetVendaEmCurso(Guid pontoVendaSessaoId)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var venda = unitOfWork.Vendas.GetVendaEmCurso(pontoVendaSessaoId);
+                if (venda == null)
+                {
+                    var pontoVendaSessao = unitOfWork.PontoDeVendaSessoes.Get(pontoVendaSessaoId);
+
+                    Venda novaVenda = new Venda()
+                    {
+                        PontoDeVendaSessao = pontoVendaSessao
+                    };
+                    unitOfWork.Vendas.Add(novaVenda);
+
+                    var affected = unitOfWork.Complete();
+                    if (affected == 0)
+                    {
+                        return new Resultado(false, "Venda não Criada");
+                    }
+                    return new Resultado(true, "Venda criada", novaVenda);
+                }
+                return new Resultado(true, "Venda aberta", venda);
+            }
+        }
+
+        public Resultado AddProdutoVenda(Guid vendaId, Guid produtoId)
+        {
+            #region Validacoes
+            #endregion
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+
+                Guid newDetalheVendaId = Guid.NewGuid();
+
+                //Procurar se o produto existe em Estoque
+                var estoqueProduto = unitOfWork.Estoques.Find(e => !e.DetalheVendaId.HasValue && e.Produto.Identificador == produtoId).FirstOrDefault();
+
+                if (estoqueProduto == null)
+                {
+                    return new Resultado(false, "Não existe stock do produto");
+                }
+                estoqueProduto.DetalheVendaId = newDetalheVendaId;
+
+                unitOfWork.Estoques.Update(estoqueProduto);
+
+                DetalheVenda detalheVenda = new DetalheVenda()
+                {
+                    VendaId = vendaId,
+                    EstoqueId = estoqueProduto.Identificador,
+                    PrecoFinal = estoqueProduto.Produto.PrecoUnitario,
+                };
+                unitOfWork.DetalheVendas.Add(detalheVenda);
+
+                var affected = unitOfWork.Complete();
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Produto não adicionado");
+                }
+
+            }
+
+            return new Resultado(true, "Produto adicionado com sucesso");
+        }
+
+
+        public Resultado GetDetalheVendasPorCompra(Guid vendaId)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var detalheVendasList = unitOfWork.DetalheVendas.Find(e => e.VendaId == vendaId).ToList();
+
+                return new Resultado(true, "Consulta com sucesso", detalheVendasList);
+            }
+        }
+
+        public Resultado DeleteAllDetalheVendasPorCompra(Guid vendaId)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var detalheVendasList = unitOfWork.DetalheVendas.Find(e => e.VendaId == vendaId).ToList();
+                var estoqueList = unitOfWork.Estoques.Find(e => e.DetalheVenda.VendaId == vendaId).ToList();
+
+                if (detalheVendasList.Count != estoqueList.Count)
+                {
+                    return new Resultado(false, "Erro na quantidade de items do carrinho e estoque");
+                }
+
+                foreach (var item in estoqueList)
+                {
+                    item.DetalheVenda = null;
+                    item.DetalheVendaId = null;
+                }
+                unitOfWork.DetalheVendas.RemoveRange(detalheVendasList);
+                unitOfWork.Estoques.UpdateRange(estoqueList);
+
+                unitOfWork.Complete();
+
+                return new Resultado(true, "Items removidos com sucesso");
+            }
+        }
+
+        public Resultado DeleteDetalheVenda(Guid detalheVendaId)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var detalheVenda = unitOfWork.DetalheVendas.Get(detalheVendaId);
+                var estoque = unitOfWork.Estoques.Find(e => e.DetalheVenda.Identificador == detalheVendaId).FirstOrDefault();
+
+                if (detalheVenda == null || estoque == null)
+                {
+                    return new Resultado(false, "Erro na no item do carrinho e estoque");
+                }
+
+                estoque.DetalheVenda = null;
+                estoque.DetalheVendaId = null;
+
+                unitOfWork.DetalheVendas.Remove(detalheVenda);
+                unitOfWork.Estoques.Update(estoque);
+
+                unitOfWork.Complete();
+
+                return new Resultado(true, "Item removido com sucesso");
+            }
+        }
+
+
+        #endregion
+
 
     }
 }

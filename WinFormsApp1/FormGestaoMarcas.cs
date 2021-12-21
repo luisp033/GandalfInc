@@ -14,16 +14,17 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoMarcas : Form
     {
-        public FormGestaoMarcas()
+        private readonly ProjetoDBContext contexto;
+
+        public FormGestaoMarcas(ProjetoDBContext context)
         {
             InitializeComponent();
-
+            contexto = context;
             DataGridLoad();
         }
         private void DataGridLoad()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
+
                 LogicaSistema sistema = new LogicaSistema(contexto);
                 this.dgv.DataSource = sistema.GetAllMarcas();
 
@@ -37,7 +38,6 @@ namespace WinFormsApp1
                 {
                     dgv.Columns.Insert(columnIndex, editButtonColumn);
                 }
-            }
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace WinFormsApp1
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            using (FormGestaoMarcasEdit frm = new FormGestaoMarcasEdit())
+            using (FormGestaoMarcasEdit frm = new FormGestaoMarcasEdit(contexto))
             {
                 frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
@@ -61,7 +61,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgv.Rows[e.RowIndex].Cells[3].Value;
-                using (FormGestaoMarcasEdit frm = new FormGestaoMarcasEdit(identificador))
+                using (FormGestaoMarcasEdit frm = new FormGestaoMarcasEdit(contexto,identificador))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     frm.ShowDialog(this);

@@ -14,31 +14,34 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoLojas : Form
     {
-        public FormGestaoLojas()
+
+        private readonly ProjetoDBContext contexto;
+
+        public FormGestaoLojas(ProjetoDBContext context)
         {
             InitializeComponent();
+
+            contexto = context;
 
             FormGestaoLojas_Load();
         }
 
         private void FormGestaoLojas_Load()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                this.dgvLojas.DataSource = sistema.GetAllLojas();
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            this.dgvLojas.DataSource = sistema.GetAllLojas();
 
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.Name = "edit_column";
-                editButtonColumn.Text = "Editar";
-                editButtonColumn.HeaderText = "Action";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                int columnIndex = 0;
-                if (dgvLojas.Columns["edit_column"] == null)
-                {
-                    dgvLojas.Columns.Insert(columnIndex, editButtonColumn);
-                }
+            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+            editButtonColumn.Name = "edit_column";
+            editButtonColumn.Text = "Editar";
+            editButtonColumn.HeaderText = "Action";
+            editButtonColumn.UseColumnTextForButtonValue = true;
+            int columnIndex = 0;
+            if (dgvLojas.Columns["edit_column"] == null)
+            {
+                dgvLojas.Columns.Insert(columnIndex, editButtonColumn);
             }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -50,7 +53,7 @@ namespace WinFormsApp1
         private void btnInsert_Click(object sender, EventArgs e)
         {
 
-            using (FormGestaoLojasEdit frmGestaoLojasEdit = new FormGestaoLojasEdit())
+            using (FormGestaoLojasEdit frmGestaoLojasEdit = new FormGestaoLojasEdit(contexto))
             {
                 frmGestaoLojasEdit.StartPosition = FormStartPosition.CenterParent;
                 frmGestaoLojasEdit.ShowDialog(this);
@@ -65,7 +68,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgvLojas.Rows[e.RowIndex].Cells[7].Value;
-                using (FormGestaoLojasEdit frmGestaoLojasEdit = new FormGestaoLojasEdit(identificador))
+                using (FormGestaoLojasEdit frmGestaoLojasEdit = new FormGestaoLojasEdit(contexto,identificador))
                 {
                     frmGestaoLojasEdit.StartPosition = FormStartPosition.CenterParent;
                     frmGestaoLojasEdit.ShowDialog(this);

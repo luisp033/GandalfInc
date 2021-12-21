@@ -14,31 +14,32 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoStocks : Form
     {
-        public FormGestaoStocks()
+        private readonly ProjetoDBContext contexto;
+
+        public FormGestaoStocks(ProjetoDBContext context)
         {
             InitializeComponent();
-
+            contexto = context;
             DataGridLoad();
         }
 
         private void DataGridLoad()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                this.dgv.DataSource = sistema.GetAllEstoque();
 
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.Name = "edit_column";
-                editButtonColumn.Text = "Editar";
-                editButtonColumn.HeaderText = "Action";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                int columnIndex = 0;
-                if (dgv.Columns["edit_column"] == null)
-                {
-                    dgv.Columns.Insert(columnIndex, editButtonColumn);
-                }
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            this.dgv.DataSource = sistema.GetAllEstoque();
+
+            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+            editButtonColumn.Name = "edit_column";
+            editButtonColumn.Text = "Editar";
+            editButtonColumn.HeaderText = "Action";
+            editButtonColumn.UseColumnTextForButtonValue = true;
+            int columnIndex = 0;
+            if (dgv.Columns["edit_column"] == null)
+            {
+                dgv.Columns.Insert(columnIndex, editButtonColumn);
             }
+
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace WinFormsApp1
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            using (FormGestaoStocksEdit frm = new FormGestaoStocksEdit())
+            using (FormGestaoStocksEdit frm = new FormGestaoStocksEdit(contexto))
             {
                 frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
@@ -62,7 +63,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgv.Rows[e.RowIndex].Cells[6].Value;
-                using (FormGestaoStocksEdit frm = new FormGestaoStocksEdit(identificador))
+                using (FormGestaoStocksEdit frm = new FormGestaoStocksEdit(contexto, identificador))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     frm.ShowDialog(this);

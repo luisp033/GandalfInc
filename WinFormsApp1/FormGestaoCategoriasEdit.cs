@@ -18,10 +18,12 @@ namespace WinFormsApp1
 
         public Guid? Id { get; set; }
         private bool editMode = false;
+        private readonly ProjetoDBContext contexto;
 
-        public FormGestaoCategoriasEdit(Guid? id = null)
+        public FormGestaoCategoriasEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
 
@@ -36,21 +38,18 @@ namespace WinFormsApp1
                 return;
             }
 
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemCategoria(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemCategoria(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                var categoria = ((CategoriaProduto)resultado.Objeto);
-                txtNome.Text = categoria.Nome;
-                numOrdem.Value = categoria.OrdemApresentacao;
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            var categoria = ((CategoriaProduto)resultado.Objeto);
+            txtNome.Text = categoria.Nome;
+            numOrdem.Value = categoria.OrdemApresentacao;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -59,15 +58,13 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaCategoria(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaCategoria(Id.Value);
+
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
                 Close();
             }
@@ -80,29 +77,26 @@ namespace WinFormsApp1
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode)
+                var resultado = sistema.AlteraCategoria(Id.Value, txtNome.Text, (int)numOrdem.Value);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraCategoria(Id.Value, txtNome.Text, (int)numOrdem.Value);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
-                {
-
-                    var resultado = sistema.InsereCategoria(txtNome.Text, (int)numOrdem.Value);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
-                }
-
             }
+            else
+            {
+                var resultado = sistema.InsereCategoria(txtNome.Text, (int)numOrdem.Value);
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
+                }
+            }
+
             Close();
         }
     }

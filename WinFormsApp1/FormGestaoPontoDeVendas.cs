@@ -14,18 +14,18 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoPontoDeVendas : Form
     {
-        public FormGestaoPontoDeVendas()
+        private readonly ProjetoDBContext contexto;
+        public FormGestaoPontoDeVendas(ProjetoDBContext context)
         {
             InitializeComponent();
-
+            contexto = context;
             DataGridLoad();
 
         }
 
         private void DataGridLoad()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
+
                 LogicaSistema sistema = new LogicaSistema(contexto);
                 this.dgvPontoVenda.DataSource = sistema.GetAllPontoDeVendas();
 
@@ -39,12 +39,11 @@ namespace WinFormsApp1
                 {
                     dgvPontoVenda.Columns.Insert(columnIndex, editButtonColumn);
                 }
-            }
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            using (FormGestaoPontoDeVendasEdit frm = new FormGestaoPontoDeVendasEdit())
+            using (FormGestaoPontoDeVendasEdit frm = new FormGestaoPontoDeVendasEdit(contexto))
             {
                 frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
@@ -63,7 +62,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgvPontoVenda.Rows[e.RowIndex].Cells[3].Value;
-                using (FormGestaoPontoDeVendasEdit frm = new FormGestaoPontoDeVendasEdit(identificador))
+                using (FormGestaoPontoDeVendasEdit frm = new FormGestaoPontoDeVendasEdit(contexto, identificador))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     frm.ShowDialog(this);

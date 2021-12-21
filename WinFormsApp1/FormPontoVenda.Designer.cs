@@ -37,6 +37,7 @@ namespace WinFormsApp1
             this.label3 = new System.Windows.Forms.Label();
             this.flowLayoutCategorias = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.flowLayoutDetalheVenda = new System.Windows.Forms.FlowLayoutPanel();
             this.lblTotalEuros = new System.Windows.Forms.Label();
             this.lblTotalItems = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,11 +47,15 @@ namespace WinFormsApp1
             this.panel4 = new System.Windows.Forms.Panel();
             this.flowLayoutPanelProdutos = new System.Windows.Forms.FlowLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.btnCleanMessage = new System.Windows.Forms.Button();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -63,12 +68,14 @@ namespace WinFormsApp1
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel3, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel4, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel5, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(974, 600);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -111,7 +118,7 @@ namespace WinFormsApp1
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 53);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(144, 544);
+            this.panel2.Size = new System.Drawing.Size(144, 504);
             this.panel2.TabIndex = 1;
             // 
             // label3
@@ -129,12 +136,13 @@ namespace WinFormsApp1
             this.flowLayoutCategorias.AutoScroll = true;
             this.flowLayoutCategorias.Location = new System.Drawing.Point(3, 39);
             this.flowLayoutCategorias.Name = "flowLayoutCategorias";
-            this.flowLayoutCategorias.Size = new System.Drawing.Size(138, 496);
+            this.flowLayoutCategorias.Size = new System.Drawing.Size(138, 465);
             this.flowLayoutCategorias.TabIndex = 0;
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.flowLayoutDetalheVenda);
             this.panel3.Controls.Add(this.lblTotalEuros);
             this.panel3.Controls.Add(this.lblTotalItems);
             this.panel3.Controls.Add(this.label2);
@@ -144,8 +152,17 @@ namespace WinFormsApp1
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(777, 53);
             this.panel3.Name = "panel3";
+            this.tableLayoutPanel1.SetRowSpan(this.panel3, 2);
             this.panel3.Size = new System.Drawing.Size(194, 544);
             this.panel3.TabIndex = 2;
+            // 
+            // flowLayoutDetalheVenda
+            // 
+            this.flowLayoutDetalheVenda.AutoScroll = true;
+            this.flowLayoutDetalheVenda.Location = new System.Drawing.Point(7, 74);
+            this.flowLayoutDetalheVenda.Name = "flowLayoutDetalheVenda";
+            this.flowLayoutDetalheVenda.Size = new System.Drawing.Size(180, 427);
+            this.flowLayoutDetalheVenda.TabIndex = 6;
             // 
             // lblTotalEuros
             // 
@@ -189,22 +206,24 @@ namespace WinFormsApp1
             // 
             this.btnCancel.BackColor = System.Drawing.Color.Red;
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(3, 504);
+            this.btnCancel.Location = new System.Drawing.Point(5, 504);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(58, 37);
+            this.btnCancel.Size = new System.Drawing.Size(62, 37);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnPagar
             // 
             this.btnPagar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnPagar.Location = new System.Drawing.Point(67, 504);
+            this.btnPagar.Location = new System.Drawing.Point(69, 504);
             this.btnPagar.Name = "btnPagar";
-            this.btnPagar.Size = new System.Drawing.Size(124, 37);
+            this.btnPagar.Size = new System.Drawing.Size(118, 37);
             this.btnPagar.TabIndex = 0;
             this.btnPagar.Text = "Pagar";
             this.btnPagar.UseVisualStyleBackColor = false;
+            this.btnPagar.Click += new System.EventHandler(this.btnPagar_Click);
             // 
             // panel4
             // 
@@ -214,7 +233,7 @@ namespace WinFormsApp1
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(153, 53);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(618, 544);
+            this.panel4.Size = new System.Drawing.Size(618, 504);
             this.panel4.TabIndex = 3;
             // 
             // flowLayoutPanelProdutos
@@ -222,7 +241,7 @@ namespace WinFormsApp1
             this.flowLayoutPanelProdutos.AutoScroll = true;
             this.flowLayoutPanelProdutos.Location = new System.Drawing.Point(3, 39);
             this.flowLayoutPanelProdutos.Name = "flowLayoutPanelProdutos";
-            this.flowLayoutPanelProdutos.Size = new System.Drawing.Size(612, 496);
+            this.flowLayoutPanelProdutos.Size = new System.Drawing.Size(612, 462);
             this.flowLayoutPanelProdutos.TabIndex = 3;
             // 
             // label4
@@ -234,6 +253,38 @@ namespace WinFormsApp1
             this.label4.Size = new System.Drawing.Size(95, 21);
             this.label4.TabIndex = 2;
             this.label4.Text = "PRODUTOS";
+            // 
+            // panel5
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.panel5, 2);
+            this.panel5.Controls.Add(this.btnCleanMessage);
+            this.panel5.Controls.Add(this.lblMessage);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 563);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(768, 34);
+            this.panel5.TabIndex = 4;
+            // 
+            // btnCleanMessage
+            // 
+            this.btnCleanMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnCleanMessage.Location = new System.Drawing.Point(3, 3);
+            this.btnCleanMessage.Name = "btnCleanMessage";
+            this.btnCleanMessage.Size = new System.Drawing.Size(63, 26);
+            this.btnCleanMessage.TabIndex = 1;
+            this.btnCleanMessage.Text = "Limpar";
+            this.btnCleanMessage.UseVisualStyleBackColor = false;
+            this.btnCleanMessage.Click += new System.EventHandler(this.btnCleanMessage_Click);
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMessage.Location = new System.Drawing.Point(72, 8);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(17, 17);
+            this.lblMessage.TabIndex = 0;
+            this.lblMessage.Text = "...";
             // 
             // FormPontoVenda
             // 
@@ -247,6 +298,7 @@ namespace WinFormsApp1
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Ponto de Venda";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPontoVenda_FormClosed);
+            this.Load += new System.EventHandler(this.FormPontoVenda_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -256,6 +308,8 @@ namespace WinFormsApp1
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -279,5 +333,9 @@ namespace WinFormsApp1
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelProdutos;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutDetalheVenda;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label lblMessage;
+        private System.Windows.Forms.Button btnCleanMessage;
     }
 }

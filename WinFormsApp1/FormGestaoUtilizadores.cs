@@ -14,10 +14,11 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoUtilizadores : Form
     {
-        public FormGestaoUtilizadores()
+        private readonly ProjetoDBContext contexto;
+        public FormGestaoUtilizadores(ProjetoDBContext context)
         {
             InitializeComponent();
-
+            contexto = context;
             DataGridLoad();
         }
 
@@ -28,8 +29,7 @@ namespace WinFormsApp1
 
         private void DataGridLoad()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
+
                 LogicaSistema sistema = new LogicaSistema(contexto);
                 this.dgvUtilizadores.DataSource = sistema.GetAllUtilizadores();
 
@@ -43,12 +43,12 @@ namespace WinFormsApp1
                 {
                     dgvUtilizadores.Columns.Insert(columnIndex, editButtonColumn);
                 }
-            }
+
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            using (FormGestaoUtilizadoresEdit frm = new FormGestaoUtilizadoresEdit())
+            using (FormGestaoUtilizadoresEdit frm = new FormGestaoUtilizadoresEdit(contexto))
             {
                 frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
@@ -63,7 +63,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgvUtilizadores.Rows[e.RowIndex].Cells[5].Value;
-                using (FormGestaoUtilizadoresEdit frm = new FormGestaoUtilizadoresEdit(identificador))
+                using (FormGestaoUtilizadoresEdit frm = new FormGestaoUtilizadoresEdit(contexto, identificador))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     frm.ShowDialog(this);

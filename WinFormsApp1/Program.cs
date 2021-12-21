@@ -1,3 +1,4 @@
+using Projeto.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ namespace WinFormsApp1
 {
     static class Program
     {
+
+        static readonly ProjetoDBContext Contexto = new ProjetoDBContext();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -17,7 +21,7 @@ namespace WinFormsApp1
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLogin());
+            Application.Run(new FormLogin(Contexto));
         }
     }
 }

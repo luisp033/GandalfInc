@@ -18,36 +18,36 @@ namespace WinFormsApp1
 
         public Guid? Id { get; set; }
         private bool editMode = false;
+        private readonly ProjetoDBContext contexto;
 
-        public FormGestaoLojasEdit(Guid? id = null)
+        public FormGestaoLojasEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
             LoadForm();
         }
 
-        private void LoadForm() 
+        private void LoadForm()
         {
-            if (!editMode) 
+            if (!editMode)
             {
                 btnDelete.Visible = false;
                 return;
             }
 
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemLoja(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemLoja(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                txtNome.Text = ((Loja)resultado.Objeto).Nome;
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            txtNome.Text = ((Loja)resultado.Objeto).Nome;
+
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -57,28 +57,26 @@ namespace WinFormsApp1
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode) 
+                var resultado = sistema.AlteraLoja(Id.Value, txtNome.Text, "123456789", "emailTeste", "999999999", null);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraLoja(Id.Value, txtNome.Text, "123456789", "emailTeste", "999999999", null);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
-                {
-                    var resultado = sistema.InsereLoja(txtNome.Text, "123456789", "emailTeste", "999999999", null);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
-                }
-
             }
+            else
+            {
+                var resultado = sistema.InsereLoja(txtNome.Text, "123456789", "emailTeste", "999999999", null);
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
+                }
+            }
+
             Close();
         }
 
@@ -88,16 +86,15 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaLoja(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaLoja(Id.Value);
+
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
+
                 Close();
             }
 

@@ -18,10 +18,12 @@ namespace WinFormsApp1
 
         public Guid? Id { get; set; }
         private bool editMode = false;
+        private readonly ProjetoDBContext contexto;
 
-        public FormGestaoPontoDeVendasEdit(Guid? id = null)
+        public FormGestaoPontoDeVendasEdit(ProjetoDBContext context, Guid? id = null)
         {
             InitializeComponent();
+            contexto = context;
             Id = id;
             editMode = (Id != null);
 
@@ -31,14 +33,12 @@ namespace WinFormsApp1
 
         private void LoadCombo()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var lojas = sistema.GetAllLojas();
-                this.cmbLoja.DataSource = lojas;
-                this.cmbLoja.DisplayMember = "Nome";
-                this.cmbLoja.ValueMember = "Identificador";
-            }
+
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var lojas = sistema.GetAllLojas();
+            this.cmbLoja.DataSource = lojas;
+            this.cmbLoja.DisplayMember = "Nome";
+            this.cmbLoja.ValueMember = "Identificador";
         }
 
         private void LoadForm()
@@ -49,52 +49,45 @@ namespace WinFormsApp1
                 return;
             }
 
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var resultado = sistema.ObtemPontoDeVenda(Id.Value);
+
+            if (!resultado.Sucesso)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-                var resultado = sistema.ObtemPontoDeVenda(Id.Value);
-
-                if (!resultado.Sucesso)
-                {
-                    MessageBox.Show(resultado.Mensagem);
-                    Close();
-                }
-
-                var pontoDeVenda = ((PontoDeVenda)resultado.Objeto);
-                txtNome.Text = pontoDeVenda.Nome;
-                cmbLoja.SelectedValue = pontoDeVenda.Loja.Identificador;
+                MessageBox.Show(resultado.Mensagem);
+                Close();
             }
+
+            var pontoDeVenda = ((PontoDeVenda)resultado.Objeto);
+            txtNome.Text = pontoDeVenda.Nome;
+            cmbLoja.SelectedValue = pontoDeVenda.Loja.Identificador;
         }
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            using (var contexto = new ProjetoDBContext())
+            LogicaSistema sistema = new LogicaSistema(contexto);
+
+            if (editMode)
             {
-                LogicaSistema sistema = new LogicaSistema(contexto);
-
-                if (editMode)
+                var resultado = sistema.AlteraPontoDeVenda(Id.Value, txtNome.Text, (Guid)cmbLoja.SelectedValue);
+                if (!resultado.Sucesso)
                 {
-                    var resultado = sistema.AlteraPontoDeVenda(Id.Value, txtNome.Text, (Guid)cmbLoja.SelectedValue);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(resultado.Mensagem);
                 }
-                else
+            }
+            else
+            {
+
+                var loja = sistema.ObtemLoja((Guid)cmbLoja.SelectedValue);
+                if (!loja.Sucesso)
                 {
-
-                    var loja = sistema.ObtemLoja((Guid)cmbLoja.SelectedValue);
-                    if (!loja.Sucesso)
-                    {
-                        MessageBox.Show(loja.Mensagem);
-                    }
-                    var resultado = sistema.InserePontoDeVenda(txtNome.Text,(Loja)loja.Objeto);
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                    MessageBox.Show(loja.Mensagem);
                 }
-
+                var resultado = sistema.InserePontoDeVenda(txtNome.Text, (Loja)loja.Objeto);
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
+                }
             }
             Close();
         }
@@ -110,15 +103,13 @@ namespace WinFormsApp1
 
             if (dr == DialogResult.Yes)
             {
-                using (var contexto = new ProjetoDBContext())
-                {
-                    LogicaSistema sistema = new LogicaSistema(contexto);
-                    var resultado = sistema.ApagaPontoDeVenda(Id.Value);
 
-                    if (!resultado.Sucesso)
-                    {
-                        MessageBox.Show(resultado.Mensagem);
-                    }
+                LogicaSistema sistema = new LogicaSistema(contexto);
+                var resultado = sistema.ApagaPontoDeVenda(Id.Value);
+
+                if (!resultado.Sucesso)
+                {
+                    MessageBox.Show(resultado.Mensagem);
                 }
                 Close();
             }

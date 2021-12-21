@@ -14,16 +14,17 @@ namespace WinFormsApp1
 {
     public partial class FormGestaoCategorias : Form
     {
-        public FormGestaoCategorias()
+        private readonly ProjetoDBContext contexto;
+        public FormGestaoCategorias(ProjetoDBContext context)
         {
             InitializeComponent();
+            contexto = context;
             DataGridLoad();
         }
 
         private void DataGridLoad()
         {
-            using (var contexto = new ProjetoDBContext())
-            {
+
                 LogicaSistema sistema = new LogicaSistema(contexto);
                 this.dgv.DataSource = sistema.GetAllCategorias();
 
@@ -37,7 +38,6 @@ namespace WinFormsApp1
                 {
                     dgv.Columns.Insert(columnIndex, editButtonColumn);
                 }
-            }
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace WinFormsApp1
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            using (FormGestaoCategoriasEdit frm = new FormGestaoCategoriasEdit())
+            using (FormGestaoCategoriasEdit frm = new FormGestaoCategoriasEdit(contexto))
             {
                 frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
@@ -61,7 +61,7 @@ namespace WinFormsApp1
             {
 
                 Guid? identificador = (Guid)dgv.Rows[e.RowIndex].Cells[3].Value;
-                using (FormGestaoCategoriasEdit frm = new FormGestaoCategoriasEdit(identificador))
+                using (FormGestaoCategoriasEdit frm = new FormGestaoCategoriasEdit(contexto,identificador))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     frm.ShowDialog(this);
