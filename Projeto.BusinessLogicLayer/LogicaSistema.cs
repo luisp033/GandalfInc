@@ -1,5 +1,7 @@
 ﻿using Projeto.DataAccessLayer;
+using Projeto.DataAccessLayer.Auxiliar;
 using Projeto.DataAccessLayer.Entidades;
+using Projeto.DataAccessLayer.Enumerados;
 using Projeto.DataAccessLayer.Persistence;
 using System;
 using System.Collections.Generic;
@@ -1000,6 +1002,57 @@ namespace Projeto.BusinessLogicLayer
 
         #region Vendas
 
+
+        public Resultado Pagamento(Guid vendaId, string nome, string nif, string telefone, TipoPagamentoEnum tipo)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+
+                // Se nif preenchido vai verificar se existe cliente, senão cria
+                Cliente cliente = null;
+
+                if (!String.IsNullOrEmpty(nif))
+                {
+                    cliente = unitOfWork.Clientes.Find(x => x.NumeroFiscal == nif).FirstOrDefault();
+
+                    if (cliente == null)
+                    {
+                        cliente = new Cliente()
+                        {
+                            Nome = nome,
+                            NumeroFiscal = nif,
+                            Telefone = telefone
+                        };
+
+                        unitOfWork.Clientes.Add(cliente);
+                    }
+                }
+
+                var vendaActual = unitOfWork.Vendas.Get(vendaId);
+                if (vendaActual == null)
+                {
+                    return new Resultado(false, "Venda inexistente");
+                }
+
+                vendaActual.Cliente = cliente;
+                vendaActual.TipoPagamento = unitOfWork.TipoPagamentos.GetTipoPagamentoByEnum(tipo);
+                vendaActual.DataHoraVenda = DateTime.Now;
+
+                var total = vendaActual.DetalheVendas.Sum(x => x.PrecoFinal);
+                vendaActual.ValorPagamento = total;
+
+                unitOfWork.Vendas.Update(vendaActual);
+
+                var affected = unitOfWork.Complete();
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Venda não terminada");
+                }
+                return new Resultado(true, "Venda terminada com sucesso");
+            }
+        }
+
+
         /// <summary>
         /// Devolve a venda em curso para a sessão, se esta não existir cria uma venda nova
         /// </summary>
@@ -1029,6 +1082,48 @@ namespace Projeto.BusinessLogicLayer
                 }
                 return new Resultado(true, "Venda aberta", venda);
             }
+        }
+
+        public List<TotalSessao> GetTotaisSessao(Guid pontoVendaSessaoId)
+        {
+            List<TotalSessao> result = null;
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                result = unitOfWork.PontoDeVendaSessoes.GetTotalSessao(pontoVendaSessaoId);
+
+            }
+            return result;
+        }
+
+        public Resultado FechaSessaoVenda(Guid pontoVendaSessaoId)
+        {
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var pontoVendaSessao = unitOfWork.PontoDeVendaSessoes.Get(pontoVendaSessaoId);
+                if (pontoVendaSessao == null)
+                {
+                    return new Resultado(false, "Sessão inexistente");
+                }
+
+                var venda = unitOfWork.Vendas.GetVendaEmCurso(pontoVendaSessaoId);
+                if (venda.DetalheVendas?.Count > 0)
+                {
+                    return new Resultado(false, "Não pode fechar a sessão com uma venda em curso!");
+                }
+
+                pontoVendaSessao.DataLogout = DateTime.Now;
+                unitOfWork.PontoDeVendaSessoes.Update(pontoVendaSessao);
+
+                var affected = unitOfWork.Complete();
+                if (affected == 0)
+                {
+                    return new Resultado(false, "Erro no fecho de Sessao.");
+                }
+
+
+            }
+            return new Resultado(true, "Sessao fechada");
         }
 
         public Resultado AddProdutoVenda(Guid vendaId, Guid produtoId)
@@ -1070,7 +1165,6 @@ namespace Projeto.BusinessLogicLayer
 
             return new Resultado(true, "Produto adicionado com sucesso");
         }
-
 
         public Resultado GetDetalheVendasPorCompra(Guid vendaId)
         {

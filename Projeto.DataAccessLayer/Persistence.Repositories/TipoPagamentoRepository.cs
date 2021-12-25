@@ -1,5 +1,7 @@
 ﻿using Projeto.DataAccessLayer.Core.Repositories;
 using Projeto.DataAccessLayer.Entidades;
+using Projeto.DataAccessLayer.Enumerados;
+using System.Linq;
 
 namespace Projeto.DataAccessLayer.Persistence.Repositories
 {
@@ -12,5 +14,9 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
             this.context = context;
         }
 
+        public TipoPagamento GetTipoPagamentoByEnum(TipoPagamentoEnum tipoPagamentoEnum)
+        {
+            return context.TipoPagamentos.FirstOrDefault(x => x.Id == (int)tipoPagamentoEnum);
+        }
     }
 }

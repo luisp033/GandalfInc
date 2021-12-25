@@ -109,6 +109,7 @@ namespace WinFormsApp1
             this.btnTotal.TabIndex = 0;
             this.btnTotal.Text = "Total / Fechar";
             this.btnTotal.UseVisualStyleBackColor = true;
+            this.btnTotal.Click += new System.EventHandler(this.btnTotal_Click);
             // 
             // panel2
             // 

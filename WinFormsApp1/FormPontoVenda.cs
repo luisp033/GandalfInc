@@ -109,7 +109,32 @@ namespace WinFormsApp1
 
         private void btnPagar_Click(object sender, EventArgs e)
         {
-            //TODO -LP- 
+            LogicaSistema sistema = new LogicaSistema(contexto);
+            var vendaResult = sistema.GetVendaEmCurso(Sessao.Identificador);
+            if (!vendaResult.Sucesso)
+            {
+                EscreveMensagem(vendaResult.Mensagem, vendaResult.Sucesso);
+                return;
+            }
+
+            var vendaAtual = (Venda)vendaResult.Objeto;
+            if (vendaAtual.DetalheVendas.Count == 0)
+            {
+                EscreveMensagem("Não é possível terminar uma venda sem produtos.", false);
+                return;
+            }
+
+            using (FormPagamento frm = new FormPagamento(contexto, vendaAtual.Identificador))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                DialogResult dr = frm.ShowDialog(this);
+                
+                if (dr == DialogResult.OK)
+                {
+                    AtualizaCarrinhoTotais();
+                }
+    
+            }
         }
 
         private void btnCleanMessage_Click(object sender, EventArgs e)
@@ -249,5 +274,24 @@ namespace WinFormsApp1
         }
         #endregion
 
+        private void btnTotal_Click(object sender, EventArgs e)
+        {
+
+            using (FormFechoCaixa frm = new FormFechoCaixa(contexto, Sessao.Identificador))
+            {
+                frm.StartPosition = FormStartPosition.CenterParent;
+                DialogResult dr = frm.ShowDialog(this);
+
+                if (dr == DialogResult.OK)
+                {
+                    var formLogin = (FormLogin)Tag;
+
+                    formLogin.Top = this.Top;
+                    formLogin.Left = this.Left;
+                    formLogin.Show();
+                    Close();
+                }
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Projeto.DataAccessLayer
             }
             else
             {
-                CnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;";
+                CnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;MultipleActiveResultSets=true;";
                 //Database.EnsureCreated();
             }
         }

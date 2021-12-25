@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Projeto.DataAccessLayer.Auxiliar;
 using Projeto.DataAccessLayer.Core.Repositories;
 using Projeto.DataAccessLayer.Entidades;
 using System;
@@ -33,6 +34,19 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
                 .ToList();
         }
 
+        public List<TotalSessao> GetTotalSessao(Guid pontoDeVendaSessaoId)
+        {
+            var query = from v in context.Vendas.AsEnumerable()
+                        join p in context.TipoPagamentos on v.TipoPagamento?.Id equals p.Id
+                        where v.Identificador == pontoDeVendaSessaoId
+                        group v by v.TipoPagamento.Id into pg
+            select new TotalSessao
+            {
+                TipoPagamento = pg.FirstOrDefault().TipoPagamento.Name,
+                Total = pg.Sum(m => m.ValorPagamento)
 
+            };
+            return query.ToList();
+        }
     }
 }

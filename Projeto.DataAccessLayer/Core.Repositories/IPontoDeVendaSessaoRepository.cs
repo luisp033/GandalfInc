@@ -1,11 +1,12 @@
-﻿using Projeto.DataAccessLayer.Entidades;
+﻿using Projeto.DataAccessLayer.Auxiliar;
+using Projeto.DataAccessLayer.Entidades;
+using System;
+using System.Collections.Generic;
 
 namespace Projeto.DataAccessLayer.Core.Repositories
 {
     public interface IPontoDeVendaSessaoRepository : IRepository<PontoDeVendaSessao>
     {
-        //PontoDeVendaSessao Login(Utilizador utilizador, PontoDeVenda pontoDeVenda);
-
-        //void Logout(PontoDeVendaSessao PontoDeVendaSessao);
+        List<TotalSessao> GetTotalSessao(Guid pontoDeVendaSessaoId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Projeto.DataAccessLayer.Persistence.Repositories;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Projeto.DataAccessLayer.Entidades;
 using System;
 using System.Collections.Generic;
@@ -170,7 +171,7 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
                     Loja = expectedLoja
                 };
                 unitOfWork.PontoDeVendas.Add(expectedPos);
-        
+
 
                 var expected = new List<PontoDeVendaSessao>() {
                     new PontoDeVendaSessao
@@ -380,6 +381,82 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories.Tests
             }
         }
 
+        [TestMethod()]
+        public void GetTotalSessaoTest()
+        {
+
+            using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext(DataBaseType.Sqlite)))
+            {
+
+                //arrange
+                var expectedTipoUtilizador = unitOfWork.TipoUtilizadores.Find(x => x.TipoId == (int)TipoUtilizadorEnum.Empregado).First();
+
+                var expectedUtilizador = new Utilizador
+                {
+                    Nome = "User Teste",
+                    Email = "email@teste.pt",
+                    Tipo = expectedTipoUtilizador,
+                    Senha = "123"
+                };
+                unitOfWork.Utilizadores.Add(expectedUtilizador);
+
+                var expectedLoja = new Loja
+                {
+                    Nome = "Loja 1",
+                };
+                unitOfWork.Lojas.Add(expectedLoja);
+
+                var expectedPos = new PontoDeVenda
+                {
+                    Nome = "POS Teste1",
+                    Loja = expectedLoja
+                };
+                unitOfWork.PontoDeVendas.Add(expectedPos);
+
+                var id = Guid.NewGuid();
+                var DateLoginExpected = DateTime.Today.AddDays(-1);
+                var DateLogoutExpected = DateTime.Today;
+                var expectedSessao = new PontoDeVendaSessao
+                {
+                    Identificador = id,
+                    Utilizador = expectedUtilizador,
+                    PontoDeVenda = expectedPos,
+                    DataLogin = DateLoginExpected,
+                    DataLogout = DateLogoutExpected
+                };
+                unitOfWork.PontoDeVendaSessoes.Add(expectedSessao);
+
+
+                //act
+
+                var expectTotalList = unitOfWork.PontoDeVendaSessoes.GetTotalSessao(expectedSessao.Identificador);
+
+                //Assert
+                Assert.AreEqual(0,expectTotalList.Count);
+            }
+
+        }
+
+        //[TestMethod()]
+        //public void GetTotalSessaoSqlServerTest()
+        //{
+
+        //    using (var unitOfWork = new UnitOfWork(new DataAccessLayer.ProjetoDBContext()))
+        //    {
+
+        //        //arrange
+
+        //        var expectedSessao = unitOfWork.PontoDeVendaSessoes.Get(new Guid("2A410A65-C76F-47FD-24D6-08D9C18CCB66"));
+
+        //        //act
+
+        //        var expectTotalList = unitOfWork.PontoDeVendaSessoes.GetTotalSessao(expectedSessao.Identificador);
+
+        //        //Assert
+        //        Assert.AreEqual(2, expectTotalList.Count);
+        //    }
+
+        //}
 
     }
 }
