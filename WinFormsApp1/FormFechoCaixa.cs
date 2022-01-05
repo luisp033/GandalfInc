@@ -1,16 +1,10 @@
 ﻿using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Auxiliar;
-using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp1

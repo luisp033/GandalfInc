@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Projeto.WebApi.Extensions;
 
 namespace Projeto.WebApi
 {
@@ -28,6 +22,10 @@ namespace Projeto.WebApi
         {
 
             services.AddControllers();
+
+            //https://code-maze.com/aspnetcore-webapi-best-practices/
+            services.ConfigureCors();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projeto.WebApi", Version = "v1" });

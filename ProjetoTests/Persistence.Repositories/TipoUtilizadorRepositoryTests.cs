@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Projeto.DataAccessLayer.Entidades;
-using Projeto.DataAccessLayer.Enumerados;
 using System;
 using System.Collections.Generic;
 using System.Linq;

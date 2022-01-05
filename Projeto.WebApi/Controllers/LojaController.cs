@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.WebApi.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Projeto.WebApi.Controllers
 {

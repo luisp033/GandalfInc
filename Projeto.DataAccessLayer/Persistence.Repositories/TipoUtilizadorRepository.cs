@@ -1,6 +1,5 @@
 ﻿using Projeto.DataAccessLayer.Core.Repositories;
 using Projeto.DataAccessLayer.Entidades;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Projeto.DataAccessLayer.Persistence.Repositories

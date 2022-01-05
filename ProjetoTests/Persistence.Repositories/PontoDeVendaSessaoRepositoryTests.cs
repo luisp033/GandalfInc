@@ -1,5 +1,4 @@
-﻿using Projeto.DataAccessLayer.Persistence.Repositories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Projeto.DataAccessLayer.Entidades;
 using System;
 using System.Collections.Generic;
