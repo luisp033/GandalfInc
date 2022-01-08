@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Projeto.BusinessLogicLayer\Projeto.BusinessLogicLayer.csproj" />
     <ProjectReference Include="..\Projeto.DataAccessLayer\Projeto.DataAccessLayer.csproj" />
   </ItemGroup>
@@ -13,6 +17,10 @@
     <Content Update="wwwroot\img\gandalf.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Gestao\" />
   </ItemGroup>
 
 </Project>
