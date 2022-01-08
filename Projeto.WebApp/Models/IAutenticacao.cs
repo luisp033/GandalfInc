@@ -8,8 +8,6 @@ namespace Projeto.WebApp.Models
 {
     public interface IAutenticacao
     {
-        string GetConnectionString();
-        string RegistrarUsuario(Usuario usuario);
         Resultado ValidarLogin(Usuario usuario);
     }
 }

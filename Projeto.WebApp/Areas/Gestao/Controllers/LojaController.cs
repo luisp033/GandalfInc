@@ -12,62 +12,53 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
 
     [Area("Gestao")]
-    public class UtilizadorController : BaseController
+    public class LojaController : BaseController
     {
 
-        public UtilizadorController(ProjetoDBContext context) : base(context)
+        public LojaController(ProjetoDBContext context) : base(context)
         {
         }
 
         public ActionResult Index()
         {
             LogicaSistema sistema = new LogicaSistema(_dbContext);
-            List<Utilizador> model = sistema.GetAllUtilizadores();
+            List<Loja> model = sistema.GetAllLojas();
 
-            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
-            //var myValor = HttpContext.Session.GetString("MyVariable");
-
-            foreach (var item in model)
-            {
-                item.Senha = String.Empty;
-            }
             return View(model);
         }
 
         public ActionResult Edit(Guid? id)
         {
-            Utilizador model = new Utilizador();
+            Loja model = new Loja();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
             if (id != null)
             {
-                model = (Utilizador)(sistema.ObtemUtilizador(id.Value).Objeto);
+                model = (Loja)(sistema.ObtemLoja(id.Value).Objeto);
             }
-
-            ViewBag.VBTipoUtilizadores = GetTipoUtilizador();
 
             return View(model);
         }
 
-        private List<SelectListItem> GetTipoUtilizador()
-        {
-            List<SelectListItem> result = new List<SelectListItem>();
+        //private List<SelectListItem> GetTipoUtilizador()
+        //{
+        //    List<SelectListItem> result = new List<SelectListItem>();
 
-            var lista = (TipoUtilizadorEnum[])Enum.GetValues(typeof(TipoUtilizadorEnum));
+        //    var lista = (TipoUtilizadorEnum[])Enum.GetValues(typeof(TipoUtilizadorEnum));
 
-            for (int i = 0; i < lista.Length; i++)
-            {
-                result.Add(new SelectListItem { Text = lista[i].ToString(), Value = i.ToString() });
-            }
+        //    for (int i = 0; i < lista.Length; i++)
+        //    {
+        //        result.Add(new SelectListItem { Text = lista[i].ToString(), Value = i.ToString() });
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, Utilizador model)
+        public ActionResult Edit(Guid id, Loja model)
         {
-            ModelState.Remove("Tipo.Name");
+            //ModelState.Remove("Tipo.Name");
 
             if (ModelState.IsValid)
             {
@@ -75,27 +66,25 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereUtilizador(model.Nome, model.Email, model.Senha, (TipoUtilizadorEnum)model.Tipo.TipoId);
+                    sistema.InsereLoja(model.Nome, model.NumeroFiscal, model.Email,model.Telefone,null);
                 }
                 else
                 {
-                    sistema.AlteraUtilizador(id, model.Nome, model.Email, model.Senha, (TipoUtilizadorEnum)model.Tipo.TipoId);
+                    sistema.AlteraLoja(id,model.Nome, model.NumeroFiscal, model.Email, model.Telefone, null);
                 }
 
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.VBTipoUtilizadores = GetTipoUtilizador();
             return View(model);
         }
 
         public ActionResult Delete(Guid id)
         {
-            Utilizador model = new Utilizador();
+            Loja model = new Loja();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
-            model = (Utilizador)(sistema.ObtemUtilizador(id).Objeto);
-            ViewBag.VBTipoUtilizadores = GetTipoUtilizador();
+            model = (Loja)(sistema.ObtemLoja(id).Objeto);
 
             return View(model);
         }
@@ -107,7 +96,7 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             try
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
-                sistema.ApagaUtilizador(id);
+                sistema.ApagaLoja(id);
 
                 return RedirectToAction(nameof(Index));
             }

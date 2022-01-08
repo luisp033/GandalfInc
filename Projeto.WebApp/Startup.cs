@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Projeto.DataAccessLayer;
 using Projeto.WebApp.Models;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,19 @@ namespace Projeto.WebApp
 
                     });
 
+            string cnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;MultipleActiveResultSets=true;";
+            services.AddDbContext<ProjetoDBContext>(options => options.UseSqlServer(cnnString));
+
             services.AddControllersWithViews();
+
+            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
+            //services.AddDistributedMemoryCache();
+            //services.AddSession(options =>
+            //{
+            //    options.IdleTimeout = TimeSpan.FromSeconds(10);
+            //    options.Cookie.HttpOnly = true;
+            //    options.Cookie.IsEssential = true;
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +74,9 @@ namespace Projeto.WebApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
+            //app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

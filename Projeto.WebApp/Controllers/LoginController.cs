@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Projeto.BusinessLogicLayer;
 using Projeto.DataAccessLayer;
@@ -10,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Projeto.WebApp.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly IAutenticacao _autentica;
 
-        public LoginController(IAutenticacao autentica)
+        public LoginController(IAutenticacao autentica, ProjetoDBContext context) : base(context)
         {
             _autentica = autentica;
         }
@@ -52,6 +53,9 @@ namespace Projeto.WebApp.Controllers
 
                     ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+
+                    //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
+                    //HttpContext.Session.SetString("MyVariable","MyValor");
 
                     await HttpContext.SignInAsync(principal);
 

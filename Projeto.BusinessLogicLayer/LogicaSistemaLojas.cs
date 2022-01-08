@@ -61,6 +61,9 @@ namespace Projeto.BusinessLogicLayer
                 }
 
                 loja.Nome = nome;
+                loja.NumeroFiscal = numeroFiscal;
+                loja.Email = email;
+                loja.Telefone = telefone;
 
                 unitOfWork.Lojas.Update(loja);
                 var affected = unitOfWork.Complete();
