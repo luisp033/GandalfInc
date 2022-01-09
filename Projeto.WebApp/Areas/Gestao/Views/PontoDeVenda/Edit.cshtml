@@ -1,7 +1,7 @@
-﻿@model Projeto.DataAccessLayer.Entidades.Loja
+﻿@model Projeto.DataAccessLayer.Entidades.PontoDeVenda
 
 @{
-    ViewData["Title"] = (Model.Identificador == Guid.Empty ? "Inserção" : "Edição") + " de loja";
+    ViewData["Title"] = (Model.Identificador == Guid.Empty ? "Inserção" : "Edição") + " de Ponto de Venda";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -13,25 +13,28 @@
             <input type="hidden" asp-for="Identificador" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (Model.Identificador == Guid.Empty)
+            {
+                <div class="form-group">
+                    <label asp-for="Loja" class="control-label"></label>
+                    <select asp-for="Loja.Identificador" asp-items="@ViewBag.VBLojas" class="form-control">
+                    </select>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Loja" class="control-label"></label>
+                    <input asp-for="Loja.Nome" class="form-control" readonly />
+                    <input type="hidden" asp-for="Loja.Identificador" />
+                </div>
+            }       
+
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumeroFiscal" class="control-label"></label>
-                <input asp-for="NumeroFiscal" class="form-control" />
-                <span asp-validation-for="NumeroFiscal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefone" class="control-label"></label>
-                <input asp-for="Telefone" class="form-control" />
-                <span asp-validation-for="Telefone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             @if (Model.Identificador != Guid.Empty)
@@ -47,11 +50,11 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="DataUltimaAlteracao" class="control-label"></label>
-                    <input asp-for="DataUltimaAlteracao" class="form-control" readonly/>
+                    <input asp-for="DataUltimaAlteracao" class="form-control" readonly />
                 </div>
             }
             <div class="form-group">
-                <a asp-action="Index"  class="btn btn-light">Voltar</a>
+                <a asp-action="Index" class="btn btn-light">Voltar</a>
                 <input type="submit" value="Gravar" class="btn btn-primary" />
             </div>
         </form>
@@ -59,5 +62,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

@@ -12,51 +12,49 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
 
     [Area("Gestao")]
-    public class LojaController : BaseController
+    public class CategoriaController : BaseController
     {
 
-        public LojaController(ProjetoDBContext context) : base(context)
+        public CategoriaController(ProjetoDBContext context) : base(context)
         {
         }
 
         public ActionResult Index()
         {
             LogicaSistema sistema = new LogicaSistema(_dbContext);
-            List<Loja> model = sistema.GetAllLojas();
+            List<CategoriaProduto> model = sistema.GetAllCategorias();
 
             return View(model);
         }
 
         public ActionResult Edit(Guid? id)
         {
-            Loja model = new Loja();
+            CategoriaProduto model = new CategoriaProduto();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
             if (id != null)
             {
-                model = (Loja)(sistema.ObtemLoja(id.Value).Objeto);
+                model = (CategoriaProduto)(sistema.ObtemCategoria(id.Value).Objeto);
             }
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, Loja model)
+        public ActionResult Edit(Guid id, CategoriaProduto model)
         {
-
             if (ModelState.IsValid)
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
 
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereLoja(model.Nome, model.NumeroFiscal, model.Email,model.Telefone,null);
+                    sistema.InsereCategoria(model.Nome, model.OrdemApresentacao);
                 }
                 else
                 {
-                    sistema.AlteraLoja(id,model.Nome, model.NumeroFiscal, model.Email, model.Telefone, null);
+                    sistema.AlteraCategoria(id,model.Nome, model.OrdemApresentacao);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -67,10 +65,10 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 
         public ActionResult Delete(Guid id)
         {
-            Loja model = new Loja();
+            CategoriaProduto model = new CategoriaProduto();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
-            model = (Loja)(sistema.ObtemLoja(id).Objeto);
+            model = (CategoriaProduto)(sistema.ObtemCategoria(id).Objeto);
 
             return View(model);
         }
@@ -82,7 +80,7 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             try
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
-                sistema.ApagaLoja(id);
+                sistema.ApagaCategoria(id);
 
                 return RedirectToAction(nameof(Index));
             }

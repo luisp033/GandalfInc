@@ -12,39 +12,41 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
 
     [Area("Gestao")]
-    public class LojaController : BaseController
+    public class PontoDeVendaController : BaseController
     {
 
-        public LojaController(ProjetoDBContext context) : base(context)
+        public PontoDeVendaController(ProjetoDBContext context) : base(context)
         {
         }
 
         public ActionResult Index()
         {
             LogicaSistema sistema = new LogicaSistema(_dbContext);
-            List<Loja> model = sistema.GetAllLojas();
+            List<PontoDeVenda> model = sistema.GetAllPontoDeVendas();
 
             return View(model);
         }
 
         public ActionResult Edit(Guid? id)
         {
-            Loja model = new Loja();
+            PontoDeVenda model = new PontoDeVenda();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
             if (id != null)
             {
-                model = (Loja)(sistema.ObtemLoja(id.Value).Objeto);
+                model = (PontoDeVenda)(sistema.ObtemPontoDeVenda(id.Value).Objeto);
             }
+
+            ViewBag.VBLojas = GetLojas();
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, Loja model)
+        public ActionResult Edit(Guid id, PontoDeVenda model)
         {
+            ModelState.Remove("Loja.Nome");
 
             if (ModelState.IsValid)
             {
@@ -52,25 +54,26 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereLoja(model.Nome, model.NumeroFiscal, model.Email,model.Telefone,null);
+                    sistema.InserePontoDeVenda(model.Nome,model.Loja);
                 }
                 else
                 {
-                    sistema.AlteraLoja(id,model.Nome, model.NumeroFiscal, model.Email, model.Telefone, null);
+                    sistema.AlteraPontoDeVenda(id,model.Nome, model.Loja.Identificador);
                 }
 
                 return RedirectToAction(nameof(Index));
             }
-
+            
+            ViewBag.VBLojas = GetLojas();
             return View(model);
         }
 
         public ActionResult Delete(Guid id)
         {
-            Loja model = new Loja();
+            PontoDeVenda model = new PontoDeVenda();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
-            model = (Loja)(sistema.ObtemLoja(id).Objeto);
+            model = (PontoDeVenda)(sistema.ObtemPontoDeVenda(id).Objeto);
 
             return View(model);
         }
@@ -82,7 +85,7 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             try
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
-                sistema.ApagaLoja(id);
+                sistema.ApagaPontoDeVenda(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -91,5 +94,20 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
                 return View();
             }
         }
+
+        private List<SelectListItem> GetLojas()
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+
+            LogicaSistema sistema = new LogicaSistema(_dbContext);
+            List<Loja> lista = sistema.GetAllLojas();
+
+            foreach (var item in lista)
+            {
+                result.Add(new SelectListItem { Text = item.Nome, Value = item.Identificador.ToString() });
+            }
+            return result;
+        }
+
     }
 }

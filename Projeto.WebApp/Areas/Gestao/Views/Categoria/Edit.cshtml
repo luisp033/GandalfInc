@@ -1,15 +1,15 @@
-﻿@model Projeto.DataAccessLayer.Entidades.Loja
+﻿@model Projeto.DataAccessLayer.Entidades.CategoriaProduto
 
 @{
-    ViewData["Title"] = (Model.Identificador == Guid.Empty ? "Inserção" : "Edição") + " de loja";
+    ViewData["Title"] = (Model.Identificador == Guid.Empty ? "Inserção" : "Edição") + " de categoria produto";
 }
 
 <h1>@ViewData["Title"]</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+
             <input type="hidden" asp-for="Identificador" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -19,19 +19,9 @@
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NumeroFiscal" class="control-label"></label>
-                <input asp-for="NumeroFiscal" class="form-control" />
-                <span asp-validation-for="NumeroFiscal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefone" class="control-label"></label>
-                <input asp-for="Telefone" class="form-control" />
-                <span asp-validation-for="Telefone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="OrdemApresentacao" class="control-label"></label>
+                <input asp-for="OrdemApresentacao" class="form-control" />
+                <span asp-validation-for="OrdemApresentacao" class="text-danger"></span>
             </div>
 
             @if (Model.Identificador != Guid.Empty)
@@ -43,21 +33,25 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="DataCriacao" class="control-label"></label>
-                    <input asp-for="DataCriacao" class="form-control" readonly/>
+                    <input asp-for="DataCriacao" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label asp-for="DataUltimaAlteracao" class="control-label"></label>
-                    <input asp-for="DataUltimaAlteracao" class="form-control" readonly/>
+                    <input asp-for="DataUltimaAlteracao" class="form-control" readonly />
                 </div>
             }
             <div class="form-group">
-                <a asp-action="Index"  class="btn btn-light">Voltar</a>
+                <a asp-action="Index" class="btn btn-light">Voltar</a>
                 <input type="submit" value="Gravar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

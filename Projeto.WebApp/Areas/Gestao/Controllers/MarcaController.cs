@@ -12,51 +12,49 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
 
     [Area("Gestao")]
-    public class LojaController : BaseController
+    public class MarcaController : BaseController
     {
 
-        public LojaController(ProjetoDBContext context) : base(context)
+        public MarcaController(ProjetoDBContext context) : base(context)
         {
         }
 
         public ActionResult Index()
         {
             LogicaSistema sistema = new LogicaSistema(_dbContext);
-            List<Loja> model = sistema.GetAllLojas();
+            List<MarcaProduto> model = sistema.GetAllMarcas();
 
             return View(model);
         }
 
         public ActionResult Edit(Guid? id)
         {
-            Loja model = new Loja();
+            MarcaProduto model = new MarcaProduto();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
             if (id != null)
             {
-                model = (Loja)(sistema.ObtemLoja(id.Value).Objeto);
+                model = (MarcaProduto)(sistema.ObtemMarca(id.Value).Objeto);
             }
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, Loja model)
+        public ActionResult Edit(Guid id, MarcaProduto model)
         {
-
             if (ModelState.IsValid)
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
 
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereLoja(model.Nome, model.NumeroFiscal, model.Email,model.Telefone,null);
+                    sistema.InsereMarca(model.Nome, model.Origem);
                 }
                 else
                 {
-                    sistema.AlteraLoja(id,model.Nome, model.NumeroFiscal, model.Email, model.Telefone, null);
+                    sistema.AlteraMarca(id,model.Nome, model.Origem);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -67,10 +65,10 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 
         public ActionResult Delete(Guid id)
         {
-            Loja model = new Loja();
+            MarcaProduto model = new MarcaProduto();
             LogicaSistema sistema = new LogicaSistema(_dbContext);
 
-            model = (Loja)(sistema.ObtemLoja(id).Objeto);
+            model = (MarcaProduto)(sistema.ObtemMarca(id).Objeto);
 
             return View(model);
         }
@@ -82,7 +80,7 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             try
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
-                sistema.ApagaLoja(id);
+                sistema.ApagaMarca(id);
 
                 return RedirectToAction(nameof(Index));
             }

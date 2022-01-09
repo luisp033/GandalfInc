@@ -26,10 +26,13 @@ namespace Projeto.BusinessLogicLayer
 
             using (var unitOfWork = new UnitOfWork(_context))
             {
+
+                var lojaDb = unitOfWork.Lojas.Get(loja.Identificador);
+
                 PontoDeVenda pontoDeVenda = new PontoDeVenda
                 {
                     Nome = nome,
-                    Loja = loja
+                    Loja = lojaDb
                 };
 
                 unitOfWork.PontoDeVendas.Add(pontoDeVenda);
