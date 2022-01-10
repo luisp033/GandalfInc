@@ -1,0 +1,51 @@
+﻿@model Projeto.DataAccessLayer.Entidades.Estoque
+
+@{
+    ViewData["Title"] = "Edição de Estoque";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Identificador" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Produto" class="control-label"></label>
+                <input asp-for="Produto.Nome" class="form-control" readonly/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NumeroSerie" class="control-label"></label>
+                <input asp-for="NumeroSerie" class="form-control" />
+                <span asp-validation-for="NumeroSerie" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataCriacao" class="control-label"></label>
+                <input asp-for="DataCriacao" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataUltimaAlteracao" class="control-label"></label>
+                <input asp-for="DataUltimaAlteracao" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-light">Voltar</a>
+                <input type="submit" value="Gravar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

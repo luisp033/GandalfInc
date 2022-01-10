@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Projeto.DataAccessLayer.Entidades.Estoque>
+
+@{
+    ViewData["Title"] = "Gestão de Estoque";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-sm btn-primary">Criar novo Estoque</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Identificador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroSerie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataEntrada)
+            </th>
+            <th>
+                @Html.DisplayName("Vendido")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identificador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroSerie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataEntrada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DetalheVendaId.HasValue)
+            </td>
+            <td>
+                @if (!item.DetalheVendaId.HasValue)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Identificador" class="btn btn-sm btn-info">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Identificador" class="btn btn-sm btn-danger">Apagar</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
