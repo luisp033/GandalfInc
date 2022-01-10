@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Projeto.DataAccessLayer.Entidades.Produto>
+
+@{
+    ViewData["Title"] = "Gestão de Produto";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Edit" class="btn btn-sm btn-primary">Criar novo Produto</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecoUnitario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ean)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Marca.Nome)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecoUnitario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ean)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Marca.Nome)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Identificador" class="btn btn-sm btn-info">Editar</a>
+                <a asp-action="Delete" asp-route-id="@item.Identificador" class="btn btn-sm btn-danger">Apagar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

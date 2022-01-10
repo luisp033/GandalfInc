@@ -10,7 +10,9 @@ using Projeto.DataAccessLayer;
 using Projeto.WebApp.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Projeto.WebApp
@@ -42,6 +44,8 @@ namespace Projeto.WebApp
 
             services.AddControllersWithViews();
 
+            
+            // Variaveis de sessao
             //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
             //services.AddDistributedMemoryCache();
             //services.AddSession(options =>
@@ -74,6 +78,20 @@ namespace Projeto.WebApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+            // Valores decimais 
+            app.Use(async (context, next) =>
+            {
+                var currentThreadCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+                currentThreadCulture.NumberFormat = NumberFormatInfo.InvariantInfo;
+
+                Thread.CurrentThread.CurrentCulture = currentThreadCulture;
+                Thread.CurrentThread.CurrentUICulture = currentThreadCulture;
+
+                await next();
+            });
+
 
             //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
             //app.UseSession();
