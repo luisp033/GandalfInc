@@ -72,6 +72,16 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
+        public Resultado ObtemUtilizador(string email)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var utilizador = unitOfWork.Utilizadores.Find(x => x.Email == email).FirstOrDefault();
+
+                return new Resultado(true, "Utilizador lido com sucesso", utilizador);
+            }
+        }
+
         public Resultado ObtemTipoUtilizadorByEmail(string email)
         {
             using (var unitOfWork = new UnitOfWork(_context))

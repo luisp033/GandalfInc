@@ -65,7 +65,7 @@ namespace Projeto.WebApp.Controllers
                                             }
                     else if (((Utilizador)loginStatus.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                     {
-                        return RedirectToAction("Index", "Pos");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

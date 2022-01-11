@@ -1,8 +1,71 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Seleção do Ponto de Venda";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+
+@if (TempData["AberturaPosFalhou"] != null)
+{
+    <p class="alert alert-danger">@TempData["AberturaPosFalhou"]</p>
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+
+            <div class="form-group">
+                <label for="LojaId" class="control-label">Lojas</label>
+                <select name="LojaId" id="LojaId" asp-items="@ViewBag.VBLojasComPos" class="form-control">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="PontoDeVendas" class="control-label">Pontos de Vendas</label>
+                <select name="PontoDeVendasId" id="PontoDeVendasId" asp-items="@(new SelectList(string.Empty,"Identificador","Nome"))" class="form-control">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <a asp-controller="Login" asp-action="Logout" class="btn btn-light">Sair</a>
+                <input type="submit" value="Entrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
+
+
+
+@section Scripts {
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //dropdown cascade
+        function ddlPosByLoja(){
+            console.log('enter');
+            var url = '@Url.Content("~/")' + "Home/GetPosByLoja";
+            var ddlsource = "#LojaId";
+            $.getJSON(url, { LojaId:$(ddlsource).val()}, function (data) {
+                var items = '';
+                $('#PontoDeVendasId').empty();
+                $.each(data, function (i, pos){
+
+                    items += "<option value='" + pos.value + "'>" + pos.text + "</option>";
+                });
+                $('#PontoDeVendasId').html(items);
+
+            });
+        }
+
+        //fire event when changed
+        $('#LojaId').change(function(){
+            ddlPosByLoja();
+        });
+
+        //first time
+        ddlPosByLoja();
+
+    });
+</script>
+}

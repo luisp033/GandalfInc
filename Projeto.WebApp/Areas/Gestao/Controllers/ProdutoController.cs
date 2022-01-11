@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Projeto.BusinessLogicLayer;
@@ -12,6 +13,7 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
 
     [Area("Gestao")]
+    [Authorize]
     public class ProdutoController : BaseController
     {
 
