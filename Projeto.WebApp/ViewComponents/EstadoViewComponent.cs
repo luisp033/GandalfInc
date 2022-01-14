@@ -30,7 +30,7 @@ namespace Projeto.WebApp.ViewComponents
             var resultado = sistema.GetVendaEmCursoForUser(User.Identity.Name);
             if (resultado.Sucesso)
             {
-                model.LojaNome = ((Venda)resultado.Objeto).PontoDeVendaSessao?.PontoDeVenda?.Loja.Nome;
+                model.LojaNome = ((Venda)resultado.Objeto).PontoDeVendaSessao.PontoDeVenda.Loja.Nome;
                 model.PosNome = ((Venda)resultado.Objeto).PontoDeVendaSessao.PontoDeVenda.Nome;
                 model.UtilizadorNome = ((Venda)resultado.Objeto).PontoDeVendaSessao.Utilizador.Nome;
                 model.SessaoData = ((Venda)resultado.Objeto).PontoDeVendaSessao.DataLogin;

@@ -3,7 +3,7 @@
 }
 
 
- 
+
 <header class="container-fluid header">
     <div class="row">
         <div class="col-8">
@@ -33,43 +33,38 @@
 
         @*Carrinho*@
         <div class="col-sm-2 sidenav">
-
             <div id="totaisDiv">
                 @(await Component.InvokeAsync("Totais"))
             </div>
+            <hr />
+            <div class="d-flex justify-content-center">
+                <div class="p-2" id="pos-cancelar">CANCELAR</div>
+                <div class="p-2" id="pos-pagar">PAGAR</div>
+            </div>
 
+            <hr />
             <div id="carrinhoDiv">
                 @(await Component.InvokeAsync("Carrinho"))
             </div>
+
+
         </div>
     </div>
 </div>
+@*        <div class="col-2 d-flex flex-row-reverse">
 
+    </div>*@
 <footer class="container-fluid text-center footer">
     <div id="mensagemDiv">
         @(await Component.InvokeAsync("MensagemPos"))
     </div>
+
 </footer>
 
+<partial name="_ModalFecho" />
+<partial name="_ModalPagamento" />
+<partial name="_ModalCancelar" />
 
-<div class="modal" tabindex="-1" role="dialog" id="modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Estatiticas de pagamentos da sessão</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button id="fechar-logout" type="button" class="btn btn-primary" asp-controller="Login" asp-action="Logout">Sair da Aplicação</button>
-        <button id="fechar-sessao" type="button" class="btn btn-danger">Fechar Sessão de Caixa</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 

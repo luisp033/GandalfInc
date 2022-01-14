@@ -1,0 +1,42 @@
+﻿@model PagamentoViewModel
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-pagamento">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            
+          
+
+            <form id="form-pagamento" asp-action="FinalizarCompra" asp-controller="Pos" data-ajax="true" data-ajax-method="POST" data-ajax-mode="REPLACE-WITH" data-ajax-update="#modal-pagamento">
+                <div class="modal-header">
+                    <h5 class="modal-title">Finalizar Compra</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <fieldset class="border p-2">
+                            <legend class="w-auto">Dados do Cliente</legend>
+
+                            <div id="form-container">
+                                <partial name="_DetalhePagamento.cshtml" model="Model" />
+                            </div>
+
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" data-tipo="2" class="botao-pagar btn btn-info p-2 m-2 text-nowrap">MB WAY</button>
+                            <button type="button" data-tipo="1" class="botao-pagar btn btn-primary p-2 m-2">MULTIBANCO</button>
+                            <button type="button" data-tipo="3" class="botao-pagar btn btn-success p-2 m-2">DINHEIRO</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

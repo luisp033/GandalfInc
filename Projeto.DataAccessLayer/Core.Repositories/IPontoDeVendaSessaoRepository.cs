@@ -8,5 +8,7 @@ namespace Projeto.DataAccessLayer.Core.Repositories
     public interface IPontoDeVendaSessaoRepository : IRepository<PontoDeVendaSessao>
     {
         List<TotalSessao> GetTotalSessao(Guid pontoDeVendaSessaoId);
+
+        PontoDeVendaSessao GetSessaoAbertaByUserEmail(string email);
     }
 }

@@ -105,9 +105,53 @@ namespace Projeto.WebApp.Controllers
         }
 
 
+        public IActionResult CancelarCompra()
+        {
+
+            LogicaSistema sistema = new LogicaSistema(_dbContext);
+
+            var vendaResult = sistema.GetVendaEmCursoForUser(User.Identity.Name);
+
+            var detalheVendaResult = sistema.DeleteAllDetalheVendasPorCompra(((Venda)vendaResult.Objeto).Identificador);
+
+            Mensagem(detalheVendaResult);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult FinalizarCompra(PagamentoViewModel model)
+        {
+            model.Pago = String.Empty;
+            if (model.Tipo == DataAccessLayer.Enumerados.TipoPagamentoEnum.MbWay && String.IsNullOrEmpty(model.Telefone))
+            {
+                ModelState.AddModelError("Telefone", "Telefone obrigatório para pagamento com MB WAY");
+                return PartialView("_DetalhePagamento", model);
+            }
+
+            LogicaSistema sistema = new LogicaSistema(_dbContext);
+            var vendaResult = sistema.GetVendaEmCursoForUser(User.Identity.Name);
+            var resultado = sistema.Pagamento(((Venda)vendaResult.Objeto).Identificador, model.Nome, model.NumeroContribuinte, model.Telefone, model.Tipo);
+
+            if (resultado.Sucesso)
+            {
+                ModelState.Clear();
+                model.Pago = "PagamentoEfetuadoComSucesso"; //serve para fechar a modal
+            }
+            else
+            { 
+                ModelState.AddModelError("Pago",resultado.Mensagem);
+            }
+
+            return PartialView("_DetalhePagamento",model);
+        }
+
         //TODO -------------------- Estatisticas dos tipos de pagamento (necessario fazer pagamentos primeiro)
-        //TODO -------------------- Mensagens no POS
-        //TODO -------------------- Pagamento
+        //TODO -------------------- Embonecar o POS (logotipo)
+        //TODO -------------------- Recibos
+        //TODO -------------------- Graficos na Gestão
+        //TODO -------------------- Estoque com datatables ou pagaincao serverside
 
     }
 }

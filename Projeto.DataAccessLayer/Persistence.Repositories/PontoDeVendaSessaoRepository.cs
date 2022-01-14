@@ -34,6 +34,22 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
                 .ToList();
         }
 
+        public PontoDeVendaSessao GetSessaoAbertaByUserEmail(string email)
+        {
+
+            var utl = (from u in context.Utilizadores
+                      where u.Email == email
+                      select u.Identificador).FirstOrDefault();
+
+            var query = from s in context.PontoDeVendaSessoes
+                        .Include(t => t.PontoDeVenda.Loja)
+                        .Include(t => t.Utilizador)
+                        where s.DataLogout == null && s.Utilizador.Identificador == utl 
+                        select s;
+
+            return query.FirstOrDefault();
+        }
+
         public List<TotalSessao> GetTotalSessao(Guid pontoDeVendaSessaoId)
         {
             var query = from v in context.Vendas.AsEnumerable()

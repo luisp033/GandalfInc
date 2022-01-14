@@ -42,6 +42,11 @@ namespace Projeto.BusinessLogicLayer
                     return new Resultado(false, "Venda inexistente");
                 }
 
+                if (vendaActual.DetalheVendas.Count == 0)
+                {
+                    return new Resultado(false, "Não existem produtos adicionados ao carrinho");
+                }
+
                 vendaActual.Cliente = cliente;
                 vendaActual.TipoPagamento = unitOfWork.TipoPagamentos.GetTipoPagamentoByEnum(tipo);
                 vendaActual.DataHoraVenda = DateTime.Now;
@@ -68,9 +73,7 @@ namespace Projeto.BusinessLogicLayer
             using (var unitOfWork = new UnitOfWork(_context))
             {
 
-                var utilizador = unitOfWork.Utilizadores.Find(x=>x.Email == email).FirstOrDefault();
-
-                var sessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.Utilizador.Identificador== utilizador.Identificador && x.DataLogout== null).FirstOrDefault();
+                var sessaoAberta = unitOfWork.PontoDeVendaSessoes.GetSessaoAbertaByUserEmail(email);
 
                 var venda = unitOfWork.Vendas.GetVendaEmCurso(sessaoAberta.Identificador);
 

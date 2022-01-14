@@ -66,6 +66,8 @@ function DelProduto(id) {
 }
 /* Estoque (fim)*/
 
+
+/* Totais (inicio) */
 function Totais() {
     $.ajax({
         url: '/Pos/Totais',
@@ -74,24 +76,12 @@ function Totais() {
         }
     });
 }
-function Mensagens() {
-    $.ajax({
-        url: '/Pos/MensagemPos',
-        success: function (data) {
-            $("#mensagemDiv").html(data);
-            window.setTimeout(function () {
-                $(".alert-mensagem").fadeTo(500, 0).slideUp(500, function () {
-                    $(this).remove();
-                });
-            }, 5000);
-        }
-    });
-}
+/* Totais (fim) */
 
-/* Modal Fecho (inicio)*/
+/* Modal Fecho (inicio) */
 
 $(document).on('click', '#pos-fechar', function () {
-    $("#modal").modal();
+    $("#modal-fechar").modal();
 });
 
 $(document).on('click', '#fechar-logout', function () {
@@ -102,14 +92,77 @@ $(document).on('click', '#fechar-sessao', function () {
     location.href = '/Pos/FecharSessao';
 });
 
+/* Modal Fecho (fim) */
 
-/* Modal Fecho (fim)*/
+/* Modal Cancelar Compra (inicio) */
+
+$(document).on('click', '#pos-cancelar', function () {
+    $("#modal-cancelar").modal();
+});
+
+$(document).on('click', '#cancelar-compra', function () {
+    location.href = '/Pos/CancelarCompra';
+});
+
+/* Modal Cancelar Compra (fim) */
+
+/* Modal Pagamento (inicio) */
+
+$(document).on('click', '#pos-pagar', function () {
+    $("#modal-pagamento").modal();
+});
+
+$(document).on('click', '.botao-pagar', function () {
+
+    let id = $(this).data("tipo");
+    $("#Tipo").val(id);
+
+    var form = $("#form-pagamento");
+    $.ajax({
+        url: '/Pos/FinalizarCompra',
+        method: 'post',
+        data: form.serialize(),
+        success: function (partialResult) {
+
+            var isPago = partialResult.indexOf("PagamentoEfetuadoComSucesso") >= 0
+
+            if (isPago) {
+                location.href = '/Pos/Index';
+            }
+            else {
+                $("#form-container").html(partialResult);
+            }
+        }
+    });
+
+});
+
+/* Modal Pagamento (fim) */
+
+
+
 
 /* Mensagens (inicio) */
-window.setTimeout(function () {
 
-    $(".alert-mensagem").fadeTo(500, 0).slideUp(500, function () {
-        $(this).remove();
+TimeOutMensagens();
+
+function Mensagens() {
+    $.ajax({
+        url: '/Pos/MensagemPos',
+        success: function (data) {
+            $("#mensagemDiv").html(data);
+            TimeOutMensagens();
+        }
     });
-}, 5000);
+}
+
+function TimeOutMensagens() {
+    window.setTimeout(function () {
+
+        $(".alert-mensagem").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 5000);
+}
+
 /* Mensagens (fim) */
