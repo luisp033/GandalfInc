@@ -2,4 +2,74 @@
     Layout = "_LayoutPos";
 }
 
-<h1>POS</h1>
+
+ 
+<header class="container-fluid header">
+    <div class="row">
+        <div class="col-8">
+            @(await Component.InvokeAsync("Estado"))
+        </div>
+        <div class="col-4 d-flex flex-row-reverse">
+            <p id="pos-fechar">FECHAR</p>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid text-center">
+    <div class="row content">
+
+
+        @*Categorias*@
+        <div class="col-sm-2 sidenav">
+            @(await Component.InvokeAsync("Categorias"))
+        </div>
+
+        @*Produtos*@
+        <div class="col-sm-8 text-left">
+            <div id="produtosDiv">
+                @(await Component.InvokeAsync("Produtos"))
+            </div>
+        </div>
+
+        @*Carrinho*@
+        <div class="col-sm-2 sidenav">
+
+            <div id="totaisDiv">
+                @(await Component.InvokeAsync("Totais"))
+            </div>
+
+            <div id="carrinhoDiv">
+                @(await Component.InvokeAsync("Carrinho"))
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid text-center footer">
+    <div id="mensagemDiv">
+        @(await Component.InvokeAsync("MensagemPos"))
+    </div>
+</footer>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Estatiticas de pagamentos da sessão</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="fechar-logout" type="button" class="btn btn-primary" asp-controller="Login" asp-action="Logout">Sair da Aplicação</button>
+        <button id="fechar-sessao" type="button" class="btn btn-danger">Fechar Sessão de Caixa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

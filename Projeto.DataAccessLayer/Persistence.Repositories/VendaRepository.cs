@@ -1,4 +1,5 @@
-﻿using Projeto.DataAccessLayer.Core.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Projeto.DataAccessLayer.Core.Repositories;
 using Projeto.DataAccessLayer.Entidades;
 using System;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
         public Venda GetVendaEmCurso(Guid pontoVendaSessaoId)
         {
             var query = from venda in context.Vendas
+                        .Include(t=>t.PontoDeVendaSessao.PontoDeVenda.Loja)
+                        .Include(t => t.DetalheVendas)
                         where !venda.DataHoraVenda.HasValue && venda.PontoDeVendaSessao.Identificador == pontoVendaSessaoId
                         select venda;
 

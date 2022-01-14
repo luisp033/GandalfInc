@@ -19,7 +19,6 @@ namespace Projeto.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-
         public HomeController(ILogger<HomeController> logger, ProjetoDBContext context) : base(context)
         {
             _logger = logger;

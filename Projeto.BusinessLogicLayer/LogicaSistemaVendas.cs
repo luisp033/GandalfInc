@@ -60,12 +60,44 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
+        /// <summary>
+        /// Devolve a venda em curso para o utilizador logado, , se esta não existir cria uma venda nova
+        /// </summary>
+        public Resultado GetVendaEmCursoForUser(string email)
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+
+                var utilizador = unitOfWork.Utilizadores.Find(x=>x.Email == email).FirstOrDefault();
+
+                var sessaoAberta = unitOfWork.PontoDeVendaSessoes.Find(x => x.Utilizador.Identificador== utilizador.Identificador && x.DataLogout== null).FirstOrDefault();
+
+                var venda = unitOfWork.Vendas.GetVendaEmCurso(sessaoAberta.Identificador);
+
+                if (venda == null)
+                {
+
+                    Venda novaVenda = new Venda()
+                    {
+                        PontoDeVendaSessao = sessaoAberta
+                    };
+                    unitOfWork.Vendas.Add(novaVenda);
+
+                    var affected = unitOfWork.Complete();
+                    if (affected == 0)
+                    {
+                        return new Resultado(false, "Venda não Criada");
+                    }
+                    return new Resultado(true, "Venda criada", novaVenda);
+                }
+                return new Resultado(true, "Venda aberta", venda);
+            }
+        }
+
 
         /// <summary>
         /// Devolve a venda em curso para a sessão, se esta não existir cria uma venda nova
         /// </summary>
-        /// <param name="pontoVendaSessaoId"></param>
-        /// <returns></returns>
         public Resultado GetVendaEmCurso(Guid pontoVendaSessaoId)
         {
             using (var unitOfWork = new UnitOfWork(_context))

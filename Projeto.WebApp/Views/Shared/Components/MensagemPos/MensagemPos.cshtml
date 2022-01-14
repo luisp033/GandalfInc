@@ -1,0 +1,18 @@
+﻿@{
+
+    if (TempData["MensagemPosErro"] != null)
+    {
+        <div class="alert alert-danger alert-mensagem alert-dismissible fade show mb-0 p-0 mt-2">
+            <button type="button" class="close pt-seis" data-dismiss="alert">&times;</button>
+            @TempData["MensagemPosErro"]
+        </div>
+    }
+    else if (TempData["MensagemPosSucesso"] != null)
+    {
+        <div class="alert alert-success alert-mensagem alert-dismissible fade show mb-0 p-0 mt-2">
+            <button type="button" class="close pt-seis" data-dismiss="alert">&times;</button>
+            @TempData["MensagemPosSucesso"]
+        </div>
+    }
+}
+

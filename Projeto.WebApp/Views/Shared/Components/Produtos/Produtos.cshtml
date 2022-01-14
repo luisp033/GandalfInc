@@ -1,0 +1,9 @@
+﻿@using Projeto.DataAccessLayer.Entidades
+@model IList<Produto>    
+    
+<div class="col-md-12" style="padding-top:50px;">    
+    @foreach (var item in Model)    
+    {    
+        <p class="pos-produto" data-id="@item.Identificador">@item.Nome</p> 
+    }    
+</div> 

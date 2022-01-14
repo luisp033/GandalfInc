@@ -40,6 +40,9 @@ namespace Projeto.WebApp.Controllers
             ModelState.Remove("Nome");
             ModelState.Remove("Email");
 
+            TempData["MensagemPosErro"] = null;
+            TempData["MensagemPosSucesso"] = null;
+
             if (ModelState.IsValid)
             {
                 Resultado  loginStatus = _autentica.ValidarLogin(usuario);
