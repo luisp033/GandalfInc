@@ -1,0 +1,42 @@
+﻿@using Projeto.DataAccessLayer.Auxiliar
+@model List<TotalSessao>
+
+<div class="col-md-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tipo Pagamento
+                </th>
+                <th>
+                    SubTotal
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.TipoPagamento
+                    </td>
+                    <td>
+                        @item.Total
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>
+                    Total
+                </th>
+                <th>
+                    @Model.Sum(x=>x.Total)
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+

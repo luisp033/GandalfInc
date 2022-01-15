@@ -86,6 +86,11 @@ namespace Projeto.WebApp.Controllers
             }
         }
 
+        public IActionResult ObtemTotaisSessao()
+        {
+            return ViewComponent("TotaisSessao");
+        }
+
         public IActionResult FecharSessao()
         {
 
@@ -147,7 +152,7 @@ namespace Projeto.WebApp.Controllers
             return PartialView("_DetalhePagamento",model);
         }
 
-        //TODO -------------------- Estatisticas dos tipos de pagamento (necessario fazer pagamentos primeiro)
+        //TODO -------------------- images nas categorias
         //TODO -------------------- Embonecar o POS (logotipo)
         //TODO -------------------- Recibos
         //TODO -------------------- Graficos na Gestão

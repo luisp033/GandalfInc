@@ -54,7 +54,8 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
         {
             var query = from v in context.Vendas.AsEnumerable()
                         join p in context.TipoPagamentos on v.TipoPagamento?.Id equals p.Id
-                        where v.Identificador == pontoDeVendaSessaoId
+                        join vs in context.PontoDeVendaSessoes on v.PontoDeVendaSessao.Identificador equals vs.Identificador
+                        where v.PontoDeVendaSessao.Identificador == pontoDeVendaSessaoId
                         group v by v.TipoPagamento.Id into pg
             select new TotalSessao
             {

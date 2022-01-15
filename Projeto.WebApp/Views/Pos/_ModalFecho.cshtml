@@ -8,7 +8,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div id="totaisSessaoDiv">
+                    @(await Component.InvokeAsync("TotaisSessao"))
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="fechar-logout" type="button" class="btn btn-primary" asp-controller="Login" asp-action="Logout">Sair da Aplicação</button>

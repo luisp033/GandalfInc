@@ -84,6 +84,16 @@ $(document).on('click', '#pos-fechar', function () {
     $("#modal-fechar").modal();
 });
 
+$("#modal-fechar").on('show.bs.modal', function () {
+    $.ajax({
+        url: '/Pos/ObtemTotaisSessao',
+        success: function (data) {
+            $("#totaisSessaoDiv").html(data);
+        }
+    });
+});
+
+
 $(document).on('click', '#fechar-logout', function () {
     location.href = '/Login/Logout';
 });
@@ -138,8 +148,6 @@ $(document).on('click', '.botao-pagar', function () {
 });
 
 /* Modal Pagamento (fim) */
-
-
 
 
 /* Mensagens (inicio) */
