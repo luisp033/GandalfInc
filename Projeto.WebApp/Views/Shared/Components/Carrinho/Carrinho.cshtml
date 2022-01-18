@@ -1,9 +1,25 @@
 ﻿@using Projeto.DataAccessLayer.Entidades
-@model IList<DetalheVenda>    
+@using Projeto.WebApp.Util
+@using System.Globalization
+@model IList<DetalheVenda>
 
-<div class="col-md-12" >    
-    @foreach (var item in Model)    
-    {    
-        <p class="pos-estoque" data-id="@item.Identificador">@item.Estoque?.Produto?.Nome</p> 
-    }    
-</div> 
+@foreach (var item in Model)
+{
+    @*        <p class="pos-estoque" data-id="@item.Identificador">@item.Estoque?.Produto?.Nome</p> *@
+
+    string imageDataURL = Util.GetUrlImageFormByteArray(item.Estoque.Produto.ImageData);
+    string valor = @item.Estoque?.Produto?.PrecoUnitario.ToString("C", CultureInfo.CreateSpecificCulture("pt-PT"));
+    <div class="card pos-estoque mb-2" data-id="@item.Identificador">
+        @*<img src="img_avatar.png" alt="Avatar" style="width:100%">*@
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                @*<img class="mx-auto img-fluid" src="@imageDataURL" style="width:30px;height:30px" alt="@item.Estoque?.Produto?.Nome">*@
+                <div class="p-1 carrinho-texto">@item.Estoque?.Produto?.Nome</div>
+                <div class="p-1 carrinho-preco">@valor</div>
+            </div>
+
+        </div>
+    </div>
+
+}
+

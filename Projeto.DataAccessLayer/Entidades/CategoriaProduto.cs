@@ -7,5 +7,6 @@ namespace Projeto.DataAccessLayer.Entidades
         [Required,MaxLength(255)]
         public string Nome { get; set; }
         public int OrdemApresentacao { get; set; }
+        public byte[] ImageData { get; set; }
     }
 }

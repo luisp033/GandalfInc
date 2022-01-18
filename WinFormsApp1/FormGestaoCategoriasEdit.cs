@@ -83,7 +83,7 @@ namespace WinFormsApp1
             }
             else
             {
-                var resultado = sistema.InsereCategoria(txtNome.Text, (int)numOrdem.Value);
+                var resultado = sistema.InsereCategoria(txtNome.Text, (int)numOrdem.Value, null);
                 if (!resultado.Sucesso)
                 {
                     MessageBox.Show(resultado.Mensagem);

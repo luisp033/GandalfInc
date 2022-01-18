@@ -6,5 +6,7 @@ namespace Projeto.DataAccessLayer.Core.Repositories
     public interface IVendaRepository : IRepository<Venda>
     {
         Venda GetVendaEmCurso(Guid pontoVendaSessaoId);
+
+        Venda GetVendaCompleta(Guid vendaId);
     }
 }

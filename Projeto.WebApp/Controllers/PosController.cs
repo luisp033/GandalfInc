@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DinkToPdf;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Projeto.BusinessLogicLayer;
@@ -131,6 +132,13 @@ namespace Projeto.WebApp.Controllers
             model.Pago = String.Empty;
             if (model.Tipo == DataAccessLayer.Enumerados.TipoPagamentoEnum.MbWay && String.IsNullOrEmpty(model.Telefone))
             {
+                //teste -LP- delete
+                LogicaSistema sistema2 = new LogicaSistema(_dbContext);
+                var vendaResult2 = sistema2.GetVendaEmCursoForUser(User.Identity.Name);
+                string htmlToRecibo = sistema2.GetReciboByVenda(((Venda)vendaResult2.Objeto).Identificador);
+
+                new UtilPdf(new SynchronizedConverter(new PdfTools())).Create(htmlToRecibo, ((Venda)vendaResult2.Objeto).Identificador);
+
                 ModelState.AddModelError("Telefone", "Telefone obrigatório para pagamento com MB WAY");
                 return PartialView("_DetalhePagamento", model);
             }
@@ -143,19 +151,28 @@ namespace Projeto.WebApp.Controllers
             {
                 ModelState.Clear();
                 model.Pago = "PagamentoEfetuadoComSucesso"; //serve para fechar a modal
+
+                //Cria recibo
+                //new UtilPdf(new SynchronizedConverter(new PdfTools())).Create();
             }
             else
-            { 
+            {
+
                 ModelState.AddModelError("Pago",resultado.Mensagem);
             }
 
             return PartialView("_DetalhePagamento",model);
         }
 
-        //TODO -------------------- images nas categorias
-        //TODO -------------------- Embonecar o POS (logotipo)
-        //TODO -------------------- Recibos
+
+
+
         //TODO -------------------- Graficos na Gestão
+
+        //TODO -------------------- Login better css
+
+        //TODO -------------------- categoria selecionada no pos
+
         //TODO -------------------- Estoque com datatables ou pagaincao serverside
 
     }

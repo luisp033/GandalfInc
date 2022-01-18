@@ -8,6 +8,7 @@ using Projeto.DataAccessLayer.Entidades;
 using Projeto.WebApp.Controllers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
@@ -37,6 +38,8 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             if (id != null)
             {
                 model = (Produto)(sistema.ObtemProduto(id.Value).Objeto);
+
+                ViewBag.ImageDataUrl = Util.Util.GetUrlImageFormByteArray(model.ImageData);
             }
 
             ViewBag.VBMarcas = GetMarcas();
@@ -56,13 +59,24 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
 
+                foreach (var file in Request.Form.Files)
+                {
+                    var ImageTitle = file.FileName;
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.CopyTo(ms);
+                        model.ImageData = ms.ToArray();
+                        ms.Close();
+                    }
+                }
+
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereProduto(model.Nome, model.Categoria.Identificador, model.Marca.Identificador,model.Ean, model.PrecoUnitario);
+                    sistema.InsereProduto(model.Nome, model.Categoria.Identificador, model.Marca.Identificador,model.Ean, model.PrecoUnitario, model.ImageData);
                 }
                 else
                 {
-                    sistema.AlteraProduto(id,model.Nome, model.Categoria.Identificador, model.Marca.Identificador, model.Ean, model.PrecoUnitario);
+                    sistema.AlteraProduto(id,model.Nome, model.Categoria.Identificador, model.Marca.Identificador, model.Ean, model.PrecoUnitario, model.ImageData);
                 }
 
                 return RedirectToAction(nameof(Index));

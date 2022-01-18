@@ -8,7 +8,7 @@ namespace Projeto.BusinessLogicLayer
 {
     public partial class LogicaSistema
     {
-        public Resultado InsereCategoria(string nome, int ordem)
+        public Resultado InsereCategoria(string nome, int ordem, byte[] image = null)
         {
 
             #region Validacoes
@@ -23,7 +23,8 @@ namespace Projeto.BusinessLogicLayer
                 CategoriaProduto categoria = new CategoriaProduto
                 {
                     Nome = nome,
-                    OrdemApresentacao = ordem
+                    OrdemApresentacao = ordem,
+                    ImageData = image
                 };
 
                 unitOfWork.CategoriaProdutos.Add(categoria);
@@ -42,7 +43,7 @@ namespace Projeto.BusinessLogicLayer
         {
             using (var unitOfWork = new UnitOfWork(_context))
             {
-                var result = unitOfWork.CategoriaProdutos.GetAll().ToList();
+                var result = unitOfWork.CategoriaProdutos.GetAll().OrderBy(o => o.OrdemApresentacao).ToList();
                 return result;
             }
         }
@@ -58,7 +59,7 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
-        public Resultado AlteraCategoria(Guid identificador, string nome, int ordem)
+        public Resultado AlteraCategoria(Guid identificador, string nome, int ordem, byte[] image = null)
         {
 
             #region Validacoes
@@ -79,6 +80,10 @@ namespace Projeto.BusinessLogicLayer
 
                 categoria.Nome = nome;
                 categoria.OrdemApresentacao = ordem;
+                if (image != null)
+                {
+                    categoria.ImageData = image;
+                }
 
                 unitOfWork.CategoriaProdutos.Update(categoria);
                 var affected = unitOfWork.Complete();

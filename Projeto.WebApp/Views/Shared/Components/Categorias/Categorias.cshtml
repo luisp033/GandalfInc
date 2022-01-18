@@ -1,13 +1,27 @@
 ﻿@using Projeto.DataAccessLayer.Entidades
-@model IList<CategoriaProduto>    
-    
-<div class="col-md-12" style="padding-top:50px;">    
+@using Projeto.WebApp.Util
+@model IList<CategoriaProduto>
 
-    <p class="pos-categoria" data-id="">Todas</p> 
-    @foreach (var item in Model)    
-    {    
-        <p class="pos-categoria" data-id="@item.Identificador">@item.Nome</p> 
-    }    
-</div> 
+<div class="col-md-12" style="height:100%;">
 
+    <h4 class="title-categoria">CATEGORIAS</h4>
 
+    <div class="card pos-categoria mb-3" >
+        <img class="card-img-top mx-auto img-fluid" src="/img/Todos.jpg" style="width:80px" alt="Todas">
+        <div class="card-body p-0">
+            <h6 class="card-title texto-card" >Todas</h6>
+        </div>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        string imageDataURL = Util.GetUrlImageFormByteArray(item.ImageData);
+        <div class="card pos-categoria mb-3" data-id="@item.Identificador" >
+            <img class="card-img-top mx-auto img-fluid" src="@imageDataURL" style="width:80px;height:80px" alt="@item.Nome">
+            <div class="card-body p-0">
+                <h6 class="card-title" texto-card>@item.Nome</h6>
+            </div>
+        </div>
+    }
+
+</div>

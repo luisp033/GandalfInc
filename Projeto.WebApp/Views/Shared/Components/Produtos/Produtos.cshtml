@@ -1,9 +1,25 @@
 ﻿@using Projeto.DataAccessLayer.Entidades
-@model IList<Produto>    
-    
-<div class="col-md-12" style="padding-top:50px;">    
-    @foreach (var item in Model)    
-    {    
-        <p class="pos-produto" data-id="@item.Identificador">@item.Nome</p> 
-    }    
+@using Projeto.WebApp.Util
+@using System.Globalization
+@model IList<Produto>
+
+<div class="col-md-12 ">
+    <div class="d-flex align-content-start flex-wrap mb-2">
+
+
+
+        @foreach (var item in Model)
+        {
+            string valor = @item.PrecoUnitario.ToString("C", CultureInfo.CreateSpecificCulture("pt-PT"));
+            string imageDataURL = Util.GetUrlImageFormByteArray(item.ImageData);
+            <div class="card pos-produto m-3 card-produto" data-id="@item.Identificador">
+                <img class="card-img-top mx-auto img-fluid" src="@imageDataURL" style="width:80px;height:80px;" alt="@item.Nome">
+                <div class="card-body p-0">
+                    <h6 class="card-title texto-card">@item.Nome</h6>
+                    <h6 class="text-right pr-2">@valor</h6>
+                </div>
+            </div>
+
+        }
+    </div>
 </div> 

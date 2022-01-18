@@ -18,7 +18,7 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
-        public Resultado InsereProduto(string nome, Guid categoria, Guid marca, string ean, decimal preco)
+        public Resultado InsereProduto(string nome, Guid categoria, Guid marca, string ean, decimal preco, byte[] image = null)
         {
 
             #region Validacoes
@@ -48,7 +48,8 @@ namespace Projeto.BusinessLogicLayer
                     Categoria = insCategoria,
                     Marca = insMarca,
                     Ean = ean,
-                    PrecoUnitario = preco
+                    PrecoUnitario = preco,
+                    ImageData = image
 
                 };
 
@@ -64,7 +65,7 @@ namespace Projeto.BusinessLogicLayer
             }
         }
 
-        public Resultado AlteraProduto(Guid identificador, string nome, Guid categoria, Guid marca, string ean, decimal preco)
+        public Resultado AlteraProduto(Guid identificador, string nome, Guid categoria, Guid marca, string ean, decimal preco, byte[] image = null)
         {
 
             #region Validacoes
@@ -100,6 +101,10 @@ namespace Projeto.BusinessLogicLayer
                 produto.Marca = insMarca;
                 produto.Ean = ean;
                 produto.PrecoUnitario = preco;
+                if (image != null)
+                { 
+                    produto.ImageData = image;
+                }
 
                 unitOfWork.Produtos.Update(produto);
                 var affected = unitOfWork.Complete();

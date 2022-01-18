@@ -4,7 +4,9 @@ using Projeto.DataAccessLayer.Enumerados;
 using Projeto.DataAccessLayer.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace Projeto.BusinessLogicLayer
 {
@@ -268,5 +270,55 @@ namespace Projeto.BusinessLogicLayer
                 return new Resultado(true, "Item removido com sucesso");
             }
         }
+
+        public string GetReciboByVenda(Guid vendaId)
+        {
+            var sb = new StringBuilder();
+
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var venda = unitOfWork.Vendas.GetVendaCompleta(vendaId);
+
+                sb.Append(@$"<h3>Gandalf</h3>");
+                sb.Append(@$"<p>Loja: {venda.PontoDeVendaSessao.PontoDeVenda.Loja.Nome}<br />");
+                sb.Append(@$"Pos: {venda.PontoDeVendaSessao.PontoDeVenda.Nome}<br />");
+                sb.Append(@$"Funcionário: {venda.PontoDeVendaSessao.Utilizador.Nome}<br />");
+                sb.Append(@$"Data da venda: {venda.DataHoraVenda} <br />");
+                sb.Append(@$"Recibo Id: {venda.Identificador}<br />");
+                if (venda.Cliente != null)
+                { 
+                    sb.Append(@$"Cliente Nif: {venda.Cliente?.NumeroFiscal}<br />");
+                    sb.Append(@$"Cliente Nome: {venda.Cliente?.Nome}<br />");
+                    sb.Append(@$"Cliente Tlf: {venda.Cliente?.Telefone}<br />");
+                }
+                sb.Append(@$"Tipo Pagamento: {venda.TipoPagamento?.ToString()}<br />");
+                sb.Append(@$"----------------------------------------------------------------</p>");
+
+                sb.Append(@"<table align = 'left' width='100%' >
+                               <tr>
+                                  <th align='left'>Produto</th>
+                                  <th align='left'>Valor</th>
+                                </tr>");
+                decimal total = 0;
+                foreach (var item in venda.DetalheVendas)
+                {
+                    string valor = item.Estoque.Produto.PrecoUnitario.ToString("C", CultureInfo.CreateSpecificCulture("pt-PT"));
+                    sb.Append(@$"<tr>
+                                  <td width='70%'>{item.Estoque.Produto.Nome}</td>
+                                  <td align='right'>{valor}</td>
+                                </tr>");
+                    total += item.Estoque.Produto.PrecoUnitario;
+                }
+                string valortotal = total.ToString("C", CultureInfo.CreateSpecificCulture("pt-PT"));
+                sb.Append(@$"<tr>
+                                  <th align='right'>Total :</th>
+                                  <th align='right'>{valortotal}</th>
+                                </tr>");
+                sb.Append(@"</table>");
+
+            }
+            return sb.ToString();
+        }
+
     }
 }

@@ -17,6 +17,8 @@ namespace Projeto.DataAccessLayer.Entidades
         [MaxLength(255)]
         public string Ean { get; set; }
 
+        public byte[] ImageData { get; set; }
+
 
     }
 }

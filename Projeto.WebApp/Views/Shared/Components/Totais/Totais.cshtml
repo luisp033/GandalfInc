@@ -1,6 +1,15 @@
-﻿@model TotaisViewModel
+﻿@using System.Globalization
+@model TotaisViewModel
 
-<div class="col-md-12">    
-    <p>Items: @Model.ItemsCompra</p> 
-    <p>Total: @Model.TotalCompra</p> 
-</div> 
+<div class="container-fluid">
+    <div class="d-flex justify-content-between">
+        <div><em>Items: </em> </div>
+        <h6>@Model.ItemsCompra</h6>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between">
+        <div><em>Total: </em></div>
+        <h6 class="text-nowrap">@Model.TotalCompra.ToString("C", CultureInfo.CreateSpecificCulture("pt-PT"))</h6>
+    </div>
+</div>

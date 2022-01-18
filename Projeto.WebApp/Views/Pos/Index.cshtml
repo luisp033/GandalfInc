@@ -6,11 +6,11 @@
 
 <header class="container-fluid header">
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-8 col-sm-12">
             @(await Component.InvokeAsync("Estado"))
         </div>
-        <div class="col-4 d-flex flex-row-reverse">
-            <p id="pos-fechar">FECHAR</p>
+        <div class="col-md-4 col-sm-12 d-flex flex-row-reverse">
+            <button type="button" class="btn btn-sm btn-primary m-1"  id="pos-fechar">FECHAR</button>
         </div>
     </div>
 </header>
@@ -20,26 +20,27 @@
 
 
         @*Categorias*@
-        <div class="col-sm-2 sidenav">
+        <div class="col-md-2 sidenav">
             @(await Component.InvokeAsync("Categorias"))
         </div>
 
         @*Produtos*@
-        <div class="col-sm-8 text-left">
+        @*<div class="col-md-8" style="background-color: #6c6868;">*@
+            <div class="col-md-8" style="background-image: Url('img/bg.jpg');background-size: cover;">
             <div id="produtosDiv">
                 @(await Component.InvokeAsync("Produtos"))
             </div>
         </div>
 
         @*Carrinho*@
-        <div class="col-sm-2 sidenav">
+        <div class="col-md-2 sidenav">
             <div id="totaisDiv">
                 @(await Component.InvokeAsync("Totais"))
             </div>
             <hr />
             <div class="d-flex justify-content-center">
-                <div class="p-2" id="pos-cancelar">CANCELAR</div>
-                <div class="p-2" id="pos-pagar">PAGAR</div>
+                <button type="button" class="btn btn-sm btn-secondary" id="pos-cancelar">CANCELAR</button>
+                <button type="button" class="btn-block ml-2 btn btn-sm btn-success " id="pos-pagar">PAGAR</button>
             </div>
 
             <hr />

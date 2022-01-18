@@ -24,5 +24,17 @@ namespace Projeto.DataAccessLayer.Persistence.Repositories
 
             return query.FirstOrDefault();
         }
+        public Venda GetVendaCompleta(Guid vendaId)
+        {
+            var query = from venda in context.Vendas
+                        .Include(t=>t.PontoDeVendaSessao.PontoDeVenda.Loja)
+                        .Include(t => t.DetalheVendas).ThenInclude(c => c.Estoque).ThenInclude(p => p.Produto)
+                        where venda.Identificador == vendaId
+                        select venda;
+
+            return query.FirstOrDefault();
+        }
+
+
     }
 }

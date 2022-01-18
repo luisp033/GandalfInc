@@ -14,7 +14,7 @@
     padding-top: 20px;
     background-color: #ff6a00;
     /*height: 100%;*/
-    min-height: calc(100vh - 104px);
+    min-height: calc(100vh - 48px);/*calc(100vh - 104px);*/
 }
 
 .header {
@@ -27,7 +27,7 @@
 
 footer {
     position: absolute;
-    background-color: #555;
+    /*background-color: #555;*/
     bottom: 0;
     width: 100%;
     white-space: nowrap;
@@ -38,6 +38,35 @@ footer {
     padding-top:6px !important;
 }
 
+.title-categoria {
+    
+    font-size: 1.5vh;
+}
+
+.texto-card {
+    font-size:1rem;
+}
+
+.card-produto {
+    min-width: 11rem;
+}
+
+.alerta-margem {
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.carrinho-texto {
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+}
+.carrinho-preco {
+    font-size: 1rem;
+    white-space: nowrap;
+}
 
 /* Set black background color, white text and some padding */
 /*footer {
@@ -47,7 +76,7 @@ footer {
 }*/
 
 /*On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 767px) {
     .sidenav {
         /* min-height: calc(100vh - 56px);*/
         min-height: 100%;
@@ -67,6 +96,19 @@ footer {
         white-space: nowrap;
         line-height: 40px; /* Vertically center the text there */
     }
+
+    .card-produto {
+        width: 100%;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .alerta-margem {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
 
 }
 

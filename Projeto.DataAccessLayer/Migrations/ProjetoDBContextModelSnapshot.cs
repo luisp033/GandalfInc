@@ -34,6 +34,9 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -349,6 +352,9 @@ namespace Projeto.DataAccessLayer.Migrations
                     b.Property<string>("Ean")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<Guid?>("MarcaIdentificador")
                         .HasColumnType("uniqueidentifier");

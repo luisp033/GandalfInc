@@ -7,6 +7,7 @@ using Projeto.DataAccessLayer.Entidades;
 using Projeto.WebApp.Controllers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
@@ -35,6 +36,9 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             if (id != null)
             {
                 model = (CategoriaProduto)(sistema.ObtemCategoria(id.Value).Objeto);
+
+                ViewBag.ImageDataUrl = Util.Util.GetUrlImageFormByteArray(model.ImageData);
+
             }
 
             return View(model);
@@ -48,13 +52,24 @@ namespace Projeto.WebApp.Areas.Gestao.Controllers
             {
                 LogicaSistema sistema = new LogicaSistema(_dbContext);
 
+                foreach (var file in Request.Form.Files)
+                {
+                    var ImageTitle = file.FileName;
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.CopyTo(ms);
+                        model.ImageData = ms.ToArray();
+                        ms.Close();
+                    }
+                }
+
                 if (id == Guid.Empty)
                 {
-                    sistema.InsereCategoria(model.Nome, model.OrdemApresentacao);
+                    sistema.InsereCategoria(model.Nome, model.OrdemApresentacao, model.ImageData);
                 }
                 else
                 {
-                    sistema.AlteraCategoria(id,model.Nome, model.OrdemApresentacao);
+                    sistema.AlteraCategoria(id, model.Nome, model.OrdemApresentacao, model.ImageData);
                 }
 
                 return RedirectToAction(nameof(Index));

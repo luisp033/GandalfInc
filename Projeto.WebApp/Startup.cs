@@ -1,3 +1,5 @@
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +43,10 @@ namespace Projeto.WebApp
 
             string cnnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=ProjectoDB;Trusted_Connection=True;MultipleActiveResultSets=true;";
             services.AddDbContext<ProjetoDBContext>(options => options.UseSqlServer(cnnString));
+
+            //Criação de pdf
+            //https://code-maze.com/create-pdf-dotnetcore/
+            //services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddControllersWithViews();
 
