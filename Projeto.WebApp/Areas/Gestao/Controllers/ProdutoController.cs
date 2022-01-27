@@ -12,7 +12,6 @@ using System.IO;
 
 namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
-
     [Area("Gestao")]
     [Authorize]
     public class ProdutoController : BaseController

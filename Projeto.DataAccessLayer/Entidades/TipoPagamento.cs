@@ -13,5 +13,11 @@ namespace Projeto.DataAccessLayer.Entidades
         [Required, MaxLength(100)]
         public string Name { get; set; }
 
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 }

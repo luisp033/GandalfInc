@@ -1,4 +1,5 @@
 ﻿using Projeto.DataAccessLayer.Auxiliar;
+using Projeto.DataAccessLayer.Dto;
 using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Enumerados;
 using Projeto.DataAccessLayer.Persistence;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Projeto.BusinessLogicLayer
 {
@@ -318,6 +320,17 @@ namespace Projeto.BusinessLogicLayer
 
             }
             return sb.ToString();
+        }
+
+        public List<DataPie> VendasPorCategoria()
+        {
+            using (var unitOfWork = new UnitOfWork(_context))
+            {
+                var x = unitOfWork.Vendas.GetVendasPorCategoria();
+
+                return x;
+            }
+
         }
 
     }

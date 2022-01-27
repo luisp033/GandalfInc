@@ -1,4 +1,5 @@
-﻿using Projeto.DataAccessLayer.Entidades;
+﻿using Projeto.DataAccessLayer.Dto;
+using Projeto.DataAccessLayer.Entidades;
 using Projeto.DataAccessLayer.Persistence;
 using System;
 using System.Collections.Generic;
@@ -118,8 +119,6 @@ namespace Projeto.BusinessLogicLayer
                 return new Resultado(true, "Categoria removida com sucesso");
             }
         }
-
-
 
     }
 }

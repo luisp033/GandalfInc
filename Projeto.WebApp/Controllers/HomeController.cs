@@ -34,7 +34,7 @@ namespace Projeto.WebApp.Controllers
 
             if (tip == TipoUtilizadorEnum.Gerente)
             {
-                return RedirectToAction("Index", "Gestao");
+                return RedirectToAction("Index", "Gestao", new { Area = "Gestao" });
             }
 
             ViewBag.VBLojasComPos = GetLojas();

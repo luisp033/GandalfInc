@@ -64,8 +64,8 @@ namespace Projeto.WebApp.Controllers
 
                     if (((Utilizador)loginStatus.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Gerente)
                     {
-                        return RedirectToAction("Index", "Gestao");
-                                            }
+                        return RedirectToAction("Index", "Gestao", new { Area = "Gestao" } );
+                    }
                     else if (((Utilizador)loginStatus.Objeto).Tipo.TipoId == (int)TipoUtilizadorEnum.Empregado)
                     {
                         return RedirectToAction("Index", "Home");

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Projeto.BusinessLogicLayer;
@@ -11,7 +12,7 @@ using System.IO;
 
 namespace Projeto.WebApp.Areas.Gestao.Controllers
 {
-
+    [Authorize]
     [Area("Gestao")]
     public class CategoriaController : BaseController
     {

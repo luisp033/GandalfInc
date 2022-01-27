@@ -132,12 +132,11 @@ namespace Projeto.WebApp.Controllers
             model.Pago = String.Empty;
             if (model.Tipo == DataAccessLayer.Enumerados.TipoPagamentoEnum.MbWay && String.IsNullOrEmpty(model.Telefone))
             {
-                //teste -LP- delete
-                LogicaSistema sistema2 = new LogicaSistema(_dbContext);
-                var vendaResult2 = sistema2.GetVendaEmCursoForUser(User.Identity.Name);
-                string htmlToRecibo = sistema2.GetReciboByVenda(((Venda)vendaResult2.Objeto).Identificador);
-
-                new UtilPdf(new SynchronizedConverter(new PdfTools())).Create(htmlToRecibo, ((Venda)vendaResult2.Objeto).Identificador);
+                ////teste -LP- delete
+                //LogicaSistema sistema2 = new LogicaSistema(_dbContext);
+                //var vendaResult2 = sistema2.GetVendaEmCursoForUser(User.Identity.Name);
+                //string htmlToRecibo = sistema2.GetReciboByVenda(((Venda)vendaResult.Objeto).Identificador);
+                //new UtilPdf(new SynchronizedConverter(new PdfTools())).Create(htmlToRecibo, ((Venda)vendaResult.Objeto).Identificador);
 
                 ModelState.AddModelError("Telefone", "Telefone obrigatório para pagamento com MB WAY");
                 return PartialView("_DetalhePagamento", model);
@@ -153,7 +152,9 @@ namespace Projeto.WebApp.Controllers
                 model.Pago = "PagamentoEfetuadoComSucesso"; //serve para fechar a modal
 
                 //Cria recibo
-                //new UtilPdf(new SynchronizedConverter(new PdfTools())).Create();
+                string htmlToRecibo = sistema.GetReciboByVenda(((Venda)vendaResult.Objeto).Identificador);
+                new UtilPdf(new SynchronizedConverter(new PdfTools())).Create(htmlToRecibo, ((Venda)vendaResult.Objeto).Identificador);
+                
             }
             else
             {
@@ -174,6 +175,8 @@ namespace Projeto.WebApp.Controllers
         //TODO -------------------- categoria selecionada no pos
 
         //TODO -------------------- Estoque com datatables ou pagaincao serverside
+
+        //TODO -------------------- Documentação
 
     }
 }
